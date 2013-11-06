@@ -1,4 +1,4 @@
-package arch.mips8;
+package arch.mips8.instruction;
 
 public interface Instruction {
 

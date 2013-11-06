@@ -1,5 +1,7 @@
 package arch.mips8;
 
+import arch.mips8.instruction.Instruction;
+
 public class Stage {
 	Instruction currentInstr;
 	boolean busy;

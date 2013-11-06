@@ -4,15 +4,23 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import arch.mips8.instruction.AddInstruction;
 
 public class FileParser {
 	private ArrayList<String> code;
 	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;
+	Map<String, Integer> labelIndex;
+	int instrIndex;
+	Globals globals;
 
 	public FileParser() {
 	}
 
-	public FileParser(String filePath) {
+	public FileParser(String filePath, Globals globals) {
+		this.globals = globals;
 		threeR = " add sub addu subu and or slt sltu mul ";
 		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu bgt ";
 		twoR = " mult multu div divu move ";
@@ -20,7 +28,8 @@ public class FileParser {
 		oneRoneIoneR = " lw sw ";
 		oneRoneI = " lui li la ";
 		oneI = " j jal b ";
-
+		instrIndex = 0;
+		labelIndex = new HashMap<String, Integer>();
 		BufferedReader br = null;
 		code = new ArrayList<String>();
 		try {
@@ -90,6 +99,7 @@ public class FileParser {
 					String label = line.substring(0, line.indexOf(':'));
 					instr = line.substring(line.indexOf(':') + 1);
 					System.out.println("label " + label);
+					labelIndex.put(label, instrIndex);
 
 				} else {
 					instr = line;
@@ -99,6 +109,7 @@ public class FileParser {
 			}
 
 		}
+		System.out.print(globals.instructions);
 	}
 
 	private void parseInstruction(String instr) throws Exception {
@@ -116,8 +127,17 @@ public class FileParser {
 				String r1 = s[1];
 				String r2 = s[2];
 				String r3 = s[3];
-				// !TODO Three Register Call
+				// TODO Three Register Call
 				System.out.println(type.trim() + " 3R " + r1 + r2 + r3);
+				switch (type.trim()) {
+				case "add":
+					globals.instructions.add(new AddInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+
+				}
+
 			} else if (twoRoneI.contains(type)) {
 				String r1 = s[1];
 				String r2 = s[2];

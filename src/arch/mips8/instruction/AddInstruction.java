@@ -1,6 +1,8 @@
-package arch.mips8;
+package arch.mips8.instruction;
 
-public class AddInstruction extends ThreeR {
+import arch.mips8.Register;
+
+public class AddInstruction extends ThreeRInsruction {
 
 	public AddInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);

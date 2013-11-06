@@ -1,12 +1,13 @@
 package arch.mips8;
 
-import java.util.ArrayList;
+import arch.mips8.instruction.Instruction;
 
 public class Simulate {
 	Stage IF, ID, IS, RF, EX, DF, DS, TC, WB;
 	boolean done;
-
-	Simulate(ArrayList<Instruction> code) {
+	Globals globals;
+	Simulate(Globals globals) {
+		this.globals = globals;
 		done = false;
 		int instrIndex = 0;
 		while (!done) {
@@ -62,16 +63,16 @@ public class Simulate {
 				Instruction i = IF.getInstruction();
 				IS.addInstruction(i);
 			}
-			if (instrIndex < code.size() && IF.free()) {
-				IS.addInstruction(code.get(instrIndex));
+			if (instrIndex < globals.instructions.size() && IF.free()) {
+				IS.addInstruction(globals.instructions.get(instrIndex));
 			}
 			if (WB.free()) {
 				Instruction i = WB.getInstruction();
-				if (i.equals(code.get(instrIndex))) {
+				if (i.equals(globals.instructions.get(instrIndex))) {
 					done = true;
 				}
 			}
-
+			instrIndex = (int) globals.getRegister("pc").content;
 		}
 	}
 }

@@ -1,10 +1,12 @@
-package arch.mips8;
+package arch.mips8.instruction;
 
-public class ThreeR implements Instruction {
+import arch.mips8.Register;
+
+public class ThreeRInsruction implements Instruction {
 	Register r1, r2, r3;
 	float r1Val, r2Val, r3Val;
 
-	public ThreeR(Register r1, Register r2, Register r3) {
+	public ThreeRInsruction(Register r1, Register r2, Register r3) {
 		this.r1 = r1;
 		this.r2 = r2;
 		this.r3 = r3;
@@ -67,13 +69,10 @@ public class ThreeR implements Instruction {
 	@Override
 	public boolean executeWB() {
 		// TODO Not necessarily locked might be unlocked in a case when some
-		// other instruction wrote in it after it was locked
-		if (r1.isLocked()) {
-			r1.setContent(r1Val);
-			r1.unlockRegister();
-			return true;
-		} else {
-			return false;
-		}
+		// other instruction wrote in it after it was locked r1.isLocked()
+		// should I check?
+		r1.setContent(r1Val);
+		r1.unlockRegister();
+		return true;
 	}
 }

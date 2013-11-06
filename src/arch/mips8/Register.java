@@ -1,11 +1,13 @@
 package arch.mips8;
 
 public class Register {
-	boolean lock;
-	boolean forward;
-	float content, fContent;
+	public String name;
+	public boolean lock;
+	public boolean forward;
+	public float content, fContent;
 
-	Register() {
+	Register(String name) {
+		this.name = name;
 		lock = false;
 		forward = true;
 		content = 0;
