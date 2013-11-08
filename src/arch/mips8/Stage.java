@@ -19,6 +19,7 @@ public class Stage {
 
 	public void execute(int stage) {
 		// This will keep busy true until its function return false
+		System.out.println(stage);
 		switch (stage) {
 		case 1:
 			busy = !currentInstr.executeIF();
@@ -49,8 +50,15 @@ public class Stage {
 
 	public void addInstruction(Instruction i) {
 		currentInstr = i;
-		loaded = true;
-		busy = true;
+		if (i != null){
+			loaded = true;
+			busy = true;
+		}
+		else{
+			busy = false;
+			loaded = false;
+		}
+		
 	}
 
 	public Instruction getInstruction() {

@@ -2,51 +2,40 @@ package arch.mips8;
 
 public class Register {
 	public String name;
-	public boolean lock;
-	public boolean forward;
-	public float content, fContent;
+	public int lock;
+	public float content;
 
 	Register(String name) {
 		this.name = name;
-		lock = false;
-		forward = true;
+		lock = 65536;
 		content = 0;
-		fContent = 0;
 	}
 
-	public boolean isLocked() {
-		return lock;
+	public boolean isLocked(int instructionId) {
+		return lock < instructionId;
 	}
 
 	public void setContent(float newContent) {
 		content = newContent;
-		fContent = newContent;
 	}
 
 	public float getContent() {
-		if(forward) return fContent;
 		return content;
 	}
 
-	public void lockRegister() {
-		lock = true;
+	public void lockRegister(int instructionId) {
+		if(instructionId < lock){
+			lock = instructionId;
+		}
 	}
 
 	public void unlockRegister() {
-		lock = false;
+		lock = 65536;
 	}
 
-	public void canForward() {
-		forward = true;
-	}
-
-	public void canNotForward() {
-		forward = false;
-	}
-
-	public boolean contentAvailable() {
+	public boolean contentAvailable(int instructionId) {
 		// TODO Modify with forwarding lock and have a new value to set while
 		// forwarding
-		return !(lock) || forward;
+		return !isLocked(instructionId);
 	}
 }

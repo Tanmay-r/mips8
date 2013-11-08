@@ -2,16 +2,30 @@ package arch.mips8;
 
 import arch.mips8.instruction.Instruction;
 
-public class Simulate {
+public class Simulator {
 	Stage IF, ID, IS, RF, EX, DF, DS, TC, WB;
 	boolean done;
 	Globals globals;
-	Simulate(Globals globals) {
+	int instructionCounter;
+	
+	Simulator(Globals globals) {
+		IF = new Stage();
+		IS = new Stage();
+		ID = new Stage();
+		EX = new Stage();
+		DF = new Stage();
+		DS = new Stage();
+		TC = new Stage();
+		WB = new Stage();
 		this.globals = globals;
-		done = false;
+		this.done = false;
+		this.instructionCounter = 0;
+	}
+	
+	void simulate(){		
 		int instrIndex = 0;
 		while (!done) {
-			if (!WB.free()) {
+			if (!WB.free()) {				
 				WB.execute(8);
 			}
 			if (!TC.free()) {
@@ -33,46 +47,68 @@ public class Simulate {
 				IS.execute(2);
 			}
 			if (!IF.free()) {
+				System.out.println("\n  Random " + IF.free());
 				IF.execute(1);
 			}
 			if ((WB.free()) && (TC.free())) {
 				Instruction i = TC.getInstruction();
 				WB.addInstruction(i);
+				TC.addInstruction(null);
 			}
 			if ((TC.free()) && (DS.free())) {
 				Instruction i = DS.getInstruction();
 				TC.addInstruction(i);
+				DS.addInstruction(null);
 			}
 			if ((DS.free()) && (DF.free())) {
 				Instruction i = DF.getInstruction();
 				DS.addInstruction(i);
+				DF.addInstruction(null);
 			}
 			if ((DF.free()) && (EX.free())) {
 				Instruction i = EX.getInstruction();
 				DF.addInstruction(i);
+				EX.addInstruction(null);
 			}
 			if ((EX.free()) && (ID.free())) {
 				Instruction i = ID.getInstruction();
 				EX.addInstruction(i);
+				ID.addInstruction(null);
 			}
 			if ((ID.free()) && (IS.free())) {
 				Instruction i = IS.getInstruction();
 				ID.addInstruction(i);
+				IS.addInstruction(null);
 			}
 			if (IS.free() && IF.free()) {
 				Instruction i = IF.getInstruction();
+				if(i != null){
+					System.out.println("\n Push IS ----" + i);
+				}
 				IS.addInstruction(i);
+				IF.addInstruction(null);
 			}
-			if (instrIndex < globals.instructions.size() && IF.free()) {
-				IS.addInstruction(globals.instructions.get(instrIndex));
+			if(instrIndex >= globals.instructions.size()){
+				IF.addInstruction(null);
 			}
-			if (WB.free()) {
+			if (instrIndex < globals.instructions.size() && IF.free()){
+				
+				Instruction i = globals.instructions.get(instrIndex).copy();
+				System.out.println("\n Push IF" + i);
+				i.setId(instructionCounter);
+				instructionCounter++;
+				IF.addInstruction(i);
+				instrIndex++;
+			}
+			/*if (WB.free()) {
 				Instruction i = WB.getInstruction();
-				if (i.equals(globals.instructions.get(instrIndex))) {
+				if (i.equals(null)) {
 					done = true;
 				}
-			}
-			instrIndex = (int) globals.getRegister("pc").content;
+			}*/
 		}
 	}
+	
+	
+	
 }

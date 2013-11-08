@@ -14,14 +14,15 @@ public class Globals {
 				.split(",");
 		registers = new HashMap<String, Register>();
 		for(String rName : registersNames){
-			registers.put(rName, new Register(rName));
+			Register r = new Register(rName.trim());
+			registers.put(rName.trim(), r);
+			
 		}
 		instructions = new ArrayList<Instruction>();
 	}
 	
 	public Register getRegister(String rName){
+		System.out.println(registers.get(rName).getContent());
 		return registers.get(rName);
 	}
-	
-
 }
