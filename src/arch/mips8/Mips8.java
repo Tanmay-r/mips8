@@ -5,7 +5,7 @@ public class Mips8 {
 	public static void main(String[] args) {
 		Globals globals = new Globals();
 		FileParser fileParser = new FileParser(
-				"/home/tanmay/ecc2.asm", globals);
+				"/home/vivek/archi_git/mips8/codes/try1.asm", globals);
 		Simulator simulator = new Simulator(globals);
 		simulator.simulate();
 	}

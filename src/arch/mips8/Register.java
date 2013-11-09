@@ -3,7 +3,7 @@ package arch.mips8;
 public class Register {
 	public String name;
 	public int lock;
-	public float content;
+	public long content;
 
 	Register(String name) {
 		this.name = name;
@@ -15,12 +15,12 @@ public class Register {
 		return lock < instructionId;
 	}
 
-	public void setContent(float newContent) {
+	public void setContent(long newContent) {
 		content = newContent;
 	}
 
-	public float getContent() {
-		return content;
+	public int getContent() {
+		return (int)(content & 0xffffffff);
 	}
 
 	public void lockRegister(int instructionId) {

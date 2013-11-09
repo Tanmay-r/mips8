@@ -4,7 +4,7 @@ import arch.mips8.Register;
 
 public class ThreeRInsruction implements Instruction {
 	Register r1, r2, r3;
-	float r1Val, r2Val, r3Val;
+	long r1Val, r2Val, r3Val;
 	int id;
 
 	//r1 depends on this instruction

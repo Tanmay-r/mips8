@@ -8,6 +8,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import arch.mips8.instruction.AddInstruction;
+import arch.mips8.instruction.SubInstruction;
+import arch.mips8.instruction.AdduInstruction;
+import arch.mips8.instruction.SubuInstruction;
+import arch.mips8.instruction.AndInstruction;
+import arch.mips8.instruction.OrInstruction;
+import arch.mips8.instruction.MulInstruction;
+import arch.mips8.instruction.SltInstruction;
+import arch.mips8.instruction.SltuInstruction;
 
 public class FileParser {
 	private ArrayList<String> code;
@@ -135,7 +143,56 @@ public class FileParser {
 							.getRegister(r1), globals.getRegister(r2), globals
 							.getRegister(r3)));
 					break;
+				
+				case "sub":
+					globals.instructions.add(new SubInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+					
+				case "addu":
+					globals.instructions.add(new AdduInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+					
+				case "subu":
+					globals.instructions.add(new SubuInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
 
+				case "and":
+					globals.instructions.add(new AndInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+
+				case "or":
+					globals.instructions.add(new OrInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+					
+				case "mul":
+					globals.instructions.add(new MulInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+					
+				case "slt":
+					globals.instructions.add(new SltInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+					
+				case "sltu":
+					globals.instructions.add(new SltuInstruction(globals
+							.getRegister(r1), globals.getRegister(r2), globals
+							.getRegister(r3)));
+					break;
+
+					
 				}
 
 			} else if (twoRoneI.contains(type)) {
