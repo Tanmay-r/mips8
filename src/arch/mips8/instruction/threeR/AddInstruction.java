@@ -1,15 +1,15 @@
-package arch.mips8.instruction;
+package arch.mips8.instruction.threeR;
 
 import arch.mips8.Register;
 
-public class SubuInstruction extends ThreeRInsruction {
+public class AddInstruction extends ThreeRInsruction {
 
-	public SubuInstruction(Register r1, Register r2, Register r3) {
+	public AddInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
 	}
 	
-	public SubuInstruction(SubuInstruction subuInstruction) {
-		super(subuInstruction);
+	public AddInstruction(AddInstruction addInstruction) {
+		super(addInstruction);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -20,17 +20,16 @@ public class SubuInstruction extends ThreeRInsruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		super.r1Val = super.r2Val - super.r3Val;
+		super.r1Val = super.r2Val + super.r3Val;
 		return true;
 	}
 	
 	@Override
-	public SubuInstruction copy(){
-		return new SubuInstruction(this);
+	public AddInstruction copy(){
+		return new AddInstruction(this);
 	}
 	
 	
 
 
 }
-

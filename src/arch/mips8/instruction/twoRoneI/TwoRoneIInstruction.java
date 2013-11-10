@@ -1,14 +1,15 @@
-package arch.mips8.instruction;
-
+package arch.mips8.instruction.twoRoneI;
 import arch.mips8.Register;
+import arch.mips8.instruction.Instruction;
 
-public class ThreeRInsruction implements Instruction {
-	Register r1, r2, r3;
-	long r1Val, r2Val, r3Val;
+public class TwoRoneIInstruction implements Instruction {
+
+	Register r1, r2;
+	long r1Val, r2Val, immd;
 	int id;
 
 	//r1 depends on this instruction
-	//this instruction depends on r2 and r3
+	//this instruction depends on r2 and immd
 
 	public int getId() {
 		return id;
@@ -18,19 +19,18 @@ public class ThreeRInsruction implements Instruction {
 		this.id = id;
 	}
 
-	public ThreeRInsruction(Register r1, Register r2, Register r3) {
+	public TwoRoneIInstruction(Register r1, Register r2, long immd) {
 		this.r1 = r1;
 		this.r2 = r2;
-		this.r3 = r3;
+		this.immd = immd;
 	}
 
-	public ThreeRInsruction(ThreeRInsruction addInstruction) {
-		this.r1 = addInstruction.r1;
-		this.r2 = addInstruction.r2;
-		this.r3 = addInstruction.r3;
-		this.r1Val = addInstruction.r1Val;
-		this.r2Val = addInstruction.r2Val;
-		this.r3Val = addInstruction.r3Val;
+	public TwoRoneIInstruction(TwoRoneIInstruction instruction) {
+		this.r1 = instruction.r1;
+		this.r2 = instruction.r2;
+		this.immd = instruction.immd;
+		this.r1Val = instruction.r1Val;
+		this.r2Val = instruction.r2Val;		
 		// TODO Auto-generated constructor stub
 	}
 
@@ -50,12 +50,10 @@ public class ThreeRInsruction implements Instruction {
 	public boolean executeID() {
 		// TODO 
 		r1.lockRegister(id);
-		if (r2.contentAvailable(id) && r3.contentAvailable(id)) {
-			r2Val = r2.getContent();
-			r3Val = r3.getContent();
+		if (r2.contentAvailable(id)) {
+			r2Val = r2.getContent();			
 			r1.lockRegister(id);
-			r2.lockRegister(id);
-			r3.lockRegister(id);
+			r2.lockRegister(id);			
 			return true;
 		} else {
 			return false;
@@ -103,7 +101,7 @@ public class ThreeRInsruction implements Instruction {
 	}
 	
 	@Override
-	public ThreeRInsruction copy(){
-		return new ThreeRInsruction(this);
+	public TwoRoneIInstruction copy(){
+		return new TwoRoneIInstruction(this);
 	}
 }
