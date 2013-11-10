@@ -1,4 +1,4 @@
-package guiClass;
+package arch.mips8.gui;
 
 import java.awt.Color;
 import java.awt.Point;
@@ -29,6 +29,11 @@ public class calculateCordinate {
 		StageColors.add(new Color(153, 204, 255));
 		StageColors.add(new Color(51, 51, 255));
 		
+	}
+	public void init(){
+		ClockPerStage.clear();
+		table.clear();
+		lines.clear();	
 	}
 	public ArrayList<String> getInstructionStalls_2() {
 		return InstructionStalls_2;
@@ -80,7 +85,7 @@ public class calculateCordinate {
 	}
 	public void readInput(String file){
 		
-			System.out.println(file);
+			//System.out.println(file);
 			String[] ClockInfo=file.split("FWD");
 			String[] ToParse = ClockInfo[0].split(",");
 			String [] Forward;
@@ -115,6 +120,7 @@ public class calculateCordinate {
 				ClockPerStage.add(s);
 				
 			}
+			System.out.println("Current X in calculate:" +initialX);
 			initialX=initialX+45;
 			CalculateLine();
 				
@@ -125,6 +131,7 @@ public class calculateCordinate {
 		
 		
 		for (String x : Forwarding){
+				System.out.println("LineCalculate");
 				String ForwardingBetween[]=x.split(":");
 				int FromInstNum = Integer.parseInt(ForwardingBetween[0]);
 				int FromStage	= Integer.parseInt(ForwardingBetween[1]);

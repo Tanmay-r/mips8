@@ -1,6 +1,7 @@
-package guiClass;
+package arch.mips8.gui;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
-public class Rectangle extends JPanel{
+public class DrawPanel extends JPanel{
 	
 	
 	
@@ -28,22 +29,60 @@ public class Rectangle extends JPanel{
 	private Color stage8=new Color(125, 167, 116);
 	private ArrayList<Line> lines;
 	private Font font=new Font("Dialog", Font.PLAIN, 12);
-	private ArrayList<StageClockCycle> Stages;
+	private ArrayList<StageClockCycle> Stages=null;
 	private Color stall_color=new Color(125, 167, 116);
 	private ArrayList<String> stageName =new  ArrayList<String>();
+	private String InputToDraw;
 	private boolean forwarding;
-	Rectangle(){
-		instructionPipeLine.setInitialX(10);
-		instructionPipeLine.setInitialY(10);
-		stageName.add("IF1");
-		stageName.add("IF2");
+	private boolean drawEnable;
+	private int CurrentCycleX;
+	private int CurrentCycleY;
+	
+	
+	public int getCurrentCycleX() {
+		return CurrentCycleX;
+	}
+	public void setCurrentCycleX(int currentCycleX) {
+		CurrentCycleX = currentCycleX;
+	}
+	public int getCurrentCycleY() {
+		return CurrentCycleY;
+	}
+	public void setCurrentCycleY(int currentCycleY) {
+		CurrentCycleY = currentCycleY;
+	}	
+	public boolean isDrawEnable() {
+		return drawEnable;
+	}
+	public void setDrawEnable(boolean drawEnable) {
+		this.drawEnable = drawEnable;
+	}
+	public String getInputToDraw() {
+		return InputToDraw;
+	}
+	public void setInputToDraw(String inputToDraw) {
+		InputToDraw = inputToDraw;
+	}
+	public DrawPanel(){
+		InputToDraw="";
+		drawEnable=false;
+		init();
+		stageName.add("IF");
+		stageName.add("IS");
 		stageName.add("ID");
 		stageName.add("EX");
-		stageName.add("M1");
-		stageName.add("M2");
-		stageName.add("M3");
+		stageName.add("DF");
+		stageName.add("DS");
+		stageName.add("TC");
 		stageName.add("WB");
 
+	}
+	public void init(){
+		instructionPipeLine.setInitialX(200);
+		instructionPipeLine.setInitialY(10);
+		CurrentCycleX=200;
+		CurrentCycleY=10;
+		
 	}
 	public Color getStage1() {
 		return stage1;
@@ -124,85 +163,46 @@ public class Rectangle extends JPanel{
 	public void setForwarding(boolean forwarding) {
 		this.forwarding = forwarding;
 	}
-
-	public int getY_Cord() {
-		return y_Cord;
-	}
-
-	
-	
-	
-	
-	
-	private int x_Cord;
-	private int y_Cord;
-	public int getX_Cord() {
-		return x_Cord;
-	}
-
-	public void setX_Cord(int x_Cord) {
-		this.x_Cord = x_Cord;
-	}
-
-	public int getY_cord() {
-		return y_Cord;
-	}
-
-	public void setY_Cord(int y_Cord) {
-		this.y_Cord = y_Cord;
-	}
-
 	private void drawAll(Graphics2D g2d){
-		BufferedReader br = null;
-		 
-		try {
- 
-			String sCurrentLine;
- 
-			br = new BufferedReader(new FileReader("/home/alok29/cs305/8_STAGE_MIPS_PIPELINE/src/guiClass/input.txt"));
- 
-			while ((sCurrentLine = br.readLine()) != null) {
-				draw(g2d,sCurrentLine);
-			}
- 
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			try {
-				if (br != null)br.close();
-			} catch (IOException ex) {
-				ex.printStackTrace();
-			}
-		}
+		draw(g2d);
+	
 	}
-	private void draw(Graphics2D g2d,String str){
-		drawRectangles(str);
-		System.out.println("Here");
-		int offset=0;
-		for(StageClockCycle x : Stages){
-    	   int X =x.getStartX();
-    	   int Y=x.getStartY();
-    	   String Stage_Name;
-    	   int stage = x.getStage();
-    	   String TypeOfStall=x.getTypeOfStalls();
-    	   if(TypeOfStall.equals("N")){
-    		   Stage_Name=stageName.get(stage-1);
-    	   }
-    	   else{
-    		   Stage_Name=TypeOfStall;
-    	   }
-    	   System.out.println(X+"::"+Y);
-    	   int NoOfCycle=x.getNumberOfClockCycle();
-    	   for(int i=0;i<NoOfCycle;i++){
-    		   drawOneClockCycle(g2d,X,Y,x.getColor(),Stage_Name);
-    		   offset++;
-    	   }
-       }
-		for( Line l : lines){
-			System.out.println("X1 :"+l.getP1().x+" Y1 :"+l.getP1().y+" X2 :"+l.getP2().x+" Y2:"+l.getP2().y);
-			drawArrow(g2d,l.getP1().x,l.getP1().y,l.getP2().x,l.getP2().y);
+	private void draw(Graphics2D g2d){
+		if(Stages!=null && Stages.size()!=0){
+				int size=Stages.size();
+				CurrentCycleX = Stages.get(size-1).getStartX();
+				System.out.println("Current X in rect "+CurrentCycleX);
+				CurrentCycleY = Stages.get(size-1).getStartY();
+				g2d.setColor(new Color(200, 200, 200));
+			    g2d.drawRect(CurrentCycleX-2, 0, 42, 600);
+			    g2d.setColor(new Color(200, 200, 0));
+			    g2d.fillRect(CurrentCycleX, 0, 40, 600);
+			    g2d.setColor(new Color(255, 255, 255));
+			    g2d.fillRect(0, 0, 175, 600);
+				for(StageClockCycle x : Stages){
+		    	   int X =x.getStartX();
+		    	   int Y=x.getStartY();
+		    	   String Stage_Name;
+		    	   int stage = x.getStage();
+		    	   String TypeOfStall=x.getTypeOfStalls();
+		    	   if(TypeOfStall.equals("N")){
+		    		   Stage_Name=stageName.get(stage-1);
+		    	   }
+		    	   else{
+		    		   Stage_Name=TypeOfStall;
+		    	   }
+		    	   int NoOfCycle=x.getNumberOfClockCycle();
+		    	   for(int i=0;i<NoOfCycle;i++){
+		    		   drawOneClockCycle(g2d,X,Y,x.getColor(),Stage_Name);
+		    	   }
+		       }
+				
+				for( Line l : lines){
+					//System.out.println("X1 :"+l.getP1().x+" Y1 :"+l.getP1().y+" X2 :"+l.getP2().x+" Y2:"+l.getP2().y);
+					drawArrow(g2d,l.getP1().x,l.getP1().y,l.getP2().x,l.getP2().y);
+				}
 		}
-      // instructionPipeLine.getClockPerStage().clear();
+    instructionPipeLine.getForwarding().clear();
 		
 	}
 	
@@ -229,7 +229,8 @@ public class Rectangle extends JPanel{
         g.fillPolygon(new int[] {len, len-5, len-5, len},
                       new int[] {0, -5, 5, 0}, 4);
     }
-	private void drawRectangles(String TwoInstructionLines){
+    
+	public void calculateUpdate(String TwoInstructionLines){
 		instructionPipeLine.readInput(TwoInstructionLines);
 		//instructionPipeLine.Calculate();
 		lines=instructionPipeLine.getLines();
@@ -238,22 +239,35 @@ public class Rectangle extends JPanel{
 		
 	}
 	
-	private void drawFirstInst(Graphics2D g2d){
-
-		
-	}
-	
+	@Override
+    public Dimension getPreferredSize() {
+          return new Dimension(Math.max(800,CurrentCycleX+100), Math.max(600,CurrentCycleY+100));
+      }
 	private void doDrawing(Graphics g) {
 	        g.setFont(font);
 	        Graphics2D g2d = (Graphics2D) g;
 
 	        drawAll(g2d);
-	    }
+	}
 
-	    @Override
-	    public void paintComponent(Graphics g) {
-	        
-	        super.paintComponent(g);
-	        doDrawing(g);
-	    }
+	@Override
+    public void paintComponent(Graphics g) {
+        
+        super.paintComponent(g);
+        if(drawEnable){
+        	calculateUpdate(InputToDraw);
+        	drawEnable=!drawEnable;
+        }
+    	doDrawing(g);
+    }
+	public void resetAll (){
+		init();
+		if(Stages!=null && lines!=null ){
+			Stages.clear();
+			lines.clear();
+		}
+		instructionPipeLine.init();
+		repaint();
+	}
+	
 }

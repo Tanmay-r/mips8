@@ -1,4 +1,4 @@
-package guiClass;
+package arch.mips8.gui;
 
 public class main {
 
