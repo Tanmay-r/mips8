@@ -3,19 +3,16 @@ package arch.mips8.gui;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 
 import javax.swing.*;
 
-public class mainWindow extends JFrame implements KeyListener{
+public class MainWindow extends JFrame implements KeyListener{
 	/**Panel That Contain others Component**/
 	private  JPanel emptyPanel;
 	/**DrawPanel object to  Draw simulation**/
@@ -28,13 +25,13 @@ public class mainWindow extends JFrame implements KeyListener{
 	private JFileChooser fileopen = new JFileChooser();
 	//private Statistics Stats= new Statistics();
 	private JTextPane statData = new JTextPane();
-	public mainWindow (){
+	
+	public MainWindow (){
 		/**Initializing  Panel**/
 		emptyPanel = new JPanel();
 		/**Setting Layout and border for emptyPanel**/
 		emptyPanel.setLayout(new BorderLayout());
-		emptyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-		
+		emptyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));		
 		SimulationPane.getViewport().add(simulationWindow);
 		
 		//statData.setPreferredSize(new Dimension(200,200));
@@ -54,15 +51,11 @@ public class mainWindow extends JFrame implements KeyListener{
 		setJMenuBar(createMenuBar());
 		
 		pack();
-		setVisible(true);
-
-		
-	}
-	
+		setVisible(true);		
+	}	
 	
 	/**Creating MenuBar**/
-	public JMenuBar createMenuBar(){
-		
+	public JMenuBar createMenuBar(){		
 		JMenuBar menuBar;
         JMenu File;
         JMenuItem File_menuItem;
@@ -122,6 +115,7 @@ public class mainWindow extends JFrame implements KeyListener{
             if(ClockCycles==4){
             	str+="FWD1:1:4:1";
             }
+        System.out.println(str);
         int W = simulationWindow.getCurrentCycleX();
         System.out.println("Current X in mainWindow" +simulationWindow.getCurrentCycleX());
         Dimension d= simulationWindow.getPreferredSize();

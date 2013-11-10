@@ -8,7 +8,7 @@ public class Simulator {
 	Globals globals;
 	int instructionCounter;
 	
-	Simulator(Globals globals) {
+	public Simulator(Globals globals) {
 		IF = new Stage();
 		IS = new Stage();
 		ID = new Stage();
@@ -22,7 +22,7 @@ public class Simulator {
 		this.instructionCounter = 0;
 	}
 	
-	void simulate(){		
+	public void simulate(){		
 		int instrIndex = 0;
 		while (!done) {
 			if (!WB.free()) {				
