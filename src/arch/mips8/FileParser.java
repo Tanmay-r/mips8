@@ -28,11 +28,11 @@ public class FileParser {
 
 	public FileParser(String filePath) {
 		threeR = " add sub addu subu and or slt sltu mul ";
-		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu bgt ";
+		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu blt ";
 		twoR = " mult multu div divu move ";
 		oneR = " mfhi mflo jr ";
 		oneRoneIoneR = " lw sw ";
-		oneRoneI = " lui li la ";
+		oneRoneI = " lui li la bltz bgez";
 		oneI = " j jal b ";
 		instrIndex = 0;
 		labelIndex = new HashMap<String, Integer>();

@@ -1,12 +1,12 @@
-package arch.mips8.instruction.twoRoneI;
+package arch.mips8.instruction.twoR;
 import arch.mips8.Globals;
 import arch.mips8.Register;
 import arch.mips8.instruction.Instruction;
 
-public class TwoRoneIInstruction implements Instruction {
+public class TwoRInstruction  implements Instruction {
 
 	Register r1, r2;
-	long r1Val, r2Val, immd;
+	long r1Val, r2Val;
 	int id;
 
 	//r1 depends on this instruction
@@ -20,16 +20,14 @@ public class TwoRoneIInstruction implements Instruction {
 		this.id = id;
 	}
 
-	public TwoRoneIInstruction(Register r1, Register r2, long immd) {
+	public TwoRInstruction(Register r1, Register r2) {
 		this.r1 = r1;
-		this.r2 = r2;
-		this.immd = immd;
+		this.r2 = r2;		
 	}
 
-	public TwoRoneIInstruction(TwoRoneIInstruction instruction) {
+	public TwoRInstruction(TwoRInstruction instruction) {
 		this.r1 = instruction.r1;
-		this.r2 = instruction.r2;
-		this.immd = instruction.immd;
+		this.r2 = instruction.r2;		
 		this.r1Val = instruction.r1Val;
 		this.r2Val = instruction.r2Val;		
 		// TODO Auto-generated constructor stub
@@ -39,25 +37,22 @@ public class TwoRoneIInstruction implements Instruction {
 	public boolean executeIF() {
 		Register reg =Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		reg.setContent(current_pc+1);
-		r1.lockRegister(id);
+		reg.setContent(current_pc+1);		
 		return true;
 	}
 
 	@Override
 	public boolean executeIS() {
-		r1.lockRegister(id);
+		
 		return true;
 	}
 
 	@Override
 	public boolean executeID() {
 		// TODO 
-		r1.lockRegister(id);
-		if (r2.contentAvailable(id)) {
-			r2Val = r2.getContent();			
-			r1.lockRegister(id);
-			r2.lockRegister(id);			
+		if (r1.contentAvailable(id) && r2.contentAvailable(id)) {
+			r1Val = r1.getContent();
+			r2Val = r2.getContent();	
 			return true;
 		} else {
 			return false;
@@ -65,10 +60,11 @@ public class TwoRoneIInstruction implements Instruction {
 
 	}
 
+
 	@Override
 	public boolean executeEX() {
 		// TODO In child class
-		r1.lockRegister(id);
+		
 		return true;
 	}
 
@@ -76,21 +72,21 @@ public class TwoRoneIInstruction implements Instruction {
 	@Override
 	public boolean executeDF() {
 		// TODO what?
-		r1.lockRegister(id);
+		
 		return true;
 	}
 
 	@Override
 	public boolean executeDS() {
 		// TODO what?
-		r1.lockRegister(id);
+		
 		return true;
 	}
 
 	@Override
 	public boolean executeTC() {
 		// TODO what?
-		r1.lockRegister(id);
+		
 		return true;
 	}
 
@@ -99,13 +95,11 @@ public class TwoRoneIInstruction implements Instruction {
 		// TODO Not necessarily locked might be unlocked in a case when some
 		// other instruction wrote in it after it was locked r1.isLocked()
 		// should I check?
-		r1.setContent(r1Val);
-		r1.unlockRegister();
 		return true;
 	}
 	
 	@Override
-	public TwoRoneIInstruction copy(){
-		return new TwoRoneIInstruction(this);
+	public TwoRInstruction copy(){
+		return new TwoRInstruction(this);
 	}
 }

@@ -1,5 +1,6 @@
 package arch.mips8.instruction.threeR;
 
+import arch.mips8.Globals;
 import arch.mips8.Register;
 import arch.mips8.instruction.Instruction;
 
@@ -43,6 +44,9 @@ public class ThreeRInsruction implements Instruction {
 
 	@Override
 	public boolean executeIS() {
+		Register reg =Globals.getRegister("pc");
+		long current_pc = reg.getContent();
+		reg.setContent(current_pc+1);
 		r1.lockRegister(id);
 		return true;
 	}
@@ -55,8 +59,6 @@ public class ThreeRInsruction implements Instruction {
 			r2Val = r2.getContent();
 			r3Val = r3.getContent();
 			r1.lockRegister(id);
-			r2.lockRegister(id);
-			r3.lockRegister(id);
 			return true;
 		} else {
 			return false;
