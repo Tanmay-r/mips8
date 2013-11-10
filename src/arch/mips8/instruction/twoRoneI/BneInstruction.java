@@ -1,34 +1,34 @@
 package arch.mips8.instruction.twoRoneI;
-
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
-public class BeqInstruction extends TwoRoneIInstruction {
+public class BneInstruction extends TwoRoneIInstruction {
 
-	public BeqInstruction(Register r1, Register r2, long immd) {
+	public BneInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
 	}
-	
-	public BeqInstruction(BeqInstruction beqInstruction) {
-		super(beqInstruction);
+
+	public BneInstruction(BneInstruction bneInstruction) {
+		super(bneInstruction);
 		// TODO Auto-generated constructor stub
 	}
 
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
+	// This should have two types of registers
+	// 1 - the registers on whom the instruction depends - r2, r3
+	// 2 - the registers which depend on this instruction - r1
 
 	@Override
 	public boolean executeEX() {
-		super.executeEX();
 		Register reg = Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		if (super.r1Val == super.r2Val)reg.setContent(current_pc - 1 + super.immd);
+		if (super.r1Val != super.r2Val)reg.setContent(current_pc - 1 + super.immd);
 		return true;
 	}
+
 	
 	@Override
 	public boolean executeIS() {
+		
 		return true;
 	}
 
@@ -49,18 +49,21 @@ public class BeqInstruction extends TwoRoneIInstruction {
 	@Override
 	public boolean executeDF() {
 		// TODO what?
+		
 		return true;
 	}
 
 	@Override
 	public boolean executeDS() {
 		// TODO what?
+		
 		return true;
 	}
 
 	@Override
 	public boolean executeTC() {
 		// TODO what?
+		
 		return true;
 	}
 
@@ -72,4 +75,5 @@ public class BeqInstruction extends TwoRoneIInstruction {
 		return true;
 	}
 	
+
 }
