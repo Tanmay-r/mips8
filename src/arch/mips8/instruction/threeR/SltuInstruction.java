@@ -1,15 +1,15 @@
-package arch.mips8.instruction;
+package arch.mips8.instruction.threeR;
 
 import arch.mips8.Register;
 
-public class SltInstruction extends ThreeRInsruction {
+public class SltuInstruction extends ThreeRInsruction {
 
-	public SltInstruction(Register r1, Register r2, Register r3) {
+	public SltuInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
 	}
 	
-	public SltInstruction(SltInstruction sltInstruction) {
-		super(sltInstruction);
+	public SltuInstruction(SltuInstruction sltuInstruction) {
+		super(sltuInstruction);
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,8 +26,8 @@ public class SltInstruction extends ThreeRInsruction {
 	}
 	
 	@Override
-	public SltInstruction copy(){
-		return new SltInstruction(this);
+	public SltuInstruction copy(){
+		return new SltuInstruction(this);
 	}
 	
 	

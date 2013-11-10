@@ -8,7 +8,7 @@ public class Simulator {
 	Globals globals;
 	int instructionCounter;
 	
-	Simulator(Globals globals) {
+	Simulator() {
 		IF = new Stage();
 		IS = new Stage();
 		ID = new Stage();
@@ -17,7 +17,6 @@ public class Simulator {
 		DS = new Stage();
 		TC = new Stage();
 		WB = new Stage();
-		this.globals = globals;
 		this.done = false;
 		this.instructionCounter = 0;
 	}
@@ -88,12 +87,12 @@ public class Simulator {
 				IS.addInstruction(i);
 				IF.addInstruction(null);
 			}
-			if(instrIndex >= globals.instructions.size()){
+			if(instrIndex >= Globals.instructions.size()){
 				IF.addInstruction(null);
 			}
-			if (instrIndex < globals.instructions.size() && IF.free()){
+			if (instrIndex < Globals.instructions.size() && IF.free()){
 				
-				Instruction i = globals.instructions.get(instrIndex).copy();
+				Instruction i = Globals.instructions.get(instrIndex).copy();
 				System.out.println("\n Push IF" + i);
 				i.setId(instructionCounter);
 				instructionCounter++;

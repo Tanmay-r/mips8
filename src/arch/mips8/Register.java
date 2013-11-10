@@ -19,8 +19,8 @@ public class Register {
 		content = newContent;
 	}
 
-	public int getContent() {
-		return (int)(content & 0xffffffff);
+	public long getContent() {
+		return content;
 	}
 
 	public void lockRegister(int instructionId) {

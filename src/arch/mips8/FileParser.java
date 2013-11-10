@@ -7,28 +7,26 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import arch.mips8.instruction.AddInstruction;
-import arch.mips8.instruction.SubInstruction;
-import arch.mips8.instruction.AdduInstruction;
-import arch.mips8.instruction.SubuInstruction;
-import arch.mips8.instruction.AndInstruction;
-import arch.mips8.instruction.OrInstruction;
-import arch.mips8.instruction.MulInstruction;
-import arch.mips8.instruction.SltInstruction;
-import arch.mips8.instruction.SltuInstruction;
+import arch.mips8.instruction.threeR.AddInstruction;
+import arch.mips8.instruction.threeR.AdduInstruction;
+import arch.mips8.instruction.threeR.AndInstruction;
+import arch.mips8.instruction.threeR.MulInstruction;
+import arch.mips8.instruction.threeR.OrInstruction;
+import arch.mips8.instruction.threeR.SltInstruction;
+import arch.mips8.instruction.threeR.SltuInstruction;
+import arch.mips8.instruction.threeR.SubInstruction;
+import arch.mips8.instruction.threeR.SubuInstruction;
 
 public class FileParser {
 	private ArrayList<String> code;
 	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;
 	Map<String, Integer> labelIndex;
 	int instrIndex;
-	Globals globals;
 
 	public FileParser() {
 	}
 
-	public FileParser(String filePath, Globals globals) {
-		this.globals = globals;
+	public FileParser(String filePath) {
 		threeR = " add sub addu subu and or slt sltu mul ";
 		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu bgt ";
 		twoR = " mult multu div divu move ";
@@ -117,7 +115,7 @@ public class FileParser {
 			}
 
 		}
-		System.out.print(globals.instructions);
+		System.out.print(Globals.instructions);
 	}
 
 	private void parseInstruction(String instr) throws Exception {
@@ -139,56 +137,56 @@ public class FileParser {
 				System.out.println(type.trim() + " 3R " + r1 + r2 + r3);
 				switch (type.trim()) {
 				case "add":
-					globals.instructions.add(new AddInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new AddInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 				
 				case "sub":
-					globals.instructions.add(new SubInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new SubInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 					
 				case "addu":
-					globals.instructions.add(new AdduInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new AdduInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 					
 				case "subu":
-					globals.instructions.add(new SubuInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new SubuInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 
 				case "and":
-					globals.instructions.add(new AndInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new AndInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 
 				case "or":
-					globals.instructions.add(new OrInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new OrInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 					
 				case "mul":
-					globals.instructions.add(new MulInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new MulInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 					
 				case "slt":
-					globals.instructions.add(new SltInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new SltInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 					
 				case "sltu":
-					globals.instructions.add(new SltuInstruction(globals
-							.getRegister(r1), globals.getRegister(r2), globals
+					Globals.instructions.add(new SltuInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
 					break;
 
