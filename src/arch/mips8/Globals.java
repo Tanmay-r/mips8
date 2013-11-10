@@ -4,11 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import arch.mips8.gui.CalculateCoordinate;
 import arch.mips8.instruction.Instruction;
 
 public class Globals {
 	public static Map<String, Register> registers;
 	public static ArrayList<Instruction> instructions;
+	public static CalculateCoordinate instructionPipeLine;
+	
 	public Globals() {
 		String registersNames[] = "$zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra, pc, hi, lo"
 				.split(",");
@@ -19,10 +22,21 @@ public class Globals {
 			
 		}
 		instructions = new ArrayList<Instruction>();
+		instructionPipeLine = new CalculateCoordinate();
 	}
 	
 	public static Register getRegister(String rName){
 		System.out.println(registers.get(rName).getContent());
 		return registers.get(rName);
 	}
+	public static void reset(){
+		String registersNames[] = "$zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra, pc, hi, lo"
+				.split(",");
+		for(String rName : registersNames){
+			registers.get(rName.trim()).setContent(0);			
+		}
+		instructions.clear();
+		//instructionPipeLine = new CalculateCoordinate();
+	}
 }
+

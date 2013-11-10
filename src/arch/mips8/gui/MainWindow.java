@@ -12,7 +12,9 @@ import java.io.IOException;
 
 import javax.swing.*;
 
+import arch.mips8.FileParser;
 import arch.mips8.Globals;
+import arch.mips8.Simulator;
 
 public class MainWindow extends JFrame implements KeyListener {
 	/** Panel That Contain others Component **/
@@ -28,9 +30,9 @@ public class MainWindow extends JFrame implements KeyListener {
 	// private Statistics Stats= new Statistics();
 	private JTextPane statData = new JTextPane();
 
-	Globals globals;
-	public MainWindow(Globals globals) {
-		this.globals = globals;
+	Simulator simulator;
+
+	public MainWindow() {
 		/** Initializing Panel **/
 		emptyPanel = new JPanel();
 		/** Setting Layout and border for emptyPanel **/
@@ -74,15 +76,49 @@ public class MainWindow extends JFrame implements KeyListener {
 		File_menuItem.setMnemonic(KeyEvent.VK_T);
 		File_menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_1,
 				ActionEvent.ALT_MASK));
-		File_menuItem.addActionListener(new FileAction());
+		File_menuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				JPanel FileChooser_panel = new JPanel();
+				FileChooser_panel.setLayout(new BorderLayout());
+				int ret = fileopen.showDialog(FileChooser_panel, "Open file");
+				if (ret == JFileChooser.APPROVE_OPTION) {
+					new FileParser(fileopen.getSelectedFile().getAbsolutePath());
+					simulator = new Simulator();
+				}
+
+			}
+		});
 
 		File.add(File_menuItem);
 		File_menuItem = new JMenuItem("Reset");
 		File_menuItem.setMnemonic(KeyEvent.VK_B);
-		File_menuItem.addActionListener(new resetAction());
+		File_menuItem.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				int confirmation = JOptionPane.showConfirmDialog(emptyPanel,
+						"Do You really Want To Reset?", "An Inane Question",
+						JOptionPane.YES_NO_OPTION);
+				if (confirmation != 1) {
+					ClockCycles = 0;
+					simulationWindow.resetAll();
+					Globals.reset();
+				}
+
+			}
+		});
 		File.add(File_menuItem);
 		File.addSeparator();
-		File_menuItem = new JMenuItem(new QuitAction());
+		File_menuItem = new JMenuItem("Quit...");
+		File_menuItem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);				
+			}
+		});
 		File_menuItem.setMnemonic(KeyEvent.VK_D);
 
 		File.add(File_menuItem);
@@ -101,34 +137,9 @@ public class MainWindow extends JFrame implements KeyListener {
 	}
 
 	public void prin() {
-		System.out.println("In prin");
-		ClockCycles++;
-
-		String str = "";
-		int k;
-		if (ClockCycles > 8) {
-			k = ClockCycles - 8;
-		} else {
-			k = 0;
-		}
-		for (int i = k; i < ClockCycles; i++) {
-			str += "," + (i + 1) + ":" + (((ClockCycles - (i + 1)) % 8) + 1)
-					+ ":N";
-		}
-		if (ClockCycles == 4) {
-			str += "FWD1:1:4:1";
-		}
-		System.out.println(str);
-		int W = simulationWindow.getCurrentCycleX();
-		System.out.println("Current X in mainWindow"
-				+ simulationWindow.getCurrentCycleX());
-		Dimension d = simulationWindow.getPreferredSize();
-		int H = simulationWindow.getCurrentCycleY() + 25;
+		simulator.nextStep();
 		simulationWindow.setDrawEnable(true);
-		// System.out.println(d.width +":"+d.height+":"+H+":"+W);
-		simulationWindow.setInputToDraw(str.substring(1));
 		simulationWindow.repaint();
-		// emptyPanel.add(myRect);
 		revalidate();
 	}
 
@@ -177,19 +188,9 @@ public class MainWindow extends JFrame implements KeyListener {
 			int keyCode = e.getKeyCode();
 			keyString += "key code = " + keyCode + " ("
 					+ KeyEvent.getKeyText(keyCode) + ")";
-			if (keyCode == 118) {
+			if (keyCode == 32) {
 				prin();
 			}
-		}
-	}
-
-	public class FileAction implements ActionListener {
-		public FileAction() {
-			super();
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			System.out.println(LoadFile());
 		}
 	}
 
@@ -201,49 +202,6 @@ public class MainWindow extends JFrame implements KeyListener {
 		public void actionPerformed(ActionEvent e) {
 			showStatistics();
 		}
-	}
-
-	public class resetAction implements ActionListener {
-		public resetAction() {
-			super();
-		}
-
-		public void actionPerformed(ActionEvent e) {
-			int confirmation = JOptionPane.showConfirmDialog(emptyPanel,
-					"Do You really Want To Reset?", "An Inane Question",
-					JOptionPane.YES_NO_OPTION);
-			if (confirmation != 1) {
-				ClockCycles = 0;
-				simulationWindow.resetAll();
-			}
-		}
-	}
-
-	public class QuitAction extends AbstractAction {
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-
-		public QuitAction() {
-			super("Quit..");
-		}
-
-		public void actionPerformed(ActionEvent e) {
-
-			System.exit(0);
-			// Button pressed logic goes here
-		}
-	}
-
-	public String LoadFile() {
-		JPanel FileChooser_panel = new JPanel();
-		FileChooser_panel.setLayout(new BorderLayout());
-		int ret = fileopen.showDialog(FileChooser_panel, "Open file");
-		if (ret == JFileChooser.APPROVE_OPTION) {
-			return fileopen.getSelectedFile().getAbsolutePath();
-		}
-		return null;
 	}
 
 }

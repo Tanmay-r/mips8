@@ -55,8 +55,6 @@ public class ThreeRInsruction implements Instruction {
 			r2Val = r2.getContent();
 			r3Val = r3.getContent();
 			r1.lockRegister(id);
-			r2.lockRegister(id);
-			r3.lockRegister(id);
 			return true;
 		} else {
 			return false;

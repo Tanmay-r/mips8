@@ -6,21 +6,24 @@ public class Stage {
 	Instruction currentInstr;
 	boolean busy;
 	boolean loaded;
+	int id;
 
-	Stage() {
+	Stage(int id) {
 		currentInstr = null;
 		busy = false;
 		loaded = false;
+		this.id = id;
 	}
 
 	public boolean free() {
 		return (!busy);
 	}
 
-	public void execute(int stage) {
+	public void execute() {
 		// This will keep busy true until its function return false
-		System.out.println(stage);
-		switch (stage) {
+		if(!busy) return;
+		System.out.println(id);
+		switch (id) {
 		case 1:
 			busy = !currentInstr.executeIF();
 			break;

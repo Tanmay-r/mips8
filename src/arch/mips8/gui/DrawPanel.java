@@ -13,9 +13,10 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import arch.mips8.Globals;
+
 public class DrawPanel extends JPanel {
 
-	private CalculateCoordinate instructionPipeLine = new CalculateCoordinate();
 
 	private Color stage1 = new Color(125, 167, 116);
 	private Color stage2 = new Color(125, 167, 116);
@@ -84,8 +85,8 @@ public class DrawPanel extends JPanel {
 	}
 
 	public void init() {
-		instructionPipeLine.setInitialX(200);
-		instructionPipeLine.setInitialY(10);
+		Globals.instructionPipeLine.setInitialX(200);
+		Globals.instructionPipeLine.setInitialY(10);
 		CurrentCycleX = 200;
 		CurrentCycleY = 10;
 
@@ -199,10 +200,7 @@ public class DrawPanel extends JPanel {
 				} else {
 					Stage_Name = TypeOfStall;
 				}
-				int NoOfCycle = x.getNumberOfClockCycle();
-				for (int i = 0; i < NoOfCycle; i++) {
-					drawOneClockCycle(g2d, X, Y, x.getColor(), Stage_Name);
-				}
+				drawOneClockCycle(g2d, X, Y, x.getColor(), Stage_Name);
 			}
 
 			for (Line l : lines) {
@@ -211,7 +209,7 @@ public class DrawPanel extends JPanel {
 						l.getP2().y);
 			}
 		}
-		instructionPipeLine.getForwarding().clear();
+		Globals.instructionPipeLine.getForwarding().clear();
 
 	}
 
@@ -241,10 +239,10 @@ public class DrawPanel extends JPanel {
 	}
 
 	public void calculateUpdate(String TwoInstructionLines) {
-		instructionPipeLine.readInput(TwoInstructionLines);
-		// instructionPipeLine.Calculate();
-		lines = instructionPipeLine.getLines();
-		Stages = instructionPipeLine.getClockPerStage();
+//		Globals.instructionPipeLine.readInput(TwoInstructionLines);
+		// Globals.instructionPipeLine.Calculate();
+		lines = Globals.instructionPipeLine.getLines();
+		Stages = Globals.instructionPipeLine.getClockPerStage();
 
 	}
 
@@ -278,7 +276,7 @@ public class DrawPanel extends JPanel {
 			Stages.clear();
 			lines.clear();
 		}
-		instructionPipeLine.init();
+		Globals.instructionPipeLine.init();
 		repaint();
 	}
 

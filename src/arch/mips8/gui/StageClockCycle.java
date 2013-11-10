@@ -3,7 +3,6 @@ package arch.mips8.gui;
 import java.awt.Color;
 
 public class StageClockCycle {
-	private int NumberOfClockCycle;
 	private String TypeOfStalls;
 	private int StartX;
 	private int StartY;
@@ -28,12 +27,6 @@ public class StageClockCycle {
 	}
 	public void setColor(Color color) {
 		this.color = color;
-	}
-	public int getNumberOfClockCycle() {
-		return NumberOfClockCycle;
-	}
-	public void setNumberOfClockCycle(int numberOfClockCycle) {
-		NumberOfClockCycle = numberOfClockCycle;
 	}
 	public String getTypeOfStalls() {
 		return TypeOfStalls;

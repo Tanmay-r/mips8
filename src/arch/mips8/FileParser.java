@@ -23,10 +23,8 @@ public class FileParser {
 	Map<String, Integer> labelIndex;
 	int instrIndex;
 
-	public FileParser() {
-	}
-
 	public FileParser(String filePath) {
+		Globals.reset();
 		threeR = " add sub addu subu and or slt sltu mul ";
 		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu bgt ";
 		twoR = " mult multu div divu move ";
