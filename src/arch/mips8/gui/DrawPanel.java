@@ -17,7 +17,7 @@ public class DrawPanel extends JPanel{
 	
 	
 	
-	private calculateCordinate instructionPipeLine=new calculateCordinate();
+	private CalculateCordinate instructionPipeLine=new CalculateCordinate();
 	
 	private Color stage1=new Color(125, 167, 116);
 	private Color stage2=new Color(125, 167, 116);

@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class calculateCordinate {
+public class CalculateCordinate {
 	private ArrayList<Line> lines= new ArrayList<Line>();
 	private ArrayList<StageClockCycle> ClockPerStage=new ArrayList<StageClockCycle>();
 	private int [] Instruction_1=new int[8];
@@ -19,7 +19,7 @@ public class calculateCordinate {
 	private ArrayList<ArrayList<StageClockCycle>> table = new ArrayList<ArrayList<StageClockCycle> >();
 	
 	
-	calculateCordinate(){
+	CalculateCordinate(){
 		StageColors.add(new Color(125, 167, 116));
 		StageColors.add(new Color(76, 153, 0));
 		StageColors.add(new Color(255, 153, 31));
