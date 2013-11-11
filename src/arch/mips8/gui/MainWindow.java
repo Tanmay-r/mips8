@@ -16,9 +16,10 @@ import arch.mips8.FileParser;
 import arch.mips8.Globals;
 import arch.mips8.Simulator;
 
-public class MainWindow extends JFrame implements KeyListener {
+public class MainWindow extends JFrame {
 	/** Panel That Contain others Component **/
 	private JPanel emptyPanel;
+	private JPanel ButtonCluster; 
 	/** DrawPanel object to Draw simulation **/
 	private DrawPanel simulationWindow = new DrawPanel();
 	/** ClockCycles to keep track of current clock cycle of a process **/
@@ -33,35 +34,71 @@ public class MainWindow extends JFrame implements KeyListener {
 	Simulator simulator;
 
 	public MainWindow() {
+		
+		setLayout(new BorderLayout());
+		setPreferredSize(new Dimension(1000, 700));
 		/** Initializing Panel **/
 		emptyPanel = new JPanel();
 		/** Setting Layout and border for emptyPanel **/
 		emptyPanel.setLayout(new BorderLayout());
-		emptyPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+		//emptyPanel.setPreferredSize(new Dimension(800,600));
+		emptyPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		SimulationPane.getViewport().add(simulationWindow);
-
 		// statData.setPreferredSize(new Dimension(200,200));
-
+		//JButton button = new JButton("Simulate");
+		add(emptyPanel, BorderLayout.CENTER);
+		add(groupButton(), BorderLayout.PAGE_END);
 		setTitle("8 Stage Pipeline");
-
-		setLayout(new BorderLayout());
+		/**Binding Space pressed for simulation**/
+		getRootPane().getInputMap().put(KeyStroke.getKeyStroke("SPACE"),
+                "pressed");
+		getRootPane().getActionMap().put("pressed",
+				new AbstractAction() {
+		    public void actionPerformed(ActionEvent e) {
+		        prin();
+		    }
+		});
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		setPreferredSize(new Dimension(800, 600));
-
+		
 		emptyPanel.add(SimulationPane);
-		addKeyListener(this);
-		this.getContentPane().add(emptyPanel, BorderLayout.CENTER);
-
 		setJMenuBar(createMenuBar());
 
 		pack();
 		setVisible(true);
 	}
 
+	/**Creating Buttons**/
+	private JPanel groupButton(){
+		JPanel pane = new JPanel();
+		pane.setBorder(BorderFactory.createEmptyBorder(10, 10, 20,10));
+		pane.setLayout(new BorderLayout());
+		JButton button = new JButton("Simulate");
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				prin();
+			}	
+		});
+		pane.add(button,BorderLayout.CENTER);
+
+		button = new JButton("Load File");
+		pane.add(button, BorderLayout.LINE_START);
+		
+		button = new JButton("QUIT");
+		button.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}		
+		});
+		pane.add(button, BorderLayout.LINE_END);
+		return pane;
+	}
 	/** Creating MenuBar **/
-	public JMenuBar createMenuBar() {
+	private JMenuBar createMenuBar() {
 		JMenuBar menuBar;
 		JMenu File;
 		JMenuItem File_menuItem;
@@ -162,37 +199,6 @@ public class MainWindow extends JFrame implements KeyListener {
 	}
 
 	/** Listener CLasses **/
-	public void keyTyped(KeyEvent e) {
-		displayInfo(e, "KEY TYPED: ");
-	}
-
-	/** Handle the key-pressed event from the text field. */
-	public void keyPressed(KeyEvent e) {
-		displayInfo(e, "KEY PRESSED: ");
-	}
-
-	/** Handle the key-released event from the text field. */
-	public void keyReleased(KeyEvent e) {
-		displayInfo(e, "KEY RELEASED: ");
-	}
-
-	public void displayInfo(KeyEvent e, String keyStatus) {
-
-		// You should only rely on the key char if the event
-		// is a key typed event.
-		int id = e.getID();
-		String keyString = "";
-		if (id == KeyEvent.KEY_PRESSED) {
-			char c = e.getKeyChar();
-			keyString = "key character = '" + c + "' ";
-			int keyCode = e.getKeyCode();
-			keyString += "key code = " + keyCode + " ("
-					+ KeyEvent.getKeyText(keyCode) + ")";
-			if (keyCode == 32) {
-				prin();
-			}
-		}
-	}
 
 	public class statAction implements ActionListener {
 		public statAction() {

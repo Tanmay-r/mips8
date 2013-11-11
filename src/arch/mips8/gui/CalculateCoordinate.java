@@ -13,8 +13,9 @@ public class CalculateCoordinate {
 	private ArrayList<String> Forwarding = new ArrayList<String>();
 	private ArrayList<Color> StageColors = new ArrayList<Color>();
 	private ArrayList<ArrayList<StageClockCycle>> table = new ArrayList<ArrayList<StageClockCycle>>();
-
+	private ArrayList<String> InstructionList;
 	public CalculateCoordinate() {
+		InstructionList=new ArrayList<String>();
 		StageColors.add(new Color(125, 167, 116));
 		StageColors.add(new Color(76, 153, 0));
 		StageColors.add(new Color(255, 153, 31));
@@ -31,7 +32,23 @@ public class CalculateCoordinate {
 		table.clear();
 		lines.clear();
 	}
+	
+	public ArrayList<ArrayList<StageClockCycle>> getTable() {
+		return table;
+	}
 
+	public void setTable(ArrayList<ArrayList<StageClockCycle>> table) {
+		this.table = table;
+	}
+
+	public ArrayList<String> getInstructionList() {
+		return InstructionList;
+	}
+
+	public void setInstructionList(ArrayList<String> instructionList) {
+		InstructionList = instructionList;
+	}
+	
 	public ArrayList<StageClockCycle> getClockPerStage() {
 		return ClockPerStage;
 	}

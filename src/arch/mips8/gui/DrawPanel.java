@@ -184,11 +184,11 @@ public class DrawPanel extends JPanel {
 			//System.out.println("Current X in rect " + CurrentCycleX);
 			CurrentCycleY = Stages.get(size - 1).getStartY();
 			g2d.setColor(new Color(200, 200, 200));
-			g2d.drawRect(CurrentCycleX - 2, 0, 42, 600);
+			g2d.drawRect(CurrentCycleX - 2, 0, 42, Math.max(700, CurrentCycleY+100));
 			g2d.setColor(new Color(200, 200, 0));
-			g2d.fillRect(CurrentCycleX, 0, 40, 600);
+			g2d.fillRect(CurrentCycleX, 0, 40, Math.max(700, CurrentCycleY+100));
 			g2d.setColor(new Color(255, 255, 255));
-			g2d.fillRect(0, 0, 175, 600);
+			g2d.fillRect(0, 0, 200, Math.max(700, CurrentCycleY+100));
 			for (StageClockCycle x : Stages) {
 				int X = x.getStartX();
 				int Y = x.getStartY();
@@ -208,19 +208,35 @@ public class DrawPanel extends JPanel {
 				drawArrow(g2d, l.getP1().x, l.getP1().y, l.getP2().x,
 						l.getP2().y);
 			}
+			//drawInstruction(g2d);
 		}
 		Globals.instructionPipeLine.getForwarding().clear();
 
 	}
+	
+	
+	private void drawInstruction (Graphics2D g2d){
+		ArrayList<String> instructionList=Globals.instructionPipeLine.getInstructionList();
+		int YOfInst=10;
+		for(String instr : instructionList){		
+			g2d.setColor(new Color(0, 0, 0));
+			g2d.drawString(instr, 20, YOfInst);
+			g2d.setFont(font);
+			YOfInst=YOfInst+25;
+			
+		}
+	
+	}
 
 	private void drawOneClockCycle(Graphics2D g2d, int X, int Y, Color color,
-			String Stage) {
+			String Stage ) {
 		g2d.setColor(new Color(212, 212, 212));
 		g2d.drawRect(X, Y, 40, 20);
 		g2d.setColor(color);
+		g2d.setFont(font);
 		g2d.fillRect(X, Y, 40, 20);
 		g2d.setColor(new Color(0, 0, 0));
-		g2d.drawString(Stage, X, Y + 20);
+		g2d.drawString(Stage, X, Y + 16);
 
 	}
 
@@ -248,7 +264,7 @@ public class DrawPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(Math.max(800, CurrentCycleX + 100), Math.max(600,
+		return new Dimension(Math.max(1000, CurrentCycleX + 100), Math.max(700,
 				CurrentCycleY + 100));
 	}
 
