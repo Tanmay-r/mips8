@@ -3,7 +3,7 @@ package arch.mips8;
 import arch.mips8.instruction.Instruction;
 
 public class Stage {
-	Instruction currentInstr;
+	Instruction currentInstr, forwardInstr;
 	boolean busy;
 	boolean loaded;
 	int id;
@@ -71,5 +71,19 @@ public class Stage {
 	public void unload() {
 		currentInstr = null;
 		loaded = false;
+	}
+	public String status(){
+		if(busy) return id + " busy" + currentInstr.getId();
+		else return id +" free";
+	}
+	public void forward(){
+		if(currentInstr!=null)
+			forwardInstr = currentInstr;
+	}
+	public void forwardDone(){
+		forwardInstr = null;
+	}
+	public Instruction getForward(){
+		return forwardInstr;
 	}
 }

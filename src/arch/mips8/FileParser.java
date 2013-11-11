@@ -7,15 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import arch.mips8.instruction.threeR.AddInstruction;
-import arch.mips8.instruction.threeR.AdduInstruction;
-import arch.mips8.instruction.threeR.AndInstruction;
-import arch.mips8.instruction.threeR.MulInstruction;
-import arch.mips8.instruction.threeR.OrInstruction;
-import arch.mips8.instruction.threeR.SltInstruction;
-import arch.mips8.instruction.threeR.SltuInstruction;
-import arch.mips8.instruction.threeR.SubInstruction;
-import arch.mips8.instruction.threeR.SubuInstruction;
+import arch.mips8.instruction.threeR.*;
 
 public class FileParser {
 	private ArrayList<String> code;

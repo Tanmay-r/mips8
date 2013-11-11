@@ -30,12 +30,14 @@ public class Register {
 	}
 
 	public void unlockRegister() {
+		System.out.println(name + " unlocked");
 		lock = 65536;
 	}
 
 	public boolean contentAvailable(int instructionId) {
 		// TODO Modify with forwarding lock and have a new value to set while
 		// forwarding
+		System.out.println(name + " " + instructionId + " " + lock);
 		return !isLocked(instructionId);
 	}
 }
