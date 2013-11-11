@@ -181,7 +181,7 @@ public class DrawPanel extends JPanel {
 		if (Stages != null && Stages.size() != 0) {
 			int size = Stages.size();
 			CurrentCycleX = Stages.get(size - 1).getStartX();
-			System.out.println("Current X in rect " + CurrentCycleX);
+			//System.out.println("Current X in rect " + CurrentCycleX);
 			CurrentCycleY = Stages.get(size - 1).getStartY();
 			g2d.setColor(new Color(200, 200, 200));
 			g2d.drawRect(CurrentCycleX - 2, 0, 42, 600);

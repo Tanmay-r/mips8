@@ -111,7 +111,7 @@ public class CalculateCoordinate {
 			ClockPerStage.add(s);
 
 		}
-		System.out.println("Current X in calculate:" + initialX);
+//		System.out.println("Current X in calculate:" + initialX);
 		initialX = initialX + 45;
 		CalculateLine();
 
@@ -156,11 +156,10 @@ public class CalculateCoordinate {
 	}
 
 	public void setClockCycles(int instNum, int stage, String type) {
-		System.out.println("INSTR : " + instNum + " " +stage);
+		System.out.println("INSTR : " + instNum + " " +stage + " " + type);
 		if (table.size() < instNum) {
 			ArrayList<StageClockCycle> list = new ArrayList<StageClockCycle>();
 			table.add(list);
-			initialX = initialX + 45;
 		}
 		StageClockCycle s = new StageClockCycle();
 		s.setStartX(initialX);
@@ -172,6 +171,6 @@ public class CalculateCoordinate {
 		table.get(instNum - 1).add(s);
 		ClockPerStage.add(s);
 		
-		System.out.println("Current X in calculate:" + initialX);
+		//System.out.println("Current X in calculate:" + initialX);
 	}
 }

@@ -46,23 +46,20 @@ public class ThreeRInsruction implements Instruction {
 
 	@Override
 	public boolean executeIF() {
-		r1.lockRegister(id);
+		Register reg = Globals.getRegister("pc");
+		long current_pc = reg.getContent();
+		reg.setContent(current_pc+1);
 		return true;
 	}
 
 	@Override
 	public boolean executeIS() {
-		Register reg =Globals.getRegister("pc");
-		long current_pc = reg.getContent();
-		reg.setContent(current_pc+1);
-		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeID() {
 		// TODO 
-		r1.lockRegister(id);
 		if (r2.contentAvailable(id) && r3.contentAvailable(id)) {
 			r2Val = r2.getContent();
 			r3Val = r3.getContent();

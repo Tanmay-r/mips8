@@ -107,140 +107,123 @@ public class Simulator {
 	}
 
 	public boolean nextStep() {
-		WB.execute();
-		TC.execute();
-		DS.execute();
-		DF.execute();
-		EX.execute();
-		ID.execute();
-		IS.execute();
+		System.out.println(IF.status() + " " + IS.status() + " " + ID.status()
+				+ " " + EX.status() + " " + DF.status() + " " + DS.status()
+				+ " " + TC.status() + " " + WB.status());
 		IF.execute();
-
+		IS.execute();
+		ID.execute();
+		EX.execute();
+		DF.execute();
+		DS.execute();
+		TC.execute();
+		WB.execute();
+		Globals.instructionPipeLine
+				.setInitialX(45 + Globals.instructionPipeLine.getInitialX());
 		if (IF.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(IF.getInstruction()
-					.getId(), 1, "N");
+					.getId(), 1, IF.status());
+		} else if (IF.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(IF.getForward().getId(),
+					1, IF.status());
 		}
 		if (IS.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(IS.getInstruction()
-					.getId(), 2, "N");
+					.getId(), 2, IS.status());
+		} else if (IS.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(IS.getForward().getId(),
+					2, IS.status());
 		}
 		if (ID.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(ID.getInstruction()
-					.getId(), 3, "N");
+					.getId(), 3, ID.status());
+		} else if (ID.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(ID.getForward().getId(),
+					3, ID.status());
 		}
 		if (EX.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(EX.getInstruction()
-					.getId(), 4, "N");
+					.getId(), 4, EX.status());
+		} else if (EX.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(EX.getForward().getId(),
+					4, EX.status());
 		}
 		if (DF.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(DF.getInstruction()
-					.getId(), 5, "N");
+					.getId(), 5, DF.status());
+		} else if (DF.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(DF.getForward().getId(),
+					5, DF.status());
 		}
 		if (DS.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(DS.getInstruction()
-					.getId(), 6, "N");
+					.getId(), 6, DS.status());
+		} else if (DS.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(DS.getForward().getId(),
+					6, DS.status());
 		}
 		if (TC.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(TC.getInstruction()
-					.getId(), 7, "N");
+					.getId(), 7, TC.status());
+		} else if (TC.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(TC.getForward().getId(),
+					7, TC.status());
 		}
 		if (WB.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(WB.getInstruction()
-					.getId(), 8, "N");
+					.getId(), 8, WB.status());
+		} else if (WB.getForward() != null) {
+			Globals.instructionPipeLine.setClockCycles(WB.getForward().getId(),
+					8, WB.status());
 		}
-		
-		Instruction temp = null, temp1 = null;
-		
+
 		if (IF.free()) {
-			if(IF.getInstruction()!=null)
-				temp = IF.getInstruction();
+			IF.forward();
 			int pc = (int) Globals.getRegister("pc").getContent();
+			System.out.println("PC is " + pc + " "
+					+ Globals.instructions.size());
 			if (pc < Globals.instructions.size()) {
 				Instruction i = Globals.instructions.get(pc).copy();
 				i.setId(instructionCounter);
 				instructionCounter++;
 				IF.addInstruction(i);
-			} else
-				temp = null;
+			} else {
+				IF.addInstruction(null);
+			}
 		}
 		if (IS.free()) {
-			temp1 = IS.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				System.out.println("copy");
-				IS.addInstruction(temp);
-				System.out.println("IS " + temp.getId());
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			IS.forward();
+			IS.addInstruction(IF.getForward());
+			IF.forwardDone();
 		}
 		if (ID.free()) {
-			temp1 = ID.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				ID.addInstruction(temp);
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			ID.forward();
+			ID.addInstruction(IS.getForward());
+			IS.forwardDone();
 		}
 		if (EX.free()) {
-			temp1 = EX.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				EX.addInstruction(temp);
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			EX.forward();
+			EX.addInstruction(ID.getForward());
+			ID.forwardDone();
 		}
 		if (DF.free()) {
-			temp1 = DF.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				DF.addInstruction(temp);
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			DF.forward();
+			DF.addInstruction(EX.getForward());
+			EX.forwardDone();
 		}
 		if (DS.free()) {
-			temp1 = DS.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				DS.addInstruction(temp);
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			DS.forward();
+			DS.addInstruction(DF.getForward());
+			DF.forwardDone();
 		}
 		if (TC.free()) {
-			temp1 = TC.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				TC.addInstruction(temp);
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			TC.forward();
+			TC.addInstruction(DS.getForward());
+			DS.forwardDone();
 		}
 		if (WB.free()) {
-			temp1 = WB.getInstruction();
-			if (temp == null) {
-				temp = temp1;
-			} else {
-				WB.addInstruction(temp);
-				temp = temp1;
-			}
-		} else {
-			temp = null;
+			WB.addInstruction(TC.getForward());
+			TC.forwardDone();
 		}
 		return true;
 	}
