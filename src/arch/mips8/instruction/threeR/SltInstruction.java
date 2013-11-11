@@ -6,10 +6,12 @@ public class SltInstruction extends ThreeRInsruction {
 
 	public SltInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
+		super.name="slt";
 	}
 	
 	public SltInstruction(SltInstruction sltInstruction) {
 		super(sltInstruction);
+		super.name="slt";
 		// TODO Auto-generated constructor stub
 	}
 

@@ -7,10 +7,12 @@ public class DivInstruction extends TwoRInstruction {
 
 	public DivInstruction(Register r1, Register r2) {
 		super(r1, r2);
+		super.name="div";
 	}
 	
 	public DivInstruction(DivInstruction divInstruction) {
 		super(divInstruction);
+		super.name="div";
 		// TODO Auto-generated constructor stub
 	}
 

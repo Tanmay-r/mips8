@@ -6,10 +6,12 @@ public class SrlInstruction extends TwoRoneIInstruction {
 
 	public SrlInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
+		super.name="srl";
 	}
 	
 	public SrlInstruction(SrlInstruction srlInstruction) {
 		super(srlInstruction);
+		super.name="srl";
 		// TODO Auto-generated constructor stub
 	}
 

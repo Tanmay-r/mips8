@@ -6,10 +6,12 @@ public class OrInstruction extends ThreeRInsruction {
 
 	public OrInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
+		super.name="or";
 	}
 	
 	public OrInstruction(OrInstruction orInstruction) {
 		super(orInstruction);
+		super.name="or";
 		// TODO Auto-generated constructor stub
 	}
 

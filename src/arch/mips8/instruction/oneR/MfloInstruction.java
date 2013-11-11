@@ -7,10 +7,12 @@ public class MfloInstruction  extends OneRInstruction{
 
 	public MfloInstruction(Register r1) {
 		super(r1);
+		super.name="mflo";
 	}
 	
 	public MfloInstruction(MfloInstruction mfloInstruction) {
 		super(mfloInstruction);
+		super.name="mflo";
 		// TODO Auto-generated constructor stub
 	}
 

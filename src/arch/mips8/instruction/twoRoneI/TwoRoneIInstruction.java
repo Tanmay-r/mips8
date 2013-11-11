@@ -8,6 +8,15 @@ public class TwoRoneIInstruction implements Instruction {
 	Register r1, r2;
 	long r1Val, r2Val, immd;
 	int id;
+	String name;
+	
+	public void setName(String name){
+		this.name=name;
+	}
+	
+	public String getInstructionName() {
+		return this.name+" "+r1.name+" "+r2.name+" "+immd;
+	}
 
 	//r1 depends on this instruction
 	//this instruction depends on r2 and immd
@@ -31,7 +40,8 @@ public class TwoRoneIInstruction implements Instruction {
 		this.r2 = instruction.r2;
 		this.immd = instruction.immd;
 		this.r1Val = instruction.r1Val;
-		this.r2Val = instruction.r2Val;		
+		this.r2Val = instruction.r2Val;	
+		this.name = instruction.name;
 		// TODO Auto-generated constructor stub
 	}
 

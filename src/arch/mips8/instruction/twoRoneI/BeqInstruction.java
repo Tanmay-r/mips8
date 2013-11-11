@@ -7,10 +7,12 @@ public class BeqInstruction extends TwoRoneIInstruction {
 
 	public BeqInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
+		super.name="beq";
 	}
 	
 	public BeqInstruction(BeqInstruction beqInstruction) {
 		super(beqInstruction);
+		super.name="beq";
 		// TODO Auto-generated constructor stub
 	}
 

@@ -11,6 +11,7 @@ public class MfhiInstruction  extends OneRInstruction{
 	
 	public MfhiInstruction(MfhiInstruction mfhiInstruction) {
 		super(mfhiInstruction);
+		super.name="mfhi";
 		// TODO Auto-generated constructor stub
 	}
 

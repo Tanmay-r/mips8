@@ -6,10 +6,12 @@ public class BneInstruction extends TwoRoneIInstruction {
 
 	public BneInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
+		super.name="bne";
 	}
 
 	public BneInstruction(BneInstruction bneInstruction) {
 		super(bneInstruction);
+		super.name="bne";
 		// TODO Auto-generated constructor stub
 	}
 

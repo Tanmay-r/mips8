@@ -6,10 +6,12 @@ public class MulInstruction extends ThreeRInsruction {
 
 	public MulInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
+		super.name="mul";
 	}
 	
 	public MulInstruction(MulInstruction mulInstruction) {
 		super(mulInstruction);
+		super.name="mul";
 		// TODO Auto-generated constructor stub
 	}
 

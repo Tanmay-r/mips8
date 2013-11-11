@@ -6,10 +6,12 @@ public class AndInstruction extends ThreeRInsruction {
 
 	public AndInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
+		super.name="and";
 	}
 	
 	public AndInstruction(AndInstruction andInstruction) {
 		super(andInstruction);
+		super.name="and";
 		// TODO Auto-generated constructor stub
 	}
 

@@ -6,10 +6,12 @@ public class SltiInstruction extends TwoRoneIInstruction {
 
 	public SltiInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
+		super.name="slti";
 	}
 	
 	public SltiInstruction(SltiInstruction sltiInstruction) {
 		super(sltiInstruction);
+		super.name="slti";
 		// TODO Auto-generated constructor stub
 	}
 

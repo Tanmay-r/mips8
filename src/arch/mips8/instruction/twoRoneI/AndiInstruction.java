@@ -6,10 +6,12 @@ public class AndiInstruction extends TwoRoneIInstruction {
 
 	public AndiInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
+		super.name="andi";
 	}
 	
 	public AndiInstruction(AndiInstruction andiInstruction) {
 		super(andiInstruction);
+		super.name="andi";
 		// TODO Auto-generated constructor stub
 	}
 

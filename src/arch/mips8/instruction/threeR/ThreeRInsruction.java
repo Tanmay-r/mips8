@@ -8,10 +8,17 @@ public class ThreeRInsruction implements Instruction {
 	Register r1, r2, r3;
 	long r1Val, r2Val, r3Val;
 	int id;
+	String name;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
 
+	public String getInstructionName() {
+		return this.name+" "+r1.name+" "+r2.name+" "+r3.name;
+	}
 	//r1 depends on this instruction
 	//this instruction depends on r2 and r3
-
 	public int getId() {
 		return id;
 	}
@@ -33,6 +40,7 @@ public class ThreeRInsruction implements Instruction {
 		this.r1Val = addInstruction.r1Val;
 		this.r2Val = addInstruction.r2Val;
 		this.r3Val = addInstruction.r3Val;
+		this.name = addInstruction.name;
 		// TODO Auto-generated constructor stub
 	}
 

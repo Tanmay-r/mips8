@@ -8,10 +8,12 @@ public class MultInstruction extends TwoRInstruction {
 
 	public MultInstruction(Register r1, Register r2) {
 		super(r1, r2);
+		super.name="mult";
 	}
 	
 	public MultInstruction(MultInstruction multInstruction) {
 		super(multInstruction);
+		super.name="mult";
 		// TODO Auto-generated constructor stub
 	}
 

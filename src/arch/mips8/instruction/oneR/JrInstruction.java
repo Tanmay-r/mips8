@@ -7,10 +7,12 @@ public class JrInstruction  extends OneRInstruction{
 
 	public JrInstruction(Register r1) {
 		super(r1);
+		super.name="jr";
 	}
 	
 	public JrInstruction(JrInstruction JrInstruction) {
 		super(JrInstruction);
+		super.name="jr";
 		// TODO Auto-generated constructor stub
 	}
 

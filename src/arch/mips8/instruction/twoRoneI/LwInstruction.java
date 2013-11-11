@@ -6,10 +6,12 @@ public class LwInstruction extends TwoRoneIInstruction {
 
 	public LwInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
+		super.name="lw";
 	}
 	
 	public LwInstruction(LwInstruction lwInstruction) {
 		super(lwInstruction);
+		super.name="lw";
 		// TODO Auto-generated constructor stub
 	}
 
