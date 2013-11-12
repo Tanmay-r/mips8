@@ -25,8 +25,8 @@ public class DivInstruction extends TwoRInstruction {
 		super.executeEX();
 		Register lo =Globals.getRegister("lo");
 		Register hi =Globals.getRegister("ho");		
-		lo.setContent((super.r1Val/super.r2Val));
-		hi.setContent((super.r1Val%super.r2Val));	
+		lo.setContent( (long)((int)super.r1Val / (int)super.r2Val) );
+		hi.setContent( (long)((int)super.r1Val % (int)super.r2Val) );	
 		return true;
 	}
 	

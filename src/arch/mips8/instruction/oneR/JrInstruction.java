@@ -24,7 +24,7 @@ public class JrInstruction  extends OneRInstruction{
 	public boolean executeEX() {
 		Register reg = Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		reg.setContent(current_pc - 1 + (super.r1Val/4));
+		reg.setContent(current_pc - 1 + ( (int)super.r1Val/4));
 		return true;
 	}
 	

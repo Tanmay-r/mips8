@@ -22,7 +22,7 @@ public class SltInstruction extends ThreeRInsruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		if(super.r2Val < super.r3Val)super.r1Val=1;
+		if( (int)super.r2Val < (int)super.r3Val)super.r1Val=1;
 		else super.r1Val=0;
 		return true;
 	}

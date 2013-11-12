@@ -25,7 +25,8 @@ public class BeqInstruction extends TwoRoneIInstruction {
 		super.executeEX();
 		Register reg = Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		if (super.r1Val == super.r2Val)reg.setContent(current_pc - 1 + super.immd);
+		if ( (int)super.r1Val == (int)super.r2Val)
+			reg.setContent(current_pc - 1 + (int)super.immd );
 		return true;
 	}
 	

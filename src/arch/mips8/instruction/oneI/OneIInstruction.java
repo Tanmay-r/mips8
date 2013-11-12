@@ -51,7 +51,7 @@ public class OneIInstruction implements Instruction {
 	public boolean executeEX() {
 		Register reg = Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		reg.setContent(current_pc - 1 + (immd/4));
+		reg.setContent(current_pc - 1 + ( (int)immd/4));
 		return true;
 	}
 

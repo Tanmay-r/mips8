@@ -26,9 +26,9 @@ public class MultInstruction extends TwoRInstruction {
 		super.executeEX();
 		Register lo =Globals.getRegister("lo");
 		Register hi =Globals.getRegister("ho");	
-		long mul = super.r1Val*super.r2Val;
-		lo.setContent((mul)&(0xffffffff));
-		hi.setContent((mul)>>32);	
+		long mul = super.r1Val * super.r2Val;
+		lo.setContent( mul & (0xffffffff) );
+		hi.setContent( mul>>32 );	
 		return true;
 	}
 	

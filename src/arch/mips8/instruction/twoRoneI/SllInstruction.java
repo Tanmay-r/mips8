@@ -22,7 +22,7 @@ public class SllInstruction extends TwoRoneIInstruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		super.r1Val = super.r2Val << super.immd;
+		super.r1Val = (long) ( (int)super.r2Val << (int)super.immd );
 		return true;
 	}
 	
