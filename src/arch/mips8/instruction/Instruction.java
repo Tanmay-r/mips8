@@ -21,6 +21,7 @@ public interface Instruction {
 	public int getId();
 	
 	public void setId(int id);
+	public String getInstructionName();
 
 	public Instruction copy();
 

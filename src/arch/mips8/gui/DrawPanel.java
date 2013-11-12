@@ -28,6 +28,7 @@ public class DrawPanel extends JPanel {
 	private Color stage8 = new Color(125, 167, 116);
 	private ArrayList<Line> lines;
 	private Font font = new Font("Dialog", Font.PLAIN, 12);
+	Font Instfont = new Font("Courier", Font.BOLD,14);
 	private ArrayList<StageClockCycle> Stages = null;
 	private Color stall_color = new Color(125, 167, 116);
 	private ArrayList<String> stageName = new ArrayList<String>();
@@ -179,6 +180,7 @@ public class DrawPanel extends JPanel {
 
 	private void draw(Graphics2D g2d) {
 		if (Stages != null && Stages.size() != 0) {
+			g2d.setFont(font);
 			int size = Stages.size();
 			CurrentCycleX = Stages.get(size - 1).getStartX();
 			//System.out.println("Current X in rect " + CurrentCycleX);
@@ -208,7 +210,7 @@ public class DrawPanel extends JPanel {
 				drawArrow(g2d, l.getP1().x, l.getP1().y, l.getP2().x,
 						l.getP2().y);
 			}
-			//drawInstruction(g2d);
+			drawInstruction(g2d);
 		}
 		Globals.instructionPipeLine.getForwarding().clear();
 
@@ -217,11 +219,14 @@ public class DrawPanel extends JPanel {
 	
 	private void drawInstruction (Graphics2D g2d){
 		ArrayList<String> instructionList=Globals.instructionPipeLine.getInstructionList();
-		int YOfInst=10;
-		for(String instr : instructionList){		
-			g2d.setColor(new Color(0, 0, 0));
-			g2d.drawString(instr, 20, YOfInst);
-			g2d.setFont(font);
+		int YOfInst=35;
+		g2d.setFont(Instfont);
+		g2d.setPaint(Color.black);
+		g2d.drawString("INSTRUCTIONS", 40, 20);
+		g2d.setColor(new Color(0, 0, 0));
+		g2d.setPaint(Color.blue);
+		for(String instr : instructionList){
+			g2d.drawString(instr, 20, YOfInst+17);
 			YOfInst=YOfInst+25;
 			
 		}
@@ -233,7 +238,6 @@ public class DrawPanel extends JPanel {
 		g2d.setColor(new Color(212, 212, 212));
 		g2d.drawRect(X, Y, 40, 20);
 		g2d.setColor(color);
-		g2d.setFont(font);
 		g2d.fillRect(X, Y, 40, 20);
 		g2d.setColor(new Color(0, 0, 0));
 		g2d.drawString(Stage, X, Y + 16);
@@ -255,8 +259,7 @@ public class DrawPanel extends JPanel {
 	}
 
 	public void calculateUpdate(String TwoInstructionLines) {
-//		Globals.instructionPipeLine.readInput(TwoInstructionLines);
-		// Globals.instructionPipeLine.Calculate();
+		
 		lines = Globals.instructionPipeLine.getLines();
 		Stages = Globals.instructionPipeLine.getClockPerStage();
 
@@ -269,7 +272,6 @@ public class DrawPanel extends JPanel {
 	}
 
 	private void doDrawing(Graphics g) {
-		g.setFont(font);
 		Graphics2D g2d = (Graphics2D) g;
 
 		drawAll(g2d);

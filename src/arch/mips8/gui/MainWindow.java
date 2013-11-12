@@ -50,14 +50,7 @@ public class MainWindow extends JFrame {
 		add(groupButton(), BorderLayout.PAGE_END);
 		setTitle("8 Stage Pipeline");
 		/**Binding Space pressed for simulation**/
-		getRootPane().getInputMap().put(KeyStroke.getKeyStroke("SPACE"),
-                "pressed");
-		getRootPane().getActionMap().put("pressed",
-				new AbstractAction() {
-		    public void actionPerformed(ActionEvent e) {
-		        prin();
-		    }
-		});
+
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		

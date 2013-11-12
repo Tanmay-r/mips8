@@ -123,6 +123,8 @@ public class Simulator {
 		if (IF.getInstruction() != null) {
 			Globals.instructionPipeLine.setClockCycles(IF.getInstruction()
 					.getId(), 1, IF.status());
+			Globals.instructionPipeLine.getInstructionList().add(IF.getInstruction()
+					.getInstructionName());
 		} else if (IF.getForward() != null) {
 			Globals.instructionPipeLine.setClockCycles(IF.getForward().getId(),
 					1, IF.status());
