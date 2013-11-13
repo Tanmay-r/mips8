@@ -26,6 +26,9 @@ public class MainWindow extends JFrame {
 	private int ClockCycles;
 	/** Scroll pane in which DrawPanel is fixed **/
 	private JScrollPane SimulationPane = new JScrollPane();
+	
+	private JScrollPane RegisterPane = new JScrollPane();
+	
 	/** File Chooser To open or Load a file **/
 	private JFileChooser fileopen = new JFileChooser();
 	// private Statistics Stats= new Statistics();
@@ -36,18 +39,22 @@ public class MainWindow extends JFrame {
 	public MainWindow() {
 		
 		setLayout(new BorderLayout());
-		setPreferredSize(new Dimension(1000, 700));
+		setPreferredSize(new Dimension(1300, 700));
 		/** Initializing Panel **/
 		emptyPanel = new JPanel();
 		/** Setting Layout and border for emptyPanel **/
 		emptyPanel.setLayout(new BorderLayout());
 		//emptyPanel.setPreferredSize(new Dimension(800,600));
 		emptyPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		SimulationPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		SimulationPane.getViewport().add(simulationWindow);
+		RegisterPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		RegisterPane.getViewport().add(simulationWindow.getRegistersGui());
 		// statData.setPreferredSize(new Dimension(200,200));
 		//JButton button = new JButton("Simulate");
 		add(emptyPanel, BorderLayout.CENTER);
 		add(groupButton(), BorderLayout.PAGE_END);
+		add(RegisterPane,BorderLayout.LINE_END);
 		setTitle("8 Stage Pipeline");
 		/**Binding Space pressed for simulation**/
 
@@ -60,7 +67,6 @@ public class MainWindow extends JFrame {
 		pack();
 		setVisible(true);
 	}
-
 	/**Creating Buttons**/
 	private JPanel groupButton(){
 		JPanel pane = new JPanel();

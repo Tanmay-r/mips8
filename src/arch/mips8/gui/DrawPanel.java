@@ -10,10 +10,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import javax.swing.JPanel;
 
 import arch.mips8.Globals;
+import arch.mips8.Register;
 
 public class DrawPanel extends JPanel {
 
@@ -37,6 +39,15 @@ public class DrawPanel extends JPanel {
 	private boolean drawEnable;
 	private int CurrentCycleX;
 	private int CurrentCycleY;
+	private RegisterPanel registersGui= new RegisterPanel();
+
+	public RegisterPanel getRegistersGui() {
+		return registersGui;
+	}
+
+	public void setRegistersGui(RegisterPanel registersGui) {
+		this.registersGui = registersGui;
+	}
 
 	public int getCurrentCycleX() {
 		return CurrentCycleX;
@@ -211,6 +222,7 @@ public class DrawPanel extends JPanel {
 						l.getP2().y);
 			}
 			drawInstruction(g2d);
+			registersGui.repaint();
 		}
 		Globals.instructionPipeLine.getForwarding().clear();
 
@@ -258,7 +270,7 @@ public class DrawPanel extends JPanel {
 				-5, 5, 0 }, 4);
 	}
 
-	public void calculateUpdate(String TwoInstructionLines) {
+	public void calculateUpdate() {
 		
 		lines = Globals.instructionPipeLine.getLines();
 		Stages = Globals.instructionPipeLine.getClockPerStage();
@@ -267,7 +279,7 @@ public class DrawPanel extends JPanel {
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(Math.max(1000, CurrentCycleX + 100), Math.max(700,
+		return new Dimension(Math.max(1050, CurrentCycleX + 100), Math.max(700,
 				CurrentCycleY + 100));
 	}
 
@@ -282,7 +294,7 @@ public class DrawPanel extends JPanel {
 
 		super.paintComponent(g);
 		if (drawEnable) {
-			calculateUpdate(InputToDraw);
+			calculateUpdate();
 			drawEnable = !drawEnable;
 		}
 		doDrawing(g);
@@ -297,5 +309,51 @@ public class DrawPanel extends JPanel {
 		Globals.instructionPipeLine.init();
 		repaint();
 	}
+	public class RegisterPanel extends JPanel {
+		
+		@Override
+		public void paintComponent(Graphics g) {
+
+			super.paintComponent(g);
+			if (drawEnable) {
+				registerUpdate(g);
+				drawEnable = !drawEnable;
+			}
+			drawRegister(g);
+		}
+		public void drawRegister(Graphics g){
+			Graphics2D g2d = (Graphics2D) g;
+			
+			int YOfInst=35;
+			g2d.setFont(Instfont);
+			g2d.setPaint(Color.black);
+			g2d.drawString("REGISTERS", 40, 20);
+			g2d.setColor(new Color(0, 0, 0));
+			String registersNames[] = "$zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra, pc, hi, lo"
+					.split(",");
+			for(String reg : registersNames){
+				Register r = Globals.getRegister(reg.trim());
+				g2d.setPaint(Color.black);
+				g2d.drawString( r.name , 20, YOfInst+17);
+				g2d.setPaint(Color.blue);
+				Long a = r.content;
+				g2d.drawString( "0x" + Long.toHexString(a) , 80, YOfInst+17);
+				
+				YOfInst=YOfInst+25;
+				
+			}
+			
+		}
+		private void registerUpdate(Graphics g){
+			drawRegister(g);
+			
+		}
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(200, Math.max(950,
+					CurrentCycleY + 100));
+		}
+	}
+	
 
 }
