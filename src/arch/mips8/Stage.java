@@ -3,87 +3,95 @@ package arch.mips8;
 import arch.mips8.instruction.Instruction;
 
 public class Stage {
-	Instruction currentInstr, forwardInstr;
-	boolean busy;
-	boolean loaded;
+	Instruction instruction;
+	char state;
 	int id;
-
-	Stage(int id) {
-		currentInstr = null;
-		busy = false;
-		loaded = false;
+	boolean stalled;
+	public Stage(int id) {
 		this.id = id;
+		this.instruction = null;
+		this.state = 'C';
+		this.stalled = false;
 	}
-
-	public boolean free() {
-		return (!busy);
-	}
-
-	public void execute() {
-		// This will keep busy true until its function return false
-		if(!busy) return;
-		System.out.println(id);
-		switch (id) {
+	
+	public boolean execute(){
+		switch(id){
 		case 1:
-			busy = !currentInstr.executeIF();
-			break;
+			return instruction.executeIF();
 		case 2:
-			busy = !currentInstr.executeIS();
-			break;
+			return instruction.executeIS();
 		case 3:
-			busy = !currentInstr.executeID();
-			break;
+			return instruction.executeID();
 		case 4:
-			busy = !currentInstr.executeEX();
-			break;
+			return instruction.executeEX();
 		case 5:
-			busy = !currentInstr.executeDF();
-			break;
+			return instruction.executeDF();
 		case 6:
-			busy = !currentInstr.executeDS();
-			break;
+			return instruction.executeDS();
 		case 7:
-			busy = !currentInstr.executeTC();
-			break;
+			return instruction.executeTC();
 		case 8:
-			busy = !currentInstr.executeWB();
-			break;
+			return instruction.executeWB();
 		}
-	}
-
-	public void addInstruction(Instruction i) {
-		currentInstr = i;
-		if (i != null){
-			loaded = true;
-			busy = true;
-		}
-		else{
-			busy = false;
-			loaded = false;
-		}
-		
+		return false;
 	}
 
 	public Instruction getInstruction() {
-		return currentInstr;
+		return instruction;
 	}
 
-	public void unload() {
-		currentInstr = null;
-		loaded = false;
+	public void setInstruction(Instruction instruction) {
+		this.instruction = instruction;
+		this.state = 'A';
+		this.stalled = false;
 	}
+
+	public char getState() {
+		return state;
+	}
+
+	public void setState(char state) {
+		this.state = state;
+		if(state=='A'){
+			
+		}
+		else if(state=='B'){
+			stalled = false;
+		}
+		else if(state=='C'){
+			instruction = null;
+		}
+	}
+
+	public boolean isStalled() {
+		return stalled;
+	}
+
+	public void setStalled(boolean stalled) {
+		this.stalled = stalled;
+	}
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String status(){
-		if(busy) return id + " busy" + currentInstr.getId();
-		else return id +" free";
+		if(state=='A' && !stalled){
+			return "N" + instruction.getId();
+		}
+		else if(state=='A' && stalled){
+			return "AS" + instruction.getId();
+		}
+		else if(state=='B'){
+			return "B" + instruction.getId();
+		}
+		return "E";
 	}
-	public void forward(){
-		if(currentInstr!=null)
-			forwardInstr = currentInstr;
-	}
-	public void forwardDone(){
-		forwardInstr = null;
-	}
-	public Instruction getForward(){
-		return forwardInstr;
-	}
+	
+	
+	
 }

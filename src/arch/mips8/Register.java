@@ -37,7 +37,7 @@ public class Register {
 	public boolean contentAvailable(int instructionId) {
 		// TODO Modify with forwarding lock and have a new value to set while
 		// forwarding
-		System.out.println(name + " " + instructionId + " " + lock);
+//		System.out.println(name + " " + instructionId + " " + lock);
 		return !isLocked(instructionId);
 	}
 }
