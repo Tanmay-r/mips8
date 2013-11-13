@@ -26,7 +26,7 @@ public class Globals {
 	}
 	
 	public static Register getRegister(String rName){
-		System.out.println(registers.get(rName).getContent());
+		//System.out.println(registers.get(rName).getContent());
 		return registers.get(rName);
 	}
 	public static void reset(){

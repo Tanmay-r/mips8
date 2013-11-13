@@ -30,7 +30,6 @@ public class Register {
 	}
 
 	public void unlockRegister() {
-		System.out.println(name + " unlocked");
 		lock = 65536;
 	}
 

@@ -56,6 +56,8 @@ public class Simulator {
 				i.setId(instructionCounter);
 				instructionCounter++;
 				IF.setInstruction(i);
+				Globals.instructionPipeLine.getInstructionList().add(
+						IF.getInstruction().getInstructionName());
 			} else {
 				IF.setState('C');
 			}
