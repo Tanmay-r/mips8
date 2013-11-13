@@ -8,6 +8,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import arch.mips8.instruction.threeR.*;
+import arch.mips8.instruction.twoRoneI.*;
+import arch.mips8.instruction.twoR.*;
+//import arch.mips8.instruction.oneRoneI.*;
+import arch.mips8.instruction.oneR.*;
+import arch.mips8.instruction.oneI.*;
 
 public class FileParser {
 	private ArrayList<String> code;
@@ -178,9 +183,7 @@ public class FileParser {
 					Globals.instructions.add(new SltuInstruction(Globals
 							.getRegister(r1), Globals.getRegister(r2), Globals
 							.getRegister(r3)));
-					break;
-
-					
+					break;								
 				}
 
 			} else if (twoRoneI.contains(type)) {
@@ -188,13 +191,93 @@ public class FileParser {
 				String r2 = s[2];
 				String i1 = s[3];
 				System.out.println(type.trim() + " 2R1I " + r1 + r2 + i1);
+				
+				switch (type.trim()) {
+					case "addi":
+						Globals.instructions.add(new AddiInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "addiu":
+						Globals.instructions.add(new AddiuInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "andi":
+						Globals.instructions.add(new AndiInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "ori":
+						Globals.instructions.add(new OriInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "beq":
+						Globals.instructions.add(new BeqInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "bne":
+						Globals.instructions.add(new BneInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;					
+					case "sll":
+						Globals.instructions.add(new SllInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "slt":
+						Globals.instructions.add(new SltiInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "sltu":
+						Globals.instructions.add(new SltiuInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "srl":
+						Globals.instructions.add(new SrlInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;							
+				}
+				
 			} else if (twoR.contains(type)) {
 				String r1 = s[1];
 				String r2 = s[2];
 				System.out.println(type.trim() + " 2R " + r1 + r2);
+				switch (type.trim()) {
+					case "div":
+						Globals.instructions.add(new DivInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2) ));			
+						break;
+					case "mult":
+						Globals.instructions.add(new MultInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2) ));			
+						break;					
+				}
+				
 			} else if (oneR.contains(type)) {
 				String r1 = s[1];
 				System.out.println(type.trim() + " 2R " + r1);
+				switch (type.trim()) {
+					case "jr":
+						Globals.instructions.add(new JrInstruction(Globals
+								.getRegister(r1)));			
+						break;
+					case "mfhi":
+						Globals.instructions.add(new MfhiInstruction(Globals
+								.getRegister(r1)));			
+						break;
+					case "mflo":
+						Globals.instructions.add(new MfloInstruction(Globals
+								.getRegister(r1)));			
+						break;
+				}
+				
 			} else if (oneRoneIoneR.contains(type)) {
 				String r1 = s[1];
 				String i1, r2;
@@ -206,9 +289,37 @@ public class FileParser {
 					r2 = s[3];
 				}
 				System.out.println(type.trim() + " 1R1I1R " + r1 + i1 + r2);
+				switch (type.trim()) {
+					case "lw":
+						Globals.instructions.add(new LwInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;
+					case "sw":
+						Globals.instructions.add(new SwInstruction(Globals
+								.getRegister(r1), Globals.getRegister(r2),
+								(long)Integer.parseInt(i1) ));			
+						break;	
+				}
+				
 			} else if (oneI.contains(type)) {
 				String i1 = s[1];
 				System.out.println(type.trim() + " 1I " + i1);
+				switch (type.trim()) {
+				case "jal":
+					Globals.instructions.add(new JumpAndLinkInstruction(
+							(long)Integer.parseInt(i1) ));			
+					break;
+				case "b":
+					Globals.instructions.add(new BranchInstruction(
+							(long)Integer.parseInt(i1) ));			
+					break;	
+				case "j":
+					Globals.instructions.add(new JumpInstruction(
+							(long)Integer.parseInt(i1) ));			
+					break;	
+			}
+				
 			} else if (oneRoneI.contains(type)) {
 				String r1 = s[1];
 				String i1 = s[2];

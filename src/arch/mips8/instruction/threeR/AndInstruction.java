@@ -22,7 +22,7 @@ public class AndInstruction extends ThreeRInsruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		super.r1Val = super.r2Val & super.r3Val;
+		super.r1Val = (long)((int)super.r2Val & (int)super.r3Val);
 		return true;
 	}
 	

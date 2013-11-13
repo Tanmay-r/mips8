@@ -22,7 +22,8 @@ public class SltiInstruction extends TwoRoneIInstruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		if(super.r2Val < super.immd)super.r1Val=1;
+		if( (int)super.r2Val < (int)super.immd )
+			super.r1Val=1;
 		else super.r1Val=0;
 		return true;
 	}

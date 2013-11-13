@@ -19,7 +19,7 @@ public class JumpAndLinkInstruction extends OneIInstruction{
 	public boolean executeEX() {
 		Register reg = Globals.getRegister("ra");
 		long current_pc = reg.getContent();
-		reg.setContent(current_pc - 1 + (super.immd/4));
+		reg.setContent(current_pc - 1 + ( (int)super.immd/4));
 		return true;
 	}
 
