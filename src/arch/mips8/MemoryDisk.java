@@ -5,10 +5,13 @@ import java.util.ArrayList;
 
 public class MemoryDisk {
 	int index;
-	ArrayList<Byte> memory;
+	public ArrayList<Byte> memory;
 
 	MemoryDisk() {
-		memory = new ArrayList<Byte>(16384);
+		memory = new ArrayList<Byte>(10000);
+		for(int i=0;i<10000;i++){
+			memory.add(i,(byte) 0);
+		}
 		index = 0;
 	}
 

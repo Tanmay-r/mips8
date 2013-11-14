@@ -8,13 +8,14 @@ import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.JPanel;
+import javax.swing.border.Border;
 
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class DrawPanel extends JPanel {
-
 
 	private Color stage1 = new Color(125, 167, 116);
 	private Color stage2 = new Color(125, 167, 116);
@@ -26,8 +27,9 @@ public class DrawPanel extends JPanel {
 	private Color stage8 = new Color(125, 167, 116);
 	private ArrayList<Line> lines;
 	private Font font = new Font("Dialog", Font.PLAIN, 12);
-	Font Instfont = new Font("Courier", Font.BOLD,14);
+	Font Instfont = new Font("Courier", Font.BOLD, 14);
 	private ArrayList<StageClockCycle> Stages = null;
+	ArrayList<ArrayList<StageClockCycle>> table=null;
 	private Color stall_color = new Color(125, 167, 116);
 	private ArrayList<String> stageName = new ArrayList<String>();
 	private String InputToDraw;
@@ -35,7 +37,9 @@ public class DrawPanel extends JPanel {
 	private boolean drawEnable;
 	private int CurrentCycleX;
 	private int CurrentCycleY;
-	private RegisterPanel registersGui= new RegisterPanel();
+	private RegisterPanel registersGui = new RegisterPanel();
+
+	private MemoryPanel memoryGui = new MemoryPanel();
 
 	public RegisterPanel getRegistersGui() {
 		return registersGui;
@@ -190,59 +194,63 @@ public class DrawPanel extends JPanel {
 			g2d.setFont(font);
 			int size = Stages.size();
 			CurrentCycleX = Stages.get(size - 1).getStartX();
-			//System.out.println("Current X in rect " + CurrentCycleX);
+			// System.out.println("Current X in rect " + CurrentCycleX);
 			CurrentCycleY = Stages.get(size - 1).getStartY();
 			g2d.setColor(new Color(200, 200, 200));
-			g2d.drawRect(CurrentCycleX - 2, 0, 42, Math.max(700, CurrentCycleY+100));
+			g2d.drawRect(CurrentCycleX - 2, 0, 42,
+					Math.max(700, CurrentCycleY + 100));
 			g2d.setColor(new Color(200, 200, 0));
-			g2d.fillRect(CurrentCycleX, 0, 40, Math.max(700, CurrentCycleY+100));
+			g2d.fillRect(CurrentCycleX, 0, 40,
+					Math.max(700, CurrentCycleY + 100));
 			g2d.setColor(new Color(255, 255, 255));
-			g2d.fillRect(0, 0, 200, Math.max(700, CurrentCycleY+100));
-			for (StageClockCycle x : Stages) {
-				int X = x.getStartX();
-				int Y = x.getStartY();
-				String Stage_Name;
-				int stage = x.getStage();
-				String TypeOfStall = x.getTypeOfStalls();
-				if (TypeOfStall.equals("N")) {
-					Stage_Name = stageName.get(stage - 1);
-				} else {
-					Stage_Name = TypeOfStall;
+			g2d.fillRect(0, 0, 200, Math.max(700, CurrentCycleY + 100));
+			for(ArrayList<StageClockCycle> l : table)
+				for (StageClockCycle x : l) {
+					int X = x.getStartX();
+					int Y = x.getStartY();
+					String Stage_Name;
+					int stage = x.getStage();
+					String TypeOfStall = x.getTypeOfStalls();
+					if (TypeOfStall.equals("N")) {
+						Stage_Name = stageName.get(stage - 1);
+					} else {
+						Stage_Name = TypeOfStall;
+					}
+					drawOneClockCycle(g2d, X, Y, x.getColor(), Stage_Name);
 				}
-				drawOneClockCycle(g2d, X, Y, x.getColor(), Stage_Name);
-			}
 
 			for (Line l : lines) {
-				// System.out.println("X1 :"+l.getP1().x+" Y1 :"+l.getP1().y+" X2 :"+l.getP2().x+" Y2:"+l.getP2().y);
+				
 				drawArrow(g2d, l.getP1().x, l.getP1().y, l.getP2().x,
 						l.getP2().y);
 			}
 			drawInstruction(g2d);
 			registersGui.repaint();
+			memoryGui.repaint();
 		}
 		Globals.instructionPipeLine.getForwarding().clear();
 
 	}
-	
-	
-	private void drawInstruction (Graphics2D g2d){
-		ArrayList<String> instructionList=Globals.instructionPipeLine.getInstructionList();
-		int YOfInst=35;
+
+	private void drawInstruction(Graphics2D g2d) {
+		ArrayList<String> instructionList = Globals.instructionPipeLine
+				.getInstructionList();
+		int YOfInst = 35;
 		g2d.setFont(Instfont);
 		g2d.setPaint(Color.black);
 		g2d.drawString("INSTRUCTIONS", 40, 20);
 		g2d.setColor(new Color(0, 0, 0));
 		g2d.setPaint(Color.blue);
-		for(String instr : instructionList){
-			g2d.drawString(instr, 20, YOfInst+17);
-			YOfInst=YOfInst+25;
-			
+		for (String instr : instructionList) {
+			g2d.drawString(instr, 20, YOfInst + 17);
+			YOfInst = YOfInst + 25;
+
 		}
-	
+
 	}
 
 	private void drawOneClockCycle(Graphics2D g2d, int X, int Y, Color color,
-			String Stage ) {
+			String Stage) {
 		g2d.setColor(new Color(212, 212, 212));
 		g2d.drawRect(X, Y, 40, 20);
 		g2d.setColor(color);
@@ -267,15 +275,16 @@ public class DrawPanel extends JPanel {
 	}
 
 	public void calculateUpdate() {
-		
+
 		lines = Globals.instructionPipeLine.getLines();
 		Stages = Globals.instructionPipeLine.getClockPerStage();
+		table= Globals.instructionPipeLine.getTable();
 
 	}
 
 	@Override
 	public Dimension getPreferredSize() {
-		return new Dimension(Math.max(1050, CurrentCycleX + 100), Math.max(700,
+		return new Dimension(Math.max(1150, CurrentCycleX + 100), Math.max(700,
 				CurrentCycleY + 100));
 	}
 
@@ -305,51 +314,169 @@ public class DrawPanel extends JPanel {
 		Globals.instructionPipeLine.init();
 		repaint();
 	}
+
 	public class RegisterPanel extends JPanel {
-		
+
+		RegisterPanel() {
+
+		}
+
 		@Override
 		public void paintComponent(Graphics g) {
 
 			super.paintComponent(g);
-			if (drawEnable) {
-				registerUpdate(g);
-				drawEnable = !drawEnable;
-			}
 			drawRegister(g);
 		}
-		public void drawRegister(Graphics g){
+
+		public void drawRegister(Graphics g) {
 			Graphics2D g2d = (Graphics2D) g;
-			
-			int YOfInst=35;
+
+			int YOfInst = 35;
 			g2d.setFont(Instfont);
-			g2d.setPaint(Color.black);
-			g2d.drawString("REGISTERS", 40, 20);
-			g2d.setColor(new Color(0, 0, 0));
 			String registersNames[] = "$zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra, pc, hi, lo"
 					.split(",");
-			for(String reg : registersNames){
+			for (String reg : registersNames) {
 				Register r = Globals.getRegister(reg.trim());
 				g2d.setPaint(Color.black);
-				g2d.drawString( r.name , 20, YOfInst+17);
+				g2d.drawString(r.name, 20, YOfInst + 17);
 				g2d.setPaint(Color.blue);
-				Long a = r.content;
-				g2d.drawString( "0x" + Long.toHexString(a) , 80, YOfInst+17);
-				
-				YOfInst=YOfInst+25;
-				
+				int a =(int) r.content;
+				g2d.drawString("0x" + Integer.toHexString(a), 80, YOfInst + 17);
+
+				YOfInst = YOfInst + 25;
+
+			}
+
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(200, Math.max(950, CurrentCycleY + 100));
+		}
+	}
+
+	public class MemoryPanel extends JPanel {
+
+		
+		private int StartIndex;
+		private int EndIndex;
+		private boolean HexOrDec;
+		private String StackOrData;
+		
+		
+
+		MemoryPanel() {
+			Border b = BorderFactory.createLoweredBevelBorder();
+			this.setBorder(b);
+			StartIndex=0;
+			EndIndex=31;
+			HexOrDec=true;
+			StackOrData="D";
+		}
+		public int getStartIndex() {
+			return StartIndex;
+		}
+
+		public void setStartIndex(int startIndex) {
+			StartIndex = startIndex;
+		}
+
+		public int getEndIndex() {
+			return EndIndex;
+		}
+
+		public void setEndIndex(int endIndex) {
+			EndIndex = endIndex;
+		}
+
+		public boolean getHexOrDec() {
+			return HexOrDec;
+		}
+
+		public void setHexOrDec(boolean hexOrDec) {
+			HexOrDec = hexOrDec;
+		}
+
+		public String getStackOrData() {
+			return StackOrData;
+		}
+
+		public void setStackOrData(String stackOrData) {
+			StackOrData = stackOrData;
+		}
+
+		@Override
+		public void paintComponent(Graphics g) {
+
+			super.paintComponent(g);
+			drawMemory(g);
+
+		}
+		
+		public void drawMemory(Graphics g) {
+			Graphics2D g2d = (Graphics2D) g;
+			g2d.setFont(Instfont);
+			g2d.setPaint(Color.black);
+			g2d.setColor(new Color(0, 0, 0));
+			g2d.drawString("ADDRESS", 20, 20);
+			for (int i = 0; i < 8; i++) {
+				g2d.drawString("ADDRESS+" + i, 150 + i * 110, 20);
+
+			}
+			printValue(g2d);
+
+
+		}
+
+		public void printValue(Graphics2D g2d){
+			
+			g2d.setPaint(Color.blue);
+			if(StackOrData.equals("D")){
+				System.out.println("Data memory");
+				for(int i=StartIndex;i<=EndIndex;i++){
+					Byte b = Globals.memory.dataMemory.memory.get(i);
+					int x=i/8;
+					int y=i%8;
+					if(y==0){
+						g2d.drawString(format(i), 20, 40+(x-StartIndex/8)*20);
+					}
+					g2d.drawString(format(b.intValue()), 150 + y * 110, 40+(x-StartIndex/8)*20);
+				}
+			}
+			else{
+				for(int i=StartIndex;i<=EndIndex;i++){
+					Byte b = Globals.memory.stackMemory.memory.get(i);
+					int x=i/8;
+					int y=i%8;
+					if(y==0){
+						g2d.drawString(format(i), 20, 40+(x-StartIndex/8)*20);
+					}
+					g2d.drawString(format(b.intValue()), 150 + y * 110, 40+(x-StartIndex/8)*20);
+				}
 			}
 			
 		}
-		private void registerUpdate(Graphics g){
-			drawRegister(g);
+		public String format(int i){
+			String value=""; 
+			if(HexOrDec)
+				value="0x"+Integer.toHexString(i);
+			else
+				value=Integer.toString(i);
+			return value;
 			
 		}
 		@Override
 		public Dimension getPreferredSize() {
-			return new Dimension(200, Math.max(950,
-					CurrentCycleY + 100));
+			return new Dimension(800, 200);
 		}
 	}
-	
+
+	public MemoryPanel getMemoryGui() {
+		return memoryGui;
+	}
+
+	public void setMemoryGui(MemoryPanel memoryGui) {
+		this.memoryGui = memoryGui;
+	}
 
 }

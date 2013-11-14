@@ -28,6 +28,8 @@ public class CalculateCoordinate {
 		ClockPerStage.clear();
 		table.clear();
 		lines.clear();
+		InstructionList.clear();
+		
 	}
 	
 	public ArrayList<ArrayList<StageClockCycle>> getTable() {
