@@ -57,14 +57,24 @@ public class ThreeRInsruction implements Instruction {
 
 	@Override
 	public boolean executeID() {
+		r1.lockRegister(id);
 		if (r2.contentAvailable(id) && r3.contentAvailable(id)) {
 			r2Val = r2.getContent();
 			r3Val = r3.getContent();
-			r1.lockRegister(id);
 			return true;
-		} else {
-			return false;
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()
+				&& r3.forwardAvailable()) {
+			return true;
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()
+				&& r3.contentAvailable(id)) {
+			r3Val = r3.getContent();
+			return true;
+		} else if (Globals.forwardingEnable && r3.forwardAvailable()
+				&& r2.contentAvailable(id)) {
+			r2Val = r2.getContent();
+			return true;
 		}
+		return false;
 
 	}
 

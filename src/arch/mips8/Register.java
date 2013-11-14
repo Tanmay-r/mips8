@@ -32,14 +32,13 @@ public class Register {
 	public long getContent() {
 		return content;
 	}
-	
-	public long getForwardContent(){
+
+	public long getForwardContent() {
 		return forwardContent;
 	}
 
 	public void lockRegister(int instructionId) {
-		if(instructionId < lock){
-			System.out.println("Lock " + name + " " + instructionId);
+		if (instructionId < lock) {
 			lock = instructionId;
 		}
 	}
@@ -50,32 +49,29 @@ public class Register {
 		lock = 65536;
 	}
 
-	public void setForward(long content, int id, int stage){
+	public void setForward(long content, int id, int stage) {
 		forwardReady = true;
-		forwardContent  = content;
+		forwardContent = content;
 		fromId = id;
 		fromStage = stage;
 	}
-	
-	public void setForwardTo(int id, int stage){
+
+	public void setForwardTo(int id, int stage) {
 		toId = id;
 		toStage = stage;
-		ArrayList<Integer> newForwarding = new ArrayList<Integer> ();
+		ArrayList<Integer> newForwarding = new ArrayList<Integer>();
 		newForwarding.add(fromId);
 		newForwarding.add(fromStage);
 		newForwarding.add(toId);
 		newForwarding.add(toStage);
 		Globals.forwardings.add(newForwarding);
 	}
-	
+
 	public boolean contentAvailable(int instructionId) {
-		// TODO Modify with forwarding lock and have a new value to set while
-		// forwarding
-//		System.out.println(name + " " + instructionId + " " + lock);
 		return !isLocked(instructionId);
 	}
-	
-	public boolean forwardAvailable(){
+
+	public boolean forwardAvailable() {
 		return forwardReady;
 	}
 }
