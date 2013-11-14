@@ -312,6 +312,8 @@ public class DrawPanel extends JPanel {
 			lines.clear();
 		}
 		Globals.instructionPipeLine.init();
+		registersGui.repaint();
+		memoryGui.repaint();
 		repaint();
 	}
 
