@@ -16,6 +16,9 @@ public class Globals {
 	public static Map<String, Integer> Labels;
 	public static ArrayList<Integer> StallArray;
 
+	public static ArrayList<ArrayList<Integer> > forwardings;
+	public static boolean forwardingEnable;
+	
 	public Globals() {
 		String registersNames[] = "$zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra, pc, hi, lo"
 				.split(",");
@@ -35,6 +38,8 @@ public class Globals {
 		Data = new HashMap<String, DataType>();
 		Labels = new HashMap<String, Integer>();
 		registers.get("$sp").setContent(16303);
+		forwardings = new ArrayList<ArrayList<Integer> >();
+		forwardingEnable = false;
 	}
 
 	public static Register getRegister(String rName) {
@@ -55,6 +60,7 @@ public class Globals {
 			StallArray.set(i, 0);
 		}
 		registers.get("$sp").setContent(16303);
+		forwardings = new ArrayList<ArrayList<Integer> >();
 		// instructionPipeLine = new CalculateCoordinate();
 	}
 }
