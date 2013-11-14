@@ -10,8 +10,7 @@ import java.util.Map;
 import arch.mips8.instruction.threeR.*;
 import arch.mips8.instruction.twoRoneI.*;
 import arch.mips8.instruction.twoR.*;
-import arch.mips8.instruction.branch.BeqInstruction;
-import arch.mips8.instruction.branch.BneInstruction;
+import arch.mips8.instruction.branch.*;
 import arch.mips8.instruction.oneRoneI.*;
 import arch.mips8.instruction.oneR.*;
 import arch.mips8.instruction.oneI.*;
@@ -19,7 +18,7 @@ import arch.mips8.instruction.oneI.*;
 public class FileParser {
 	private ArrayList<String> code;
 	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;
-	private Map<Integer,String> LabelsLocation = new HashMap<Integer,String>();
+	private Map<Integer, String> LabelsLocation = new HashMap<Integer, String>();
 	int instrIndex;
 
 	public FileParser(String filePath) {
@@ -31,7 +30,7 @@ public class FileParser {
 		oneRoneIoneR = " lw sw lb sb ";
 		oneRoneI = " lui li la ";
 		oneI = " j jal ";
-		instrIndex = 0;		
+		instrIndex = 0;
 		BufferedReader br = null;
 		code = new ArrayList<String>();
 		try {
@@ -149,7 +148,20 @@ public class FileParser {
 		}
 		// System.out.print(Globals.instructions);
 		for (Integer key : LabelsLocation.keySet()) {
-		    Globals.instructions.get(key)
+			if (Globals.instructions.get(key).getInstructionName().split(" ")[0]
+					.equals("beq")
+					|| Globals.instructions.get(key).getInstructionName()
+							.split(" ")[0].equals("bne")) {
+				((BranchInstruction) (Globals.instructions.get(key))).immd =  (Globals.Labels
+						.get(LabelsLocation.get(key))-key);
+				System.out.println(key+" "+Globals.Labels.get(LabelsLocation.get(key)));
+			}else if (Globals.instructions.get(key).getInstructionName().split(" ")[0]
+					.equals("jal")
+					|| Globals.instructions.get(key).getInstructionName()
+							.split(" ")[0].equals("j")) {
+				((OneIInstruction) (Globals.instructions.get(key))).immd = (long) Globals.Labels
+						.get(LabelsLocation.get(key));
+			}
 		}
 	}
 
@@ -264,8 +276,8 @@ public class FileParser {
 						Globals.instructions.add(new BeqInstruction(Globals
 								.getRegister(r1), Globals.getRegister(r2),
 								Globals.Labels.get(i1)
-										- Globals.instructions.size() - 1));
-						LabelsLocation.put(Globals.instructions.size()-1, i1);
+										- Globals.instructions.size()));
+						LabelsLocation.put(Globals.instructions.size() - 1, i1);
 
 					}
 					break;
@@ -278,8 +290,8 @@ public class FileParser {
 						Globals.instructions.add(new BneInstruction(Globals
 								.getRegister(r1), Globals.getRegister(r2),
 								Globals.Labels.get(i1)
-										- Globals.instructions.size() - 1));
-						LabelsLocation.put(Globals.instructions.size()-1, i1);
+										- Globals.instructions.size()));
+						LabelsLocation.put(Globals.instructions.size() - 1, i1);
 
 					}
 					break;
@@ -348,7 +360,8 @@ public class FileParser {
 					i1 = s[2];
 					r2 = s[3].replace(")", "");
 				}
-				System.out.println(type.trim() + " 1R1I1R " + r1 +" "+ i1 +" "+ r2);
+				System.out.println(type.trim() + " 1R1I1R " + r1 + " " + i1
+						+ " " + r2);
 				switch (type.trim()) {
 				case "lw":
 					Globals.instructions.add(new LwInstruction(Globals
@@ -373,7 +386,7 @@ public class FileParser {
 					} catch (NumberFormatException e) {
 						Globals.instructions.add(new JumpAndLinkInstruction(
 								Globals.Labels.get(i1)));
-						LabelsLocation.put(Globals.instructions.size()-1, i1);
+						LabelsLocation.put(Globals.instructions.size() - 1, i1);
 					}
 					break;
 				case "j":
@@ -383,7 +396,7 @@ public class FileParser {
 					} catch (NumberFormatException e) {
 						Globals.instructions.add(new JumpInstruction(
 								Globals.Labels.get(i1)));
-						LabelsLocation.put(Globals.instructions.size()-1, i1);
+						LabelsLocation.put(Globals.instructions.size() - 1, i1);
 					}
 					break;
 				}
@@ -393,28 +406,29 @@ public class FileParser {
 				String i1 = s[2];
 				// System.out.println(type.trim() + " 1R1I " + r1 + i1);
 				switch (type.trim()) {
-					case "lui":
-						Globals.instructions.add(new LuiInstruction(Globals
-								.getRegister(r1),(long) Integer.parseInt(i1)));
-						break;
-					case "li":
-						Globals.instructions.add(new LuiInstruction(Globals
-								.getRegister(r1),  (long)((Integer.parseInt(i1))>>16)   ));
-						Globals.instructions.add(new OriInstruction(Globals
-								.getRegister(r1),Globals.getRegister(r1),
-								(long)((Integer.parseInt(i1))& 0xffff)  ));
-						break;					
-					case "la":						
-												
-						
-						 int value = Globals.Data.get(i1).getIndex(); 
-						 
-						Globals.instructions.add(new LuiInstruction(Globals
-								.getRegister(r1),  (long)(value>>16) ));
-						Globals.instructions.add(new OriInstruction(Globals
-								.getRegister(r1),Globals.getRegister(r1), (value & 0xffff)  ));
-						break;
-					}					
+				case "lui":
+					Globals.instructions.add(new LuiInstruction(Globals
+							.getRegister(r1), (long) Integer.parseInt(i1)));
+					break;
+				case "li":
+					Globals.instructions.add(new LuiInstruction(Globals
+							.getRegister(r1),
+							(long) ((Integer.parseInt(i1)) >> 16)));
+					Globals.instructions.add(new OriInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r1),
+							(long) ((Integer.parseInt(i1)) & 0xffff)));
+					break;
+				case "la":
+
+					int value = Globals.Data.get(i1).getIndex();
+
+					Globals.instructions.add(new LuiInstruction(Globals
+							.getRegister(r1), (long) (value >> 16)));
+					Globals.instructions.add(new OriInstruction(Globals
+							.getRegister(r1), Globals.getRegister(r1),
+							(value & 0xffff)));
+					break;
+				}
 			} else if (type.equals(" syscall ")) {
 				// System.out.println(type.trim());
 			} else {

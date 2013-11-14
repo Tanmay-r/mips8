@@ -3,10 +3,11 @@ import arch.mips8.Globals;
 import arch.mips8.Register;
 import arch.mips8.instruction.Instruction;
 
-public class branch implements Instruction {
+public class BranchInstruction implements Instruction {
 
 	Register r1, r2;
-	long r1Val, r2Val, immd;
+	long r1Val, r2Val;
+	public long immd;
 	int id;
 	String name;
 	boolean branchTaken;
@@ -30,13 +31,13 @@ public class branch implements Instruction {
 		this.id = id;
 	}
 
-	public branch(Register r1, Register r2, long immd) {
+	public BranchInstruction(Register r1, Register r2, long immd) {
 		this.r1 = r1;
 		this.r2 = r2;
 		this.immd = immd;
 	}
 
-	public branch(branch instruction) {
+	public BranchInstruction(BranchInstruction instruction) {
 		this.r1 = instruction.r1;
 		this.r2 = instruction.r2;
 		this.immd = instruction.immd;
@@ -105,8 +106,8 @@ public class branch implements Instruction {
 	}
 	
 	@Override
-	public branch copy(){
-		return new branch(this);
+	public BranchInstruction copy(){
+		return new BranchInstruction(this);
 	}
 	
 	public boolean getBranchTaken(){

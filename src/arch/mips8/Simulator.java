@@ -1,7 +1,7 @@
 package arch.mips8;
 
 import arch.mips8.instruction.Instruction;
-import arch.mips8.instruction.branch.branch;
+import arch.mips8.instruction.branch.BranchInstruction;
 
 public class Simulator {
 	Stage IF, ID, IS, RF, EX, DF, DS, TC, WB;
@@ -46,13 +46,13 @@ public class Simulator {
 			successful = EX.execute();
 			if (successful){
 				if(EX.getInstruction().getInstructionName().split(" ")[0].equals("beq")){
-					System.out.println(((branch) EX.getInstruction()).getBranchTaken());
-					if(((branch) EX.getInstruction()).getBranchTaken()){
+					System.out.println(((BranchInstruction) EX.getInstruction()).getBranchTaken());
+					if(((BranchInstruction) EX.getInstruction()).getBranchTaken()){
 						flush();
 					}
 				}
 				if(EX.getInstruction().getInstructionName().split(" ")[0].equals("bne")){
-					if(((branch)EX.getInstruction()).getBranchTaken()){
+					if(((BranchInstruction)EX.getInstruction()).getBranchTaken()){
 						flush();
 					}
 				}

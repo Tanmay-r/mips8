@@ -8,7 +8,7 @@ public class OneIInstruction implements Instruction {
 	
 	
 	int id;
-	long immd;
+	public long immd;
 	String name;
 	
 	public void setName(String name) {

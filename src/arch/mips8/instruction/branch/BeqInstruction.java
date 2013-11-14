@@ -3,7 +3,7 @@ package arch.mips8.instruction.branch;
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
-public class BeqInstruction extends branch {
+public class BeqInstruction extends BranchInstruction {
 	public boolean branchTaken = false;
 	long prev_pc = 0;
 	

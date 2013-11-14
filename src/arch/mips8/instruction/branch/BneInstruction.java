@@ -3,7 +3,7 @@ package arch.mips8.instruction.branch;
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
-public class BneInstruction extends branch {
+public class BneInstruction extends BranchInstruction {
 	long prev_pc = 0;
 	
 	public BneInstruction(Register r1, Register r2, long immd) {
