@@ -1,12 +1,12 @@
-package arch.mips8.instruction.twoRoneI;
+package arch.mips8.instruction.oneRoneI;
 import arch.mips8.Globals;
 import arch.mips8.Register;
 import arch.mips8.instruction.Instruction;
 
-public class TwoRoneIInstruction implements Instruction {
+public class OneRoneIInstruction implements Instruction {
 
-	Register r1, r2;
-	long r1Val, r2Val, immd;
+	Register r1;
+	long r1Val, immd;
 	int id;
 	String name;
 	
@@ -15,7 +15,7 @@ public class TwoRoneIInstruction implements Instruction {
 	}
 	
 	public String getInstructionName() {
-		return this.name+" "+r1.name+" "+r2.name+" "+immd;
+		return this.name+" "+r1.name+" "+immd;
 	}
 
 	//r1 depends on this instruction
@@ -29,18 +29,15 @@ public class TwoRoneIInstruction implements Instruction {
 		this.id = id;
 	}
 
-	public TwoRoneIInstruction(Register r1, Register r2, long immd) {
-		this.r1 = r1;
-		this.r2 = r2;
+	public OneRoneIInstruction(Register r1, long immd) {
+		this.r1 = r1;		
 		this.immd = immd;
 	}
 
-	public TwoRoneIInstruction(TwoRoneIInstruction instruction) {
-		this.r1 = instruction.r1;
-		this.r2 = instruction.r2;
+	public OneRoneIInstruction(OneRoneIInstruction instruction) {
+		this.r1 = instruction.r1;		
 		this.immd = instruction.immd;
-		this.r1Val = instruction.r1Val;
-		this.r2Val = instruction.r2Val;	
+		this.r1Val = instruction.r1Val;		
 		this.name = instruction.name;
 		// TODO Auto-generated constructor stub
 	}
@@ -62,13 +59,7 @@ public class TwoRoneIInstruction implements Instruction {
 	public boolean executeID() {
 		// TODO 
 		r1.lockRegister(id);
-		if (r2.contentAvailable(id)) {
-			r2Val = r2.getContent();			
-			r1.lockRegister(id);			
-			return true;
-		} else {
-			return false;
-		}
+		return true;						
 	}
 
 	@Override
@@ -111,7 +102,8 @@ public class TwoRoneIInstruction implements Instruction {
 	}
 	
 	@Override
-	public TwoRoneIInstruction copy(){
-		return new TwoRoneIInstruction(this);
+	public OneRoneIInstruction copy(){
+		return new OneRoneIInstruction(this);
 	}
 }
+
