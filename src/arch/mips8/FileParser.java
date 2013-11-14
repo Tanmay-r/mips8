@@ -18,7 +18,8 @@ import arch.mips8.instruction.oneI.*;
 
 public class FileParser {
 	private ArrayList<String> code;
-	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;	
+	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;
+	private Map<Integer,String> LabelsLocation = new HashMap<Integer,String>();
 	int instrIndex;
 
 	public FileParser(String filePath) {
@@ -147,6 +148,9 @@ public class FileParser {
 
 		}
 		// System.out.print(Globals.instructions);
+		for (Integer key : LabelsLocation.keySet()) {
+		    Globals.instructions.get(key)
+		}
 	}
 
 	private void parseInstruction(String instr) throws Exception {
@@ -261,6 +265,7 @@ public class FileParser {
 								.getRegister(r1), Globals.getRegister(r2),
 								Globals.Labels.get(i1)
 										- Globals.instructions.size() - 1));
+						LabelsLocation.put(Globals.instructions.size()-1, i1);
 
 					}
 					break;
@@ -274,6 +279,7 @@ public class FileParser {
 								.getRegister(r1), Globals.getRegister(r2),
 								Globals.Labels.get(i1)
 										- Globals.instructions.size() - 1));
+						LabelsLocation.put(Globals.instructions.size()-1, i1);
 
 					}
 					break;
@@ -367,6 +373,7 @@ public class FileParser {
 					} catch (NumberFormatException e) {
 						Globals.instructions.add(new JumpAndLinkInstruction(
 								Globals.Labels.get(i1)));
+						LabelsLocation.put(Globals.instructions.size()-1, i1);
 					}
 					break;
 				case "j":
@@ -376,6 +383,7 @@ public class FileParser {
 					} catch (NumberFormatException e) {
 						Globals.instructions.add(new JumpInstruction(
 								Globals.Labels.get(i1)));
+						LabelsLocation.put(Globals.instructions.size()-1, i1);
 					}
 					break;
 				}
@@ -397,10 +405,10 @@ public class FileParser {
 								(long)((Integer.parseInt(i1))& 0xffff)  ));
 						break;					
 					case "la":						
-						 int value = Globals.Data.get(i1).getIndex(); //- Globals.instructions.size();
-						//int value;
-					
+												
 						
+						 int value = Globals.Data.get(i1).getIndex(); 
+						 
 						Globals.instructions.add(new LuiInstruction(Globals
 								.getRegister(r1),  (long)(value>>16) ));
 						Globals.instructions.add(new OriInstruction(Globals
