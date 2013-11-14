@@ -8,7 +8,7 @@ public class MemoryDisk {
 	ArrayList<Byte> memory;
 
 	MemoryDisk() {
-		memory = new ArrayList<Byte>(10000);
+		memory = new ArrayList<Byte>(16384);
 		index = 0;
 	}
 

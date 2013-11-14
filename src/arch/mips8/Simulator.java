@@ -1,6 +1,8 @@
 package arch.mips8;
 
 import arch.mips8.instruction.Instruction;
+import arch.mips8.instruction.twoRoneI.BeqInstruction;
+import arch.mips8.instruction.twoRoneI.BneInstruction;
 
 public class Simulator {
 	Stage IF, ID, IS, RF, EX, DF, DS, TC, WB;
@@ -41,7 +43,31 @@ public class Simulator {
 		// DF
 		stageAction(DF, DS);
 		// EX
-		stageAction(EX, DF);
+		if (EX.getState() == 'A') {
+			successful = EX.execute();
+			if (successful) {
+				if(EX.getInstruction() instanceof BeqInstruction){
+					if(((BeqInstruction)EX.getInstruction()).getBranchTaken()){
+						flush();
+					}
+				}
+				if(EX.getInstruction() instanceof BneInstruction){
+					if(((BneInstruction)EX.getInstruction()).getBranchTaken()){
+						flush();
+					}
+				}
+				EX.setState('B');				
+			} else {
+				EX.setState('A');
+				EX.setStalled(true);
+			}
+		}
+		if (EX.getState() == 'B') {
+			if (DF.getState() == 'C') {
+				DF.setInstruction(EX.getInstruction());
+				EX.setState('C');
+			}
+		}
 		// ID
 		stageAction(ID, EX);
 		// IS
@@ -99,6 +125,22 @@ public class Simulator {
 				prev.setState('C');
 			}
 		}
+	}
+	
+	void flush(){
+		int id = EX.getInstruction().getId();		
+		//TODO register unlocks
+		for(String regName:Globals.registers.keySet()){
+			Register r = Globals.getRegister(regName);
+			if (!r.isLocked(id)){
+				r.unlockRegister();
+			}
+		}
+
+		IF.setState('C');
+		IS.setState('C');
+		ID.setState('C');
+		
 	}
 
 }

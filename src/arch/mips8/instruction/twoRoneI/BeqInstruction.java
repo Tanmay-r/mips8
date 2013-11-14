@@ -4,7 +4,9 @@ import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class BeqInstruction extends TwoRoneIInstruction {
-
+	boolean branchTaken = false;
+	long prev_pc = 0;
+	
 	public BeqInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
 		super.name="beq";
@@ -22,11 +24,21 @@ public class BeqInstruction extends TwoRoneIInstruction {
 
 	@Override
 	public boolean executeEX() {
-		super.executeEX();
 		Register reg = Globals.getRegister("pc");
+		if ( (int)super.r1Val == (int)super.r2Val){
+			reg.setContent(prev_pc + (int)super.immd);
+			branchTaken = true;
+		}
+		return true;
+	}
+	
+	@Override
+	public boolean executeIF() {
+		Register reg =Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		if ( (int)super.r1Val == (int)super.r2Val)
-			reg.setContent(current_pc - 1 + (int)super.immd );
+		prev_pc  = current_pc;
+		reg.setContent(current_pc+1);
+		r1.lockRegister(id);
 		return true;
 	}
 	
@@ -73,6 +85,10 @@ public class BeqInstruction extends TwoRoneIInstruction {
 		// other instruction wrote in it after it was locked r1.isLocked()
 		// should I check?
 		return true;
+	}
+	
+	public boolean getBranchTaken(){
+		return branchTaken;
 	}
 	
 }
