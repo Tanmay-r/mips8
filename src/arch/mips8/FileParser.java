@@ -10,14 +10,13 @@ import java.util.Map;
 import arch.mips8.instruction.threeR.*;
 import arch.mips8.instruction.twoRoneI.*;
 import arch.mips8.instruction.twoR.*;
-//import arch.mips8.instruction.oneRoneI.*;
+import arch.mips8.instruction.oneRoneI.*;
 import arch.mips8.instruction.oneR.*;
 import arch.mips8.instruction.oneI.*;
 
 public class FileParser {
 	private ArrayList<String> code;
-	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;
-	Map<String, Integer> labelIndex;
+	private String threeR, twoRoneI, twoR, oneR, oneRoneIoneR, oneI, oneRoneI;	
 	int instrIndex;
 
 	public FileParser(String filePath) {
@@ -26,11 +25,10 @@ public class FileParser {
 		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu ";
 		twoR = " mult multu div divu move ";
 		oneR = " mfhi mflo jr ";
-		oneRoneIoneR = " lw sw ";
+		oneRoneIoneR = " lw sw lb sb ";
 		oneRoneI = " lui li la ";
 		oneI = " j jal ";
-		instrIndex = 0;
-		labelIndex = new HashMap<String, Integer>();
+		instrIndex = 0;		
 		BufferedReader br = null;
 		code = new ArrayList<String>();
 		try {
@@ -336,13 +334,13 @@ public class FileParser {
 				String r1 = s[1];
 				String i1, r2;
 				if (s.length == 3) {
-					i1 = s[2].split("(")[0];
-					r2 = s[2].split("(")[1].replace(")", "");
+					i1 = s[2].split("\\(")[0];
+					r2 = s[2].split("\\(")[1].replace(")", "");
 				} else {
 					i1 = s[2];
-					r2 = s[3];
+					r2 = s[3].replace(")", "");
 				}
-				// System.out.println(type.trim() + " 1R1I1R " + r1 + i1 + r2);
+				System.out.println(type.trim() + " 1R1I1R " + r1 +" "+ i1 +" "+ r2);
 				switch (type.trim()) {
 				case "lw":
 					Globals.instructions.add(new LwInstruction(Globals
@@ -384,6 +382,13 @@ public class FileParser {
 				String r1 = s[1];
 				String i1 = s[2];
 				// System.out.println(type.trim() + " 1R1I " + r1 + i1);
+				switch (type.trim()) {
+					case "lui":
+						Globals.instructions.add(new LuiInstruction(Globals
+								.getRegister(r1),(long) Integer.parseInt(i1)));
+						break;
+						
+				}
 			} else if (type.equals(" syscall ")) {
 				// System.out.println(type.trim());
 			} else {

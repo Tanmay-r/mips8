@@ -13,19 +13,23 @@ public class MemoryDisk {
 	}
 
 	public boolean storeInt(int integer, int index) {
+
+		System.out.println("memory call s " + index + " " +integer);
 		if (index + 3 < 10000) {
-			for (int i = 0; i < 4; i++) {
+			for (int i = 3; i >= 0; i--) {
 				memory.add(index, (byte) (integer >>> (i * 8)));
+				System.out.println(memory.get(index));
 				index++;
 			}
 			return true;
 		}
+		
 		return false;
 	}
 
 	public int storeInt(int integer) {
 		if (index + 3 < 10000) {
-			for (int i = 0; i < 4; i++) {
+			for (int i = 3; i >= 0; i--) {
 				memory.add(index, (byte) (integer >>> (i * 8)));
 				index++;
 			}
@@ -42,13 +46,14 @@ public class MemoryDisk {
 					memory.get(index++) };
 			result = ByteBuffer.wrap(bytes).getInt();
 		}
+		System.out.println("memory call " + index + " " + result);
 		return result;
 	}
 
 	public boolean storeHalfword(int halfword, int index) {
 		if (index + 1 < 10000) {
+			memory.add(index++, (byte) (halfword >>> 8));
 			memory.add(index, (byte) (halfword >>> 0));
-			memory.add(index, (byte) (halfword >>> 8));
 			return true;
 		}
 		return false;
@@ -56,8 +61,8 @@ public class MemoryDisk {
 
 	public int storeHalfword(int halfword) {
 		if (index + 1 < 10000) {
-			memory.add(index++, (byte) (halfword >>> 0));
 			memory.add(index++, (byte) (halfword >>> 8));
+			memory.add(index++, (byte) (halfword >>> 0));
 			return index - 2;
 		}
 		return -1;

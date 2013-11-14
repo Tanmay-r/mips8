@@ -5,6 +5,8 @@ import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class MultInstruction extends TwoRInstruction {
+	
+	private int multCounter = 4;
 
 	public MultInstruction(Register r1, Register r2) {
 		super(r1, r2);
@@ -28,8 +30,12 @@ public class MultInstruction extends TwoRInstruction {
 		Register hi =Globals.getRegister("ho");	
 		long mul = super.r1Val * super.r2Val;
 		lo.setContent( mul & (0xffffffff) );
-		hi.setContent( mul>>32 );	
-		return true;
+		hi.setContent( mul>>32 );
+		if(multCounter > 1){
+			multCounter--;
+			return false;
+		}
+		else return true;
 	}
 	
 	@Override

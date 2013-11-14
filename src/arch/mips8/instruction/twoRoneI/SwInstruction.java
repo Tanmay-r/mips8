@@ -3,6 +3,8 @@ import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class SwInstruction extends TwoRoneIInstruction {
+	
+	private int addr;
 
 	public SwInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
@@ -21,8 +23,38 @@ public class SwInstruction extends TwoRoneIInstruction {
 
 	@Override
 	public boolean executeEX() {
-		super.executeEX();
-//		super.r1Val=MEM[super.r2Val+super.immd];
+		addr = (int)(  super.r2Val  +   (int)super.immd  );
+		return true;
+	}
+	@Override
+	public boolean executeID() {
+		if (r2.contentAvailable(id) && r1.contentAvailable(id)) {
+			r1Val = r1.getContent();
+			r2Val = r2.getContent();	
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	
+	@Override
+	public boolean executeDS() {
+		boolean b = Globals.memory.dataMemory.storeInt( (int)super.r1Val , addr);
+		return b;
+	}
+	@Override
+	public boolean executeDF() {
+		return true;
+	}
+
+	@Override
+	public boolean executeTC() {
+		return true;
+	}
+	
+	@Override
+	public boolean executeWB() {
 		return true;
 	}
 	
@@ -31,4 +63,8 @@ public class SwInstruction extends TwoRoneIInstruction {
 		return new SwInstruction(this);
 	}
 
+	@Override
+	public String getInstructionName() {
+		return this.name+" "+r1.name+" "+immd + " (" +r2.name+")";
+	}
 }

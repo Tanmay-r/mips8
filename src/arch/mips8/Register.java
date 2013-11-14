@@ -25,6 +25,7 @@ public class Register {
 
 	public void lockRegister(int instructionId) {
 		if(instructionId < lock){
+			System.out.println("Lock " + name + " " + instructionId);
 			lock = instructionId;
 		}
 	}

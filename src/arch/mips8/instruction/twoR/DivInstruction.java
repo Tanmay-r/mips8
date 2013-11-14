@@ -4,6 +4,8 @@ import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class DivInstruction extends TwoRInstruction {
+	
+	private int divCounter = 4;
 
 	public DivInstruction(Register r1, Register r2) {
 		super(r1, r2);
@@ -27,7 +29,11 @@ public class DivInstruction extends TwoRInstruction {
 		Register hi =Globals.getRegister("ho");		
 		lo.setContent( (long)((int)super.r1Val / (int)super.r2Val) );
 		hi.setContent( (long)((int)super.r1Val % (int)super.r2Val) );	
-		return true;
+		if(divCounter>1){
+			divCounter--;
+			return false;
+		}
+		else return true;
 	}
 	
 	@Override
