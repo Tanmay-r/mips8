@@ -10,6 +10,8 @@ import java.util.Map;
 import arch.mips8.instruction.threeR.*;
 import arch.mips8.instruction.twoRoneI.*;
 import arch.mips8.instruction.twoR.*;
+import arch.mips8.instruction.branch.BeqInstruction;
+import arch.mips8.instruction.branch.BneInstruction;
 import arch.mips8.instruction.oneRoneI.*;
 import arch.mips8.instruction.oneR.*;
 import arch.mips8.instruction.oneI.*;

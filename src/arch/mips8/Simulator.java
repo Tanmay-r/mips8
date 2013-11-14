@@ -1,8 +1,7 @@
 package arch.mips8;
 
 import arch.mips8.instruction.Instruction;
-import arch.mips8.instruction.twoRoneI.BeqInstruction;
-import arch.mips8.instruction.twoRoneI.BneInstruction;
+import arch.mips8.instruction.branch.branch;
 
 public class Simulator {
 	Stage IF, ID, IS, RF, EX, DF, DS, TC, WB;
@@ -45,14 +44,15 @@ public class Simulator {
 		// EX
 		if (EX.getState() == 'A') {
 			successful = EX.execute();
-			if (successful) {
-				if(EX.getInstruction() instanceof BeqInstruction){
-					if(((BeqInstruction)EX.getInstruction()).getBranchTaken()){
+			if (successful){
+				if(EX.getInstruction().getInstructionName().split(" ")[0].equals("beq")){
+					System.out.println(((branch) EX.getInstruction()).getBranchTaken());
+					if(((branch) EX.getInstruction()).getBranchTaken()){
 						flush();
 					}
 				}
-				if(EX.getInstruction() instanceof BneInstruction){
-					if(((BneInstruction)EX.getInstruction()).getBranchTaken()){
+				if(EX.getInstruction().getInstructionName().split(" ")[0].equals("bne")){
+					if(((branch)EX.getInstruction()).getBranchTaken()){
 						flush();
 					}
 				}
@@ -128,8 +128,8 @@ public class Simulator {
 	}
 	
 	void flush(){
-		int id = EX.getInstruction().getId();		
-		//TODO register unlocks
+		int id = EX.getInstruction().getId();	
+		System.out.println("inside flush");
 		for(String regName:Globals.registers.keySet()){
 			Register r = Globals.getRegister(regName);
 			if (!r.isLocked(id)){
