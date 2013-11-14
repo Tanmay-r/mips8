@@ -6,6 +6,7 @@ public class BranchInstruction extends OneIInstruction{
 		super(branchInstruction);
 		super.name="b";	
 	}
+
 	public BranchInstruction(long immd) {
 		super(immd);
 		super.name="b";

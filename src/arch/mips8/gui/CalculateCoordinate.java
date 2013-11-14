@@ -2,9 +2,6 @@ package arch.mips8.gui;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class CalculateCoordinate {
