@@ -1,7 +1,13 @@
+.data
+five: .word 5
+four: .word 4
 .text
 main:
-lui $t1, 35
-sw $t1, 0($t0)
-lw $t2, 0($t0)
-add $t4,$t5,$t1
-add $t7,$t4,$t1
+
+la $t7,five
+lw $t1, 0($t7)
+
+la $t7,four
+lw $t2, 0($t7)
+
+add $t3,$t1,$t2
