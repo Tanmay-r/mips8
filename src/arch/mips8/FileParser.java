@@ -389,8 +389,24 @@ public class FileParser {
 						Globals.instructions.add(new LuiInstruction(Globals
 								.getRegister(r1),(long) Integer.parseInt(i1)));
 						break;
+					case "li":
+						Globals.instructions.add(new LuiInstruction(Globals
+								.getRegister(r1),  (long)((Integer.parseInt(i1))>>16)   ));
+						Globals.instructions.add(new OriInstruction(Globals
+								.getRegister(r1),Globals.getRegister(r1),
+								(long)((Integer.parseInt(i1))& 0xffff)  ));
+						break;					
+					case "la":						
+						 int value = Globals.Data.get(i1).getIndex(); //- Globals.instructions.size();
+						//int value;
+					
 						
-				}
+						Globals.instructions.add(new LuiInstruction(Globals
+								.getRegister(r1),  (long)(value>>16) ));
+						Globals.instructions.add(new OriInstruction(Globals
+								.getRegister(r1),Globals.getRegister(r1), (value & 0xffff)  ));
+						break;
+					}					
 			} else if (type.equals(" syscall ")) {
 				// System.out.println(type.trim());
 			} else {

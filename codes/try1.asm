@@ -1,3 +1,6 @@
+.data
+five: .word 5
+four: .word 4
 .text
 main:
 		lui $t1, 35
