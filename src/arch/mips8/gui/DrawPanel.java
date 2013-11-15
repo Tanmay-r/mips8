@@ -109,6 +109,7 @@ public class DrawPanel extends JPanel {
 		Globals.instructionPipeLine.setInitialY(10);
 		CurrentCycleX = 200;
 		CurrentCycleY = 10;
+		CycleNo = 0;
 
 	}
 
@@ -520,15 +521,15 @@ public class DrawPanel extends JPanel {
 				}
 			}
 			else{
-				for(int i=16303-EndIndex;i<=16303 - StartIndex;i++){
+				for(int i=16315-EndIndex;i<=16315 - StartIndex;i++){
 					System.out.println(i);
 					Byte b = Globals.memory.stackMemory.memory.get(i);
 					int x=i/8;
 					int y=i%8;
 					if(y==0){
-						g2d.drawString(format(i), 20, 40+(x-(16303-EndIndex)/8)*20);
+						g2d.drawString(format(i), 20, 40+(x-(16315-EndIndex)/8)*20);
 					}
-					g2d.drawString(format(b.intValue()), 150 + y * 110, 40+(x-(16303-EndIndex)/8)*20);
+					g2d.drawString(format(b.intValue()), 150 + y * 110, 40+(x-(16315-EndIndex)/8)*20);
 				}
 			}
 			
