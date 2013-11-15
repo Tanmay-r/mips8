@@ -11,7 +11,9 @@ public class CalculateCoordinate {
 	private ArrayList<Color> StageColors = new ArrayList<Color>();
 	private ArrayList<ArrayList<StageClockCycle>> table = new ArrayList<ArrayList<StageClockCycle>>();
 	private ArrayList<String> InstructionList;
+
 	public CalculateCoordinate() {
+
 		InstructionList=new ArrayList<String>();
 		StageColors.add(new Color(125, 167, 116));
 		StageColors.add(new Color(76, 153, 0));
@@ -172,7 +174,6 @@ public class CalculateCoordinate {
 	}
 
 	public void setClockCycles(int instNum, int stage, String type) {
-		System.out.println("INSTR : " + instNum + " " +stage + " " + type);
 		if (table.size() < instNum) {
 			ArrayList<StageClockCycle> list = new ArrayList<StageClockCycle>();
 			table.add(list);

@@ -81,13 +81,13 @@ public class Stage {
 
 	public String status(){
 		if(state=='A' && !stalled){
-			return "N" + instruction.getId();
+			return "N";
 		}
 		else if(state=='A' && stalled){
-			return "AS" + instruction.getId();
+			return "D";
 		}
 		else if(state=='B'){
-			return "B" + instruction.getId();
+			return "S";
 		}
 		return "E";
 	}

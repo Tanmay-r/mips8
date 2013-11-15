@@ -3,6 +3,7 @@ package arch.mips8.gui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -38,9 +39,16 @@ public class DrawPanel extends JPanel {
 	private int CurrentCycleX;
 	private int CurrentCycleY;
 	private RegisterPanel registersGui = new RegisterPanel();
-
+	FontMetrics fm = getFontMetrics( getFont() );
 	private MemoryPanel memoryGui = new MemoryPanel();
+	private int CycleNo;
+	public int getCycleNo() {
+		return CycleNo;
+	}
 
+	public void setCycleNo(int cycleNo) {
+		CycleNo = cycleNo;
+	}
 	public RegisterPanel getRegistersGui() {
 		return registersGui;
 	}
@@ -194,7 +202,6 @@ public class DrawPanel extends JPanel {
 			g2d.setFont(font);
 			int size = Stages.size();
 			CurrentCycleX = Stages.get(size - 1).getStartX();
-			// System.out.println("Current X in rect " + CurrentCycleX);
 			CurrentCycleY = Stages.get(size - 1).getStartY();
 			g2d.setColor(new Color(200, 200, 200));
 			g2d.drawRect(CurrentCycleX - 2, 0, 42,
@@ -202,8 +209,12 @@ public class DrawPanel extends JPanel {
 			g2d.setColor(new Color(200, 200, 0));
 			g2d.fillRect(CurrentCycleX, 0, 40,
 					Math.max(700, CurrentCycleY + 100));
+
+			
 			g2d.setColor(new Color(255, 255, 255));
 			g2d.fillRect(0, 0, 200, Math.max(700, CurrentCycleY + 100));
+			
+			
 			for(ArrayList<StageClockCycle> l : table)
 				for (StageClockCycle x : l) {
 					int X = x.getStartX();
@@ -224,6 +235,7 @@ public class DrawPanel extends JPanel {
 				drawArrow(g2d, l.getP1().x, l.getP1().y, l.getP2().x,
 						l.getP2().y);
 			}
+			drawCycleNo(g2d);
 			drawInstruction(g2d);
 			registersGui.repaint();
 			memoryGui.repaint();
@@ -256,7 +268,8 @@ public class DrawPanel extends JPanel {
 		g2d.setColor(color);
 		g2d.fillRect(X, Y, 40, 20);
 		g2d.setColor(new Color(0, 0, 0));
-		g2d.drawString(Stage, X, Y + 16);
+		
+		g2d.drawString(Stage, X+20-(getWidth(Stage)/2), Y + 16);
 
 	}
 
@@ -274,11 +287,45 @@ public class DrawPanel extends JPanel {
 				-5, 5, 0 }, 4);
 	}
 
-	public void calculateUpdate() {
+	
+	private void drawCycleNo(Graphics2D g2d){
+		
 
+		//System.out.println("Cycleno "+Globals.instructionPipeLine.getCycleNo());
+		CycleNo=0;
+		int width =0;
+		for(int i=245;i<=CurrentCycleX;i+=45){
+			
+			g2d.setColor(new Color(200, 200, 200));
+			g2d.drawRect(CurrentCycleX - 2, 0, 42,
+					20);
+			
+			g2d.setColor(new Color(255, 255, 255));
+			g2d.fillRect(CurrentCycleX, 0, 40,
+					20);
+			
+			width = getWidth(Integer.toString(CycleNo+1));
+			
+			g2d.setPaint(Color.black);
+			g2d.drawString(Integer.toString(CycleNo+1),i+20-(width/2),16);
+			CycleNo++;
+			
+			
+			
+		}
+		
+	}
+	public int getWidth(String str){
+		
+		return fm.stringWidth(str);
+				
+		
+	}
+	public void calculateUpdate() {
 		lines = Globals.instructionPipeLine.getLines();
 		Stages = Globals.instructionPipeLine.getClockPerStage();
 		table= Globals.instructionPipeLine.getTable();
+		CycleNo=table.get(table.size()-1).get(table.get(table.size()-1).size()-1).getStartX();
 
 	}
 
@@ -317,6 +364,30 @@ public class DrawPanel extends JPanel {
 		repaint();
 	}
 
+	public String getStatistics(){
+		String html="";
+		html+="<html><body>";
+		html+="<b>Total Instruction :</b>  <br><hr>";
+		html+="<div><b>Total Cycles :</b> "+CycleNo+" <br></div><hr>";
+		html+="<span><b>Total Stalls :</b></span>";
+		html+="<table border='1'>"
+				+ "<tr> "
+				+"<td>Data Hazard Stalls</td> <td> 10</td>"
+				+ "</tr>"
+				+ "<tr> "
+				+"<td>Structural Hazard Stalls</td> <td> 4</td>"
+				+ "</tr>"
+				+ "<tr> "
+				+"<td>Branch Hazard Stalls</td> <td> 4</td>"
+				+ "</tr>"
+				+ "</tr></table>";
+		
+		
+		html+="</body></html>";
+		
+		return html;
+	}
+	
 	public class RegisterPanel extends JPanel {
 
 		RegisterPanel() {

@@ -304,12 +304,12 @@ public class MainWindow extends JFrame {
 		System.out.println("Statistics");
 		statData = new JTextPane();
 		statData.setContentType("text/html");
-		statData.setText("alok");
+		statData.setText(simulationWindow.getStatistics());
 		statData.setEditable(false);
 		JScrollPane mypane = new JScrollPane();
 		// mypane.setPreferredSize(new Dimension(100,100));
 		mypane.getViewport().add(statData);
-		Object[] objarr = { new JLabel("Total Cycles:"), mypane, };
+		Object[] objarr = {  mypane };
 
 		JOptionPane Optpane = new JOptionPane(objarr, JOptionPane.PLAIN_MESSAGE);
 		JDialog dialog = Optpane.createDialog(emptyPanel, "Statistics");
