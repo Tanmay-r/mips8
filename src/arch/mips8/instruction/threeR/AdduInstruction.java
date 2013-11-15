@@ -6,18 +6,13 @@ public class AdduInstruction extends ThreeRInsruction {
 
 	public AdduInstruction(Register r1, Register r2, Register r3) {
 		super(r1, r2, r3);
-		super.name="addu";
-	}
-	
-	public AdduInstruction(AdduInstruction adduInstruction) {
-		super(adduInstruction);
-		super.name="addu";
-		// TODO Auto-generated constructor stub
+		super.name = "addu";
 	}
 
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
+	public AdduInstruction(AdduInstruction adduInstruction) {
+		super(adduInstruction);
+		super.name = "addu";
+	}
 
 	@Override
 	public boolean executeEX() {
@@ -25,11 +20,10 @@ public class AdduInstruction extends ThreeRInsruction {
 		super.r1Val = super.r2Val + super.r3Val;
 		return true;
 	}
-	
+
 	@Override
-	public AdduInstruction copy(){
+	public AdduInstruction copy() {
 		return new AdduInstruction(this);
 	}
 
 }
-

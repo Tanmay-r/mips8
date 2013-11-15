@@ -9,16 +9,15 @@ public class ThreeRInsruction implements Instruction {
 	long r1Val, r2Val, r3Val;
 	int id;
 	String name;
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
 
 	public String getInstructionName() {
-		return this.name+" "+r1.name+" "+r2.name+" "+r3.name;
+		return this.name + " " + r1.name + " " + r2.name + " " + r3.name;
 	}
-	//r1 depends on this instruction
-	//this instruction depends on r2 and r3
+
 	public int getId() {
 		return id;
 	}
@@ -41,14 +40,13 @@ public class ThreeRInsruction implements Instruction {
 		this.r2Val = addInstruction.r2Val;
 		this.r3Val = addInstruction.r3Val;
 		this.name = addInstruction.name;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean executeIF() {
 		Register reg = Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		reg.setContent(current_pc+1);
+		reg.setContent(current_pc + 1);
 		return true;
 	}
 
@@ -59,7 +57,6 @@ public class ThreeRInsruction implements Instruction {
 
 	@Override
 	public boolean executeID() {
-		// TODO 
 		if (r2.contentAvailable(id) && r3.contentAvailable(id)) {
 			r2Val = r2.getContent();
 			r3Val = r3.getContent();
@@ -73,45 +70,37 @@ public class ThreeRInsruction implements Instruction {
 
 	@Override
 	public boolean executeEX() {
-		// TODO In child class
 		r1.lockRegister(id);
 		return true;
 	}
 
-
 	@Override
 	public boolean executeDF() {
-		// TODO what?
 		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeDS() {
-		// TODO what?
 		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeTC() {
-		// TODO what?
 		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeWB() {
-		// TODO Not necessarily locked might be unlocked in a case when some
-		// other instruction wrote in it after it was locked r1.isLocked()
-		// should I check?
 		r1.setContent(r1Val);
 		r1.unlockRegister();
 		return true;
 	}
-	
+
 	@Override
-	public ThreeRInsruction copy(){
+	public ThreeRInsruction copy() {
 		return new ThreeRInsruction(this);
 	}
 }

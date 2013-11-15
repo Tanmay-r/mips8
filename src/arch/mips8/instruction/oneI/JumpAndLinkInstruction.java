@@ -3,23 +3,23 @@ package arch.mips8.instruction.oneI;
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
-public class JumpAndLinkInstruction extends OneIInstruction{
-	
-	
-	public JumpAndLinkInstruction(long immd){
+public class JumpAndLinkInstruction extends OneIInstruction {
+
+	public JumpAndLinkInstruction(long immd) {
 		super(immd);
-		super.name="jal";
+		super.name = "jal";
 	}
-	public JumpAndLinkInstruction (JumpAndLinkInstruction jumpandlinkInstruction){
+
+	public JumpAndLinkInstruction(JumpAndLinkInstruction jumpandlinkInstruction) {
 		super(jumpandlinkInstruction);
-		super.name="jal";
+		super.name = "jal";
 	}
-	
+
 	@Override
 	public boolean executeEX() {
 		Register reg = Globals.getRegister("ra");
-		long current_pc = reg.getContent();
-		reg.setContent(current_pc - 1 + ( (int)super.immd/4));
+		reg.setContent(current_pc + 1);
+		Globals.getRegister("pc").setContent(immd);
 		return true;
 	}
 

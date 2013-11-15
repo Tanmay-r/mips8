@@ -8,20 +8,17 @@ public class MemoryDisk {
 	public ArrayList<Byte> memory;
 
 	MemoryDisk() {
-		memory = new ArrayList<Byte>(10000);
-		for (int i = 0; i < 10000; i++) {
+		memory = new ArrayList<Byte>(16384);
+		for (int i = 0; i < 16384; i++) {
 			memory.add(i, (byte) 0);
 		}
 		index = 0;
 	}
 
 	public boolean storeInt(int integer, int index) {
-
-		System.out.println("memory call s " + index + " " + integer);
-		if (index + 3 < 10000) {
+		if (index + 3 < 16384) {
 			for (int i = 3; i >= 0; i--) {
 				memory.set(index, (byte) (integer >>> (i * 8)));
-				System.out.println(memory.get(index));
 				index++;
 			}
 			return true;
@@ -31,7 +28,7 @@ public class MemoryDisk {
 	}
 
 	public int storeInt(int integer) {
-		if (index + 3 < 10000) {
+		if (index + 3 < 16384) {
 			for (int i = 3; i >= 0; i--) {
 				memory.set(index, (byte) (integer >>> (i * 8)));
 				index++;
@@ -43,13 +40,12 @@ public class MemoryDisk {
 
 	public int getInt(int index) {
 		int result = 0;
-		if (index + 3 < 10000) {
+		if (index + 3 < 16384) {
 			byte[] bytes = new byte[] { memory.get(index++),
 					memory.get(index++), memory.get(index++),
 					memory.get(index++) };
 			result = ByteBuffer.wrap(bytes).getInt();
 		}
-		System.out.println("memory call " + index + " " + result);
 		return result;
 	}
 
@@ -74,7 +70,7 @@ public class MemoryDisk {
 
 	public int getHalfword(int index) {
 		int result = 0;
-		if (index + 1 < 10000) {
+		if (index + 1 < 16384) {
 			byte[] bytes = new byte[] { memory.get(index++),
 					memory.get(index++), 0, 0 };
 			result = ByteBuffer.wrap(bytes).getInt();
@@ -100,7 +96,7 @@ public class MemoryDisk {
 
 	public int getByte(int index) {
 		int result = 0;
-		if (index < 10000) {
+		if (index < 16384) {
 			byte[] bytes = new byte[] { memory.get(index++), 0, 0, 0 };
 			result = ByteBuffer.wrap(bytes).getInt();
 		}

@@ -1,7 +1,7 @@
 package arch.mips8.instruction;
 
 public interface Instruction {
-	
+
 	public boolean executeIF();
 
 	public boolean executeIS();
@@ -17,10 +17,11 @@ public interface Instruction {
 	public boolean executeTC();
 
 	public boolean executeWB();
-	
+
 	public int getId();
-	
+
 	public void setId(int id);
+
 	public String getInstructionName();
 
 	public Instruction copy();

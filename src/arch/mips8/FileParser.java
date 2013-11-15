@@ -21,15 +21,17 @@ public class FileParser {
 	private Map<Integer, String> LabelsLocation = new HashMap<Integer, String>();
 	int instrIndex;
 
-	public FileParser(String filePath) {
+	public FileParser(String filePath) throws Exception {
 		Globals.reset();
-		threeR = " add sub addu subu and or slt sltu mul ";
+		threeR = " add sub addu subu and or slt sltu ";
 		twoRoneI = " addi addiu andi ori sll srl beq bne slti sltiu ";
-		twoR = " mult multu div divu move ";
+		// beq, bne --> Branch Intruction
+		twoR = " mult div ";
 		oneR = " mfhi mflo jr ";
-		oneRoneIoneR = " lw sw lb sb ";
+		oneRoneIoneR = " lw sw "; // -->TwoROneIInstruction
 		oneRoneI = " lui li la ";
 		oneI = " j jal ";
+
 		instrIndex = 0;
 		BufferedReader br = null;
 		code = new ArrayList<String>();
@@ -47,12 +49,7 @@ public class FileParser {
 					}
 				}
 			}
-			try {
-				parseCode();
-			} catch (Exception e) {
-				e.printStackTrace();
-				// System.out.println("Syntax Error");
-			}
+			parseCode();
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -95,16 +92,11 @@ public class FileParser {
 
 			}
 			if (text) {
-				String instr;
 				if (line.contains(":")) {
 					String label = line.substring(0, line.indexOf(':'));
-					instr = line.substring(line.indexOf(':') + 1);
+					label.trim();
 					Globals.Labels.put(label, 0);
-				} else {
-					instr = line;
 				}
-				// parseInstruction(instr);
-
 			}
 		}
 		for (int i = 0; i < code.size(); i++) {
@@ -135,8 +127,8 @@ public class FileParser {
 				String instr;
 				if (line.contains(":")) {
 					String label = line.substring(0, line.indexOf(':'));
+					label.trim();
 					instr = line.substring(line.indexOf(':') + 1);
-					System.out.println("label " + label);
 					Globals.Labels.put(label, Globals.instructions.size());
 				} else {
 					instr = line;
@@ -146,17 +138,15 @@ public class FileParser {
 			}
 
 		}
-		// System.out.print(Globals.instructions);
 		for (Integer key : LabelsLocation.keySet()) {
 			if (Globals.instructions.get(key).getInstructionName().split(" ")[0]
 					.equals("beq")
 					|| Globals.instructions.get(key).getInstructionName()
 							.split(" ")[0].equals("bne")) {
-				((BranchInstruction) (Globals.instructions.get(key))).immd =  (Globals.Labels
-						.get(LabelsLocation.get(key))-key);
-				System.out.println(key+" "+Globals.Labels.get(LabelsLocation.get(key)));
-			}else if (Globals.instructions.get(key).getInstructionName().split(" ")[0]
-					.equals("jal")
+				((BranchInstruction) (Globals.instructions.get(key))).immd = (Globals.Labels
+						.get(LabelsLocation.get(key)) - key);
+			} else if (Globals.instructions.get(key).getInstructionName()
+					.split(" ")[0].equals("jal")
 					|| Globals.instructions.get(key).getInstructionName()
 							.split(" ")[0].equals("j")) {
 				((OneIInstruction) (Globals.instructions.get(key))).immd = (long) Globals.Labels
@@ -174,16 +164,13 @@ public class FileParser {
 			String[] s = instr.split(" ");
 			for (int i = 0; i < s.length; i++)
 				s[i] = s[i].trim();
-			// System.out.println(instr);
 			if (s.length > 4)
-				throw new Exception("Syntax Error");
+				throw new Exception("Syntax Error : " + instr);
 			String type = " " + s[0] + " ";
 			if (threeR.contains(type)) {
 				String r1 = s[1];
 				String r2 = s[2];
 				String r3 = s[3];
-				// TODO Three Register Call
-				// System.out.println(type.trim() + " 3R " + r1 + r2 + r3);
 				switch (type.trim()) {
 				case "add":
 					Globals.instructions.add(new AddInstruction(Globals
@@ -221,12 +208,6 @@ public class FileParser {
 							.getRegister(r3)));
 					break;
 
-				case "mul":
-					Globals.instructions.add(new MulInstruction(Globals
-							.getRegister(r1), Globals.getRegister(r2), Globals
-							.getRegister(r3)));
-					break;
-
 				case "slt":
 					Globals.instructions.add(new SltInstruction(Globals
 							.getRegister(r1), Globals.getRegister(r2), Globals
@@ -244,8 +225,6 @@ public class FileParser {
 				String r1 = s[1];
 				String r2 = s[2];
 				String i1 = s[3];
-				// System.out.println(type.trim() + " 2R1I " + r1 + r2 + i1);
-
 				switch (type.trim()) {
 				case "addi":
 					Globals.instructions.add(new AddiInstruction(Globals
@@ -320,7 +299,6 @@ public class FileParser {
 			} else if (twoR.contains(type)) {
 				String r1 = s[1];
 				String r2 = s[2];
-				// System.out.println(type.trim() + " 2R " + r1 + r2);
 				switch (type.trim()) {
 				case "div":
 					Globals.instructions.add(new DivInstruction(Globals
@@ -334,7 +312,6 @@ public class FileParser {
 
 			} else if (oneR.contains(type)) {
 				String r1 = s[1];
-				// System.out.println(type.trim() + " 2R " + r1);
 				switch (type.trim()) {
 				case "jr":
 					Globals.instructions.add(new JrInstruction(Globals
@@ -360,8 +337,6 @@ public class FileParser {
 					i1 = s[2];
 					r2 = s[3].replace(")", "");
 				}
-				System.out.println(type.trim() + " 1R1I1R " + r1 + " " + i1
-						+ " " + r2);
 				switch (type.trim()) {
 				case "lw":
 					Globals.instructions.add(new LwInstruction(Globals
@@ -377,7 +352,6 @@ public class FileParser {
 
 			} else if (oneI.contains(type)) {
 				String i1 = s[1];
-				// System.out.println(type.trim() + " 1I " + i1);
 				switch (type.trim()) {
 				case "jal":
 					try {
@@ -404,7 +378,6 @@ public class FileParser {
 			} else if (oneRoneI.contains(type)) {
 				String r1 = s[1];
 				String i1 = s[2];
-				// System.out.println(type.trim() + " 1R1I " + r1 + i1);
 				switch (type.trim()) {
 				case "lui":
 					Globals.instructions.add(new LuiInstruction(Globals
@@ -429,25 +402,20 @@ public class FileParser {
 							(value & 0xffff)));
 					break;
 				}
-			} else if (type.equals(" syscall ")) {
-				// System.out.println(type.trim());
 			} else {
-				System.out.println("Not Considered " + type);
-				// throw new Exception();
+				throw new Exception("Syntax Error : " + "Not Considered "
+						+ type);
 			}
 		}
 	}
 
-	private void parseData(String[] s) {
+	private void parseData(String[] s) throws Exception {
 		String tag = s[0].trim();
 		String type = s[1].trim();
 		String value = "";
 		for (int j = 2; j < s.length; j++)
 			value = value + " " + s[j];
 		tag = tag.split(":")[0];
-		System.out.println("Tag " + tag);
-		System.out.println("Type " + type);
-		System.out.println("Value " + value + "\n");
 		value = value.trim();
 		switch (type.trim()) {
 		case ".ascii": {
@@ -523,6 +491,9 @@ public class FileParser {
 					new DataType(tag, type, index, Integer.parseInt(value)));
 			break;
 		}
+		default:
+			throw new Exception("Error in data part: " + type.trim()
+					+ " not considered");
 		}
 	}
 }

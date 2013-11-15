@@ -1,53 +1,48 @@
 package arch.mips8.instruction.twoRoneI;
+
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class LwInstruction extends TwoRoneIInstruction {
-	
+
 	private int addr;
 
 	public LwInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
-		super.name="lw";
-	}
-	
-	public LwInstruction(LwInstruction lwInstruction) {
-		super(lwInstruction);
-		super.name="lw";
-		// TODO Auto-generated constructor stub
+		super.name = "lw";
 	}
 
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
+	public LwInstruction(LwInstruction lwInstruction) {
+		super(lwInstruction);
+		super.name = "lw";
+	}
 
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		addr = (int)(super.r2Val + (int)super.immd);
-		
+		addr = (int) (super.r2Val + (int) super.immd);
 		return true;
 	}
-	
+
 	@Override
 	public boolean executeDS() {
-		super.executeDS();		
-		if(super.r2.name == "sp"){
-			super.r1Val = (long)(Globals.memory.stackMemory.getInt(-addr));
-		}
-		else{
-			super.r1Val = (long)(Globals.memory.dataMemory.getInt(addr));
+		super.executeDS();
+		if (super.r2.name == "sp") {
+			super.r1Val = (long) (Globals.memory.stackMemory.getInt(-addr));
+		} else {
+			super.r1Val = (long) (Globals.memory.dataMemory.getInt(addr));
 		}
 		return true;
 	}
-	
+
 	@Override
-	public LwInstruction copy(){
+	public LwInstruction copy() {
 		return new LwInstruction(this);
 	}
+
 	@Override
 	public String getInstructionName() {
-		return this.name+" "+r1.name+" "+immd + " (" +r2.name+")";
+		return this.name + " " + r1.name + " " + immd + " (" + r2.name + ")";
 	}
 
 }

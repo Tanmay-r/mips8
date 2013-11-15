@@ -6,32 +6,24 @@ public class OriInstruction extends TwoRoneIInstruction {
 
 	public OriInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
-		super.name="ori";
-	}
-	
-	public OriInstruction(OriInstruction oriInstruction) {
-		super(oriInstruction);
-		super.name="ori";
-		// TODO Auto-generated constructor stub
+		super.name = "ori";
 	}
 
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
+	public OriInstruction(OriInstruction oriInstruction) {
+		super(oriInstruction);
+		super.name = "ori";
+	}
 
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		super.r1Val = (long)((int)super.r2Val | (int)super.immd);
+		super.r1Val = (long) ((int) super.r2Val | (int) super.immd);
 		return true;
 	}
-	
+
 	@Override
-	public OriInstruction copy(){
+	public OriInstruction copy() {
 		return new OriInstruction(this);
 	}
-	
-	
-
 
 }

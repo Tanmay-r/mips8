@@ -6,33 +6,24 @@ public class AddiInstruction extends TwoRoneIInstruction {
 
 	public AddiInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
-		super.name="addi";
-	}
-	
-	public AddiInstruction(AddiInstruction addiInstruction) {
-		super(addiInstruction);
-		super.name="addi";
-		
-		// TODO Auto-generated constructor stub
+		super.name = "addi";
 	}
 
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
+	public AddiInstruction(AddiInstruction addiInstruction) {
+		super(addiInstruction);
+		super.name = "addi";
+	}
 
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		super.r1Val = (long)((int)super.r2Val + (int)super.immd);
+		super.r1Val = (long) ((int) super.r2Val + (int) super.immd);
 		return true;
 	}
-	
+
 	@Override
-	public AddiInstruction copy(){
+	public AddiInstruction copy() {
 		return new AddiInstruction(this);
 	}
-	
-	
-
 
 }

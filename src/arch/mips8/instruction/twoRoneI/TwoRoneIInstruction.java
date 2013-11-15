@@ -1,4 +1,5 @@
 package arch.mips8.instruction.twoRoneI;
+
 import arch.mips8.Globals;
 import arch.mips8.Register;
 import arch.mips8.instruction.Instruction;
@@ -9,17 +10,14 @@ public class TwoRoneIInstruction implements Instruction {
 	long r1Val, r2Val, immd;
 	int id;
 	String name;
-	
-	public void setName(String name){
-		this.name=name;
-	}
-	
-	public String getInstructionName() {
-		return this.name+" "+r1.name+" "+r2.name+" "+immd;
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
-	//r1 depends on this instruction
-	//this instruction depends on r2 and immd
+	public String getInstructionName() {
+		return this.name + " " + r1.name + " " + r2.name + " " + immd;
+	}
 
 	public int getId() {
 		return id;
@@ -40,16 +38,15 @@ public class TwoRoneIInstruction implements Instruction {
 		this.r2 = instruction.r2;
 		this.immd = instruction.immd;
 		this.r1Val = instruction.r1Val;
-		this.r2Val = instruction.r2Val;	
+		this.r2Val = instruction.r2Val;
 		this.name = instruction.name;
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public boolean executeIF() {
-		Register reg =Globals.getRegister("pc");
+		Register reg = Globals.getRegister("pc");
 		long current_pc = reg.getContent();
-		reg.setContent(current_pc+1);
+		reg.setContent(current_pc + 1);
 		return true;
 	}
 
@@ -60,11 +57,10 @@ public class TwoRoneIInstruction implements Instruction {
 
 	@Override
 	public boolean executeID() {
-		// TODO 
 		r1.lockRegister(id);
 		if (r2.contentAvailable(id)) {
-			r2Val = r2.getContent();			
-			r1.lockRegister(id);			
+			r2Val = r2.getContent();
+			r1.lockRegister(id);
 			return true;
 		} else {
 			return false;
@@ -73,45 +69,37 @@ public class TwoRoneIInstruction implements Instruction {
 
 	@Override
 	public boolean executeEX() {
-		// TODO In child class
 		r1.lockRegister(id);
 		return true;
 	}
 
-
 	@Override
 	public boolean executeDF() {
-		// TODO what?
 		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeDS() {
-		// TODO what?
 		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeTC() {
-		// TODO what?
 		r1.lockRegister(id);
 		return true;
 	}
 
 	@Override
 	public boolean executeWB() {
-		// TODO Not necessarily locked might be unlocked in a case when some
-		// other instruction wrote in it after it was locked r1.isLocked()
-		// should I check?
 		r1.setContent(r1Val);
 		r1.unlockRegister();
 		return true;
 	}
-	
+
 	@Override
-	public TwoRoneIInstruction copy(){
+	public TwoRoneIInstruction copy() {
 		return new TwoRoneIInstruction(this);
 	}
 }

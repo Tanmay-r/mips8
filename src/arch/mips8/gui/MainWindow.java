@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
@@ -31,18 +30,15 @@ import arch.mips8.Simulator;
 public class MainWindow extends JFrame {
 	/** Panel That Contain others Component **/
 	private JPanel emptyPanel;
-	private JPanel ButtonCluster;
 	/** DrawPanel object to Draw simulation **/
 	private DrawPanel simulationWindow = new DrawPanel();
 	/** ClockCycles to keep track of current clock cycle of a process **/
-	private int ClockCycles;
 	private JPanel rightPanel;
 	private JPanel memoryPanel;
 	/** Scroll pane in which DrawPanel is fixed **/
 	private JScrollPane SimulationPane = new JScrollPane();
 
 	private JScrollPane RegisterPane = new JScrollPane();
-	private JScrollPane MemoryPane = new JScrollPane();
 
 	/** File Chooser To open or Load a file **/
 	private JFileChooser fileopen = new JFileChooser();
@@ -239,7 +235,11 @@ public class MainWindow extends JFrame {
 				FileChooser_panel.setLayout(new BorderLayout());
 				int ret = fileopen.showDialog(FileChooser_panel, "Open file");
 				if (ret == JFileChooser.APPROVE_OPTION) {
-					new FileParser(fileopen.getSelectedFile().getAbsolutePath());
+					try{
+						new FileParser(fileopen.getSelectedFile().getAbsolutePath());
+					}catch(Exception exception){
+						JOptionPane.showMessageDialog(null, exception.getMessage(), "Syntax Error", JOptionPane.ERROR_MESSAGE);
+					}
 					simulator = new Simulator();
 				}
 
@@ -296,7 +296,6 @@ public class MainWindow extends JFrame {
 		revalidate();
 	}
 	public void Reset(){
-		ClockCycles = 0;
 		simulationWindow.resetAll();
 		Globals.reset();
 

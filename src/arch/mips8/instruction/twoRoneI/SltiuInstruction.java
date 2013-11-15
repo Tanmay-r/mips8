@@ -6,33 +6,27 @@ public class SltiuInstruction extends TwoRoneIInstruction {
 
 	public SltiuInstruction(Register r1, Register r2, long immd) {
 		super(r1, r2, immd);
-		super.name="sltui";
-	}
-	
-	public SltiuInstruction(SltiuInstruction sltiuInstruction) {
-		super(sltiuInstruction);
-		super.name="sltui";
-		// TODO Auto-generated constructor stub
+		super.name = "sltui";
 	}
 
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
+	public SltiuInstruction(SltiuInstruction sltiuInstruction) {
+		super(sltiuInstruction);
+		super.name = "sltui";
+	}
 
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		if(super.r2Val < super.immd)super.r1Val=1;
-		else super.r1Val=0;
+		if (super.r2Val < super.immd)
+			super.r1Val = 1;
+		else
+			super.r1Val = 0;
 		return true;
 	}
-	
+
 	@Override
-	public SltiuInstruction copy(){
+	public SltiuInstruction copy() {
 		return new SltiuInstruction(this);
 	}
-	
-	
-
 
 }

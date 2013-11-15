@@ -3,34 +3,41 @@ package arch.mips8.instruction.oneR;
 import arch.mips8.Globals;
 import arch.mips8.Register;
 
-public class MfhiInstruction  extends OneRInstruction{
-
+public class MfhiInstruction extends OneRInstruction {
+	Register hi;
+	long hiVal;
 	public MfhiInstruction(Register r1) {
 		super(r1);
+		super.name = "mfhi";
+		hi = Globals.getRegister("hi");
 	}
-	
+
 	public MfhiInstruction(MfhiInstruction mfhiInstruction) {
 		super(mfhiInstruction);
-		super.name="mfhi";
-		// TODO Auto-generated constructor stub
+		super.name = "mfhi";
+		hi = Globals.getRegister("hi");
 	}
-
-	//This should have two types of registers
-	//1 - the registers on whom the instruction depends - r2, r3
-	//2 - the registers which depend on this instruction - r1
-
+	
+	@Override
+	public boolean executeID(){
+		super.executeID();
+		if(hi.contentAvailable(id)){
+			hiVal = hi.getContent();
+			return true;
+		}else{
+			return false;
+		}
+	}
 	@Override
 	public boolean executeEX() {
-		super.executeEX();		
-		Register hi =Globals.getRegister("hi");				
-		super.r1Val=hi.getContent();		
+		super.executeEX();
+		super.r1Val = hiVal;
 		return true;
 	}
-	
+
 	@Override
-	public MfhiInstruction copy(){
+	public MfhiInstruction copy() {
 		return new MfhiInstruction(this);
 	}
-	
 
 }

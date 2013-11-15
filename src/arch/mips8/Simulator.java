@@ -44,19 +44,34 @@ public class Simulator {
 		// EX
 		if (EX.getState() == 'A') {
 			successful = EX.execute();
-			if (successful){
-				if(EX.getInstruction().getInstructionName().split(" ")[0].equals("beq")){
-					System.out.println(((BranchInstruction) EX.getInstruction()).getBranchTaken());
-					if(((BranchInstruction) EX.getInstruction()).getBranchTaken()){
+			if (successful) {
+				if (EX.getInstruction().getInstructionName().split(" ")[0]
+						.equals("beq")) {
+					if (((BranchInstruction) EX.getInstruction())
+							.getBranchTaken()) {
 						flush();
 					}
 				}
-				if(EX.getInstruction().getInstructionName().split(" ")[0].equals("bne")){
-					if(((BranchInstruction)EX.getInstruction()).getBranchTaken()){
+				if (EX.getInstruction().getInstructionName().split(" ")[0]
+						.equals("bne")) {
+					if (((BranchInstruction) EX.getInstruction())
+							.getBranchTaken()) {
 						flush();
 					}
 				}
-				EX.setState('B');				
+				if (EX.getInstruction().getInstructionName().split(" ")[0]
+						.equals("j")) {
+					flush();
+				}
+				if (EX.getInstruction().getInstructionName().split(" ")[0]
+						.equals("jal")) {
+					flush();
+				}
+				if (EX.getInstruction().getInstructionName().split(" ")[0]
+						.equals("jr")) {
+					flush();
+				}
+				EX.setState('B');
 			} else {
 				EX.setState('A');
 				EX.setStalled(true);
@@ -126,13 +141,12 @@ public class Simulator {
 			}
 		}
 	}
-	
-	void flush(){
-		int id = EX.getInstruction().getId();	
-		System.out.println("inside flush");
-		for(String regName:Globals.registers.keySet()){
+
+	void flush() {
+		int id = EX.getInstruction().getId();
+		for (String regName : Globals.registers.keySet()) {
 			Register r = Globals.getRegister(regName);
-			if (!r.isLocked(id)){
+			if (!r.isLocked(id)) {
 				r.unlockRegister();
 			}
 		}
@@ -140,7 +154,7 @@ public class Simulator {
 		IF.setState('C');
 		IS.setState('C');
 		ID.setState('C');
-		
+
 	}
 
 }
