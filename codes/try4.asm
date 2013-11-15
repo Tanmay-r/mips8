@@ -6,13 +6,11 @@ main:
 		lui $t1, 35
 		sw $t1, 0($t0)
 		lw $t2, 0($t0)
-
-		beq $t1, $t2, label
-		sltu $t4,$t5,$t1
-		
-label:	
+		jal label
+			
 		add $t4,$t5,$t1
 		sw $t2,8($t0)
-		
+label:		
 		sub $t4,$t5,$t1
 		and $t7,$t5,$t1
+		jr $ra

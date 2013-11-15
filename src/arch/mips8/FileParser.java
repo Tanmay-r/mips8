@@ -453,12 +453,10 @@ public class FileParser {
 		case ".halfword": {
 			String[] bytes = value.split(",");
 			int intbyte = Integer.parseInt(bytes[0].trim());
-			int index = Globals.memory.dataMemory.storeByte((byte) intbyte);
-			Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 8));
+			int index = Globals.memory.dataMemory.storeHalfword(intbyte);
 			for (int i = 1; i < bytes.length; i++) {
 				intbyte = Integer.parseInt(bytes[i].trim());
-				Globals.memory.dataMemory.storeByte((byte) intbyte);
-				Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 8));
+				Globals.memory.dataMemory.storeHalfword(intbyte);
 			}
 			Globals.Data.put(tag, new DataType(tag, type, index,
 					2 * bytes.length));
@@ -467,16 +465,10 @@ public class FileParser {
 		case ".word": {
 			String[] bytes = value.split(",");
 			int intbyte = Integer.parseInt(bytes[0].trim());
-			int index = Globals.memory.dataMemory.storeByte((byte) intbyte);
-			Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 8));
-			Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 16));
-			Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 24));
+			int index = Globals.memory.dataMemory.storeInt(intbyte);
 			for (int i = 1; i < bytes.length; i++) {
 				intbyte = Integer.parseInt(bytes[i].trim());
-				Globals.memory.dataMemory.storeByte((byte) intbyte);
-				Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 8));
-				Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 16));
-				Globals.memory.dataMemory.storeByte((byte) (intbyte >>> 24));
+				Globals.memory.dataMemory.storeInt(intbyte);
 			}
 			Globals.Data.put(tag, new DataType(tag, type, index,
 					4 * bytes.length));

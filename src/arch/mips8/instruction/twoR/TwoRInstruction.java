@@ -41,6 +41,10 @@ public class TwoRInstruction implements Instruction {
 		this.r1Val = instruction.r1Val;
 		this.r2Val = instruction.r2Val;
 		this.name = instruction.name;
+		this.hi = instruction.hi;
+		this.lo = instruction.lo;
+		this.hiVal = instruction.hiVal;
+		this.loVal = instruction.loVal;
 	}
 
 	@Override

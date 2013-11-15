@@ -84,9 +84,12 @@ public class Stage {
 			return "N";
 		}
 		else if(state=='A' && stalled){
-			return "D";
+			System.out.println("D :" +Globals.StallArray.get(0));
+			Globals.StallArray.set(0, Globals.StallArray.get(0)+1);
+			return "D";		
 		}
 		else if(state=='B'){
+			Globals.StallArray.set(1, Globals.StallArray.get(1)+1);
 			return "S";
 		}
 		return "E";

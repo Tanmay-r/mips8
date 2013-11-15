@@ -71,7 +71,7 @@ public class OneIInstruction implements Instruction {
 
 	@Override
 	public boolean executeWB() {
-		return false;
+		return true;
 	}
 
 	public int getId() {
@@ -83,8 +83,8 @@ public class OneIInstruction implements Instruction {
 	}
 
 	@Override
-	public Instruction copy() {
-		return null;
+	public OneIInstruction copy() {
+		return new OneIInstruction(this);
 	}
 
 }

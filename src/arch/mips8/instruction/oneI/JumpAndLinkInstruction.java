@@ -17,10 +17,15 @@ public class JumpAndLinkInstruction extends OneIInstruction {
 
 	@Override
 	public boolean executeEX() {
-		Register reg = Globals.getRegister("ra");
+		Register reg = Globals.getRegister("$ra");
 		reg.setContent(current_pc + 1);
 		Globals.getRegister("pc").setContent(immd);
 		return true;
+	}
+
+	@Override
+	public JumpAndLinkInstruction copy() {
+		return new JumpAndLinkInstruction(this);
 	}
 
 }

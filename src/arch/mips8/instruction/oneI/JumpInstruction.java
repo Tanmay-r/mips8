@@ -19,5 +19,9 @@ public class JumpInstruction extends OneIInstruction {
 		Globals.getRegister("pc").setContent(immd);
 		return true;
 	}
-
+	
+	@Override
+	public JumpInstruction copy() {
+		return new JumpInstruction(this);
+	}
 }

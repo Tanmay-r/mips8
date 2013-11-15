@@ -365,20 +365,23 @@ public class DrawPanel extends JPanel {
 	}
 
 	public String getStatistics(){
+		
+		
+		
 		String html="";
 		html+="<html><body>";
-		html+="<b>Total Instruction :</b>  <br><hr>";
+		html+="<b>Total Instruction :</b>"+table.size()+"  <br><hr>";
 		html+="<div><b>Total Cycles :</b> "+CycleNo+" <br></div><hr>";
-		html+="<span><b>Total Stalls :</b></span>";
+		html+="<span><b>Total Stalls :</b> "+(Globals.StallArray.get(0)+Globals.StallArray.get(1)+Globals.StallArray.get(2))+" </span>";
 		html+="<table border='1'>"
 				+ "<tr> "
-				+"<td>Data Hazard Stalls</td> <td> 10</td>"
+				+"<td>Data Hazard Stalls</td> <td>"+Globals.StallArray.get(0)+"</td>"
 				+ "</tr>"
 				+ "<tr> "
-				+"<td>Structural Hazard Stalls</td> <td> 4</td>"
+				+"<td>Structural Hazard Stalls</td> <td>"+Globals.StallArray.get(1)+"</td>"
 				+ "</tr>"
 				+ "<tr> "
-				+"<td>Branch Hazard Stalls</td> <td> 4</td>"
+				+"<td>Branch Hazard Stalls</td> <td>"+Globals.StallArray.get(2)+"</td>"
 				+ "</tr>"
 				+ "</tr></table>";
 		
@@ -517,14 +520,15 @@ public class DrawPanel extends JPanel {
 				}
 			}
 			else{
-				for(int i=StartIndex;i<=EndIndex;i++){
+				for(int i=16303-EndIndex;i<=16303 - StartIndex;i++){
+					System.out.println(i);
 					Byte b = Globals.memory.stackMemory.memory.get(i);
 					int x=i/8;
 					int y=i%8;
 					if(y==0){
-						g2d.drawString(format(i), 20, 40+(x-StartIndex/8)*20);
+						g2d.drawString(format(i), 20, 40+(x-(16303-EndIndex)/8)*20);
 					}
-					g2d.drawString(format(b.intValue()), 150 + y * 110, 40+(x-StartIndex/8)*20);
+					g2d.drawString(format(b.intValue()), 150 + y * 110, 40+(x-(16303-EndIndex)/8)*20);
 				}
 			}
 			

@@ -108,10 +108,6 @@ public class MainWindow extends JFrame {
 			}
 		});
 		pane.add(button, BorderLayout.CENTER);
-
-		button = new JButton("Load File");
-		pane.add(button, BorderLayout.LINE_START);
-
 		button = new JButton("QUIT");
 		button.setMnemonic(KeyEvent.VK_D);
 		button.addActionListener(new ActionListener() {

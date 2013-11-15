@@ -27,8 +27,8 @@ public class LwInstruction extends TwoRoneIInstruction {
 	@Override
 	public boolean executeDS() {
 		super.executeDS();
-		if (super.r2.name == "sp") {
-			super.r1Val = (long) (Globals.memory.stackMemory.getInt(-addr));
+		if (super.r2.name.equals("$sp")) {
+			super.r1Val = (long) (Globals.memory.stackMemory.getInt(addr));
 		} else {
 			super.r1Val = (long) (Globals.memory.dataMemory.getInt(addr));
 		}

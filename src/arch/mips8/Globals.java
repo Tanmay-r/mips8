@@ -14,6 +14,7 @@ public class Globals {
 	public static Memory memory;
 	public static Map<String, DataType> Data;
 	public static Map<String, Integer> Labels;
+	public static ArrayList<Integer> StallArray;
 
 	public Globals() {
 		String registersNames[] = "$zero, $at, $v0, $v1, $a0, $a1, $a2, $a3, $t0, $t1, $t2, $t3, $t4, $t5, $t6, $t7, $s0, $s1, $s2, $s3, $s4, $s5, $s6, $s7, $t8, $t9, $k0, $k1, $gp, $sp, $fp, $ra, pc, hi, lo"
@@ -27,8 +28,13 @@ public class Globals {
 		instructions = new ArrayList<Instruction>();
 		instructionPipeLine = new CalculateCoordinate();
 		memory = new Memory();
+		StallArray = new ArrayList<Integer>(3);
+		for (int i = 0; i < 3; i++) {
+			StallArray.add(i, 0);
+		}
 		Data = new HashMap<String, DataType>();
 		Labels = new HashMap<String, Integer>();
+		registers.get("$sp").setContent(16303);
 	}
 
 	public static Register getRegister(String rName) {
@@ -45,6 +51,10 @@ public class Globals {
 		instructions.clear();
 		memory = new Memory();
 		Labels = new HashMap<String, Integer>();
+		for (int i = 0; i < 3; i++) {
+			StallArray.set(i, 0);
+		}
+		registers.get("$sp").setContent(16303);
 		// instructionPipeLine = new CalculateCoordinate();
 	}
 }

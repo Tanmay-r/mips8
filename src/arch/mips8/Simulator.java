@@ -17,6 +17,7 @@ public class Simulator {
 		TC = new Stage(7);
 		WB = new Stage(8);
 		this.instructionCounter = 1;
+		System.out.println(Globals.instructions.size());
 	}
 
 	public boolean nextStep() {
@@ -45,10 +46,12 @@ public class Simulator {
 		if (EX.getState() == 'A') {
 			successful = EX.execute();
 			if (successful) {
+				int bstall = instructionCounter-EX.getInstruction().getId()-1;
 				if (EX.getInstruction().getInstructionName().split(" ")[0]
 						.equals("beq")) {
 					if (((BranchInstruction) EX.getInstruction())
 							.getBranchTaken()) {
+						Globals.StallArray.set(2, Globals.StallArray.get(2)+bstall);
 						flush();
 					}
 				}
@@ -56,19 +59,23 @@ public class Simulator {
 						.equals("bne")) {
 					if (((BranchInstruction) EX.getInstruction())
 							.getBranchTaken()) {
+						Globals.StallArray.set(2, Globals.StallArray.get(2)+bstall);
 						flush();
 					}
 				}
 				if (EX.getInstruction().getInstructionName().split(" ")[0]
 						.equals("j")) {
+					Globals.StallArray.set(2, Globals.StallArray.get(2)+bstall);
 					flush();
 				}
 				if (EX.getInstruction().getInstructionName().split(" ")[0]
 						.equals("jal")) {
+					Globals.StallArray.set(2, Globals.StallArray.get(2)+bstall);
 					flush();
 				}
 				if (EX.getInstruction().getInstructionName().split(" ")[0]
 						.equals("jr")) {
+					Globals.StallArray.set(2, Globals.StallArray.get(2)+bstall);
 					flush();
 				}
 				EX.setState('B');
