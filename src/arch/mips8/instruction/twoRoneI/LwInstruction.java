@@ -24,14 +24,20 @@ public class LwInstruction extends TwoRoneIInstruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		addr = (int)(  super.r2Val  +   (int)super.immd  );
+		addr = (int)(super.r2Val + (int)super.immd);
+		
 		return true;
 	}
 	
 	@Override
 	public boolean executeDS() {
 		super.executeDS();		
-		super.r1Val = (long)(Globals.memory.dataMemory.getInt(addr));
+		if(super.r2.name == "sp"){
+			super.r1Val = (long)(Globals.memory.stackMemory.getInt(-addr));
+		}
+		else{
+			super.r1Val = (long)(Globals.memory.dataMemory.getInt(addr));
+		}
 		return true;
 	}
 	

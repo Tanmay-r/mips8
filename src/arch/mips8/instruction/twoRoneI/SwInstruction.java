@@ -40,7 +40,13 @@ public class SwInstruction extends TwoRoneIInstruction {
 	
 	@Override
 	public boolean executeDS() {
-		boolean b = Globals.memory.dataMemory.storeInt( (int)super.r1Val , addr);
+		boolean b;
+		if(super.r2.name == "sp"){
+			b = Globals.memory.stackMemory.storeInt( (int)super.r1Val , -addr);
+		}
+		else{
+			b = Globals.memory.dataMemory.storeInt( (int)super.r1Val , addr);
+		}		
 		return b;
 	}
 	@Override
