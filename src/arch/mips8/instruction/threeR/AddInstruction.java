@@ -17,27 +17,34 @@ public class AddInstruction extends ThreeRInsruction {
 
 	@Override
 	public boolean executeEX() {
+		//Assuming it comes here only when some value was available in previous step 
+		//case include only when values are properly available 
+		//special case only in case of sw as discussed
 		super.executeEX();
+		super.r1Val = super.r2Val + super.r3Val;
+		
 		if (r2.contentAvailable(id) && r3.contentAvailable(id)) {
-			super.r1Val = (long)((int)super.r2Val + (int)super.r3Val);
+			//no forwarding used here so nothing to set
 		} else if (Globals.forwardingEnable && r2.forwardAvailable()
 				&& r3.forwardAvailable()) {
+			//both forwarded so setting forward to teeling both forwarded to ex of this id
+			//Whenever set forward to is set add one forward line in forward table
+			r2.setForwardTo(id, 4);
+			r3.setForwardTo(id, 4);
 			return true;
 		} else if (Globals.forwardingEnable && r2.forwardAvailable()
 				&& r3.contentAvailable(id)) {
-			r3Val = r3.getContent();
+			r2.setForwardTo(id, 4);
 			return true;
 		} else if (Globals.forwardingEnable && r3.forwardAvailable()
 				&& r2.contentAvailable(id)) {
-			r2Val = r2.getContent();
+			r3.setForwardTo(id, 4);
 			return true;
 		}
-		if(Globals.forwardingEnable && r2.forwardAvailable() && r3.forwardAvailable()){
-			super.r1Val = r2.getForwardContent() + r3.getForwardContent();
-			r2.setForwardTo(id, stage);
-		}
-		
 		if(Globals.forwardingEnable){
+			//Forwarding value of r1 telling it is forwarded from here
+			//this won't affect if r1 is same as r2 or r3 as forward to is set before and after that value is beig changed
+			//TODO still needed to be checked
 			r1.setForward(r1Val, id, 4);
 		}
 		return true;
