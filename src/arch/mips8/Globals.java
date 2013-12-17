@@ -39,7 +39,7 @@ public class Globals {
 		Labels = new HashMap<String, Integer>();
 		registers.get("$sp").setContent(16303);
 		forwardings = new ArrayList<ArrayList<Integer> >();
-		forwardingEnable = false;
+		forwardingEnable = true;
 	}
 
 	public static Register getRegister(String rName) {
