@@ -21,6 +21,11 @@ public class LwInstruction extends TwoRoneIInstruction {
 	public boolean executeEX() {
 		super.executeEX();
 		addr = (int) (super.r2Val + (int) super.immd);
+		if (r2.contentAvailable(id)) {
+
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()) {
+			r2.setForwardTo(id, 4);
+		}		
 		return true;
 	}
 
@@ -31,6 +36,11 @@ public class LwInstruction extends TwoRoneIInstruction {
 			super.r1Val = (long) (Globals.memory.stackMemory.getInt(addr));
 		} else {
 			super.r1Val = (long) (Globals.memory.dataMemory.getInt(addr));
+		}
+		if(Globals.forwardingEnable){
+			//Forwarding happens from DS to EX/DS not from TC, confirmed - 
+			//https://www.inkling.com/read/computer-architecture-hennessy-5th/appendix-c/section-c-6 Figure C.43
+			r1.setForward(r1Val, id, 6);
 		}
 		return true;
 	}

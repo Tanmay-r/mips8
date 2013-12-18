@@ -28,12 +28,9 @@ public class MultInstruction extends TwoRInstruction {
 			return false;
 		} else{
 			if (r1.contentAvailable(id) && r2.contentAvailable(id)) {
-				//no forwarding used here so nothing to set
+				
 			} else if (Globals.forwardingEnable && r1.forwardAvailable()
 					&& r1.forwardAvailable()) {
-				//both forwarded so setting forward to telling both forwarded to ex of this id
-				//Whenever set forward to is set add one forward line in forward table
-				//TODO check if the stageID should be 4 or something else, because this is a 4 step stage
 				r1.setForwardTo(id, 4);
 				r2.setForwardTo(id, 4);
 			} else if (Globals.forwardingEnable && r1.forwardAvailable()

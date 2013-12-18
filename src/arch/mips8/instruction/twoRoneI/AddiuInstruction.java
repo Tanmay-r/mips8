@@ -1,5 +1,6 @@
 package arch.mips8.instruction.twoRoneI;
 
+import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class AddiuInstruction extends TwoRoneIInstruction {
@@ -18,6 +19,14 @@ public class AddiuInstruction extends TwoRoneIInstruction {
 	public boolean executeEX() {
 		super.executeEX();
 		super.r1Val = super.r2Val + super.immd;
+		if (r2.contentAvailable(id)) {
+
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()) {
+			r2.setForwardTo(id, 4);
+		}
+		if(Globals.forwardingEnable){
+			r1.setForward(r1Val, id, 4);
+		}
 		return true;
 	}
 

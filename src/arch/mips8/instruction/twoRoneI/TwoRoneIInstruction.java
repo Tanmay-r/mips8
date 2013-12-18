@@ -62,9 +62,11 @@ public class TwoRoneIInstruction implements Instruction {
 			r2Val = r2.getContent();
 			r1.lockRegister(id);
 			return true;
-		} else {
-			return false;
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()) {
+			r2Val = r2.getForwardContent();
+			return true;
 		}
+		return false;
 	}
 
 	@Override

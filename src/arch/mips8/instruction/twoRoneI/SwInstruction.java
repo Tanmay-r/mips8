@@ -20,6 +20,18 @@ public class SwInstruction extends TwoRoneIInstruction {
 	@Override
 	public boolean executeEX() {
 		addr = (int) (super.r2Val + (int) super.immd);
+		if (r2.contentAvailable(id) && r1.contentAvailable(id)) {
+
+		} else if (Globals.forwardingEnable && r2.forwardAvailable() && r1.contentAvailable(id)) {
+			r2.setForwardTo(id, 4);
+		} else if (Globals.forwardingEnable && r2.contentAvailable(id) && r1.forwardAvailable()){
+			r1Val = r1.getForwardContent();
+		} else if (Globals.forwardingEnable && r2.forwardAvailable() && r1.forwardAvailable()) {
+			r2.setForwardTo(id, 4);
+			r1Val = r1.getForwardContent();
+		} else {
+			return false;
+		}		
 		return true;
 	}
 
@@ -29,7 +41,10 @@ public class SwInstruction extends TwoRoneIInstruction {
 			r1Val = r1.getContent();
 			r2Val = r2.getContent();
 			return true;
-		} else {
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()){
+			r2Val = r2.getForwardContent();
+			return true;
+		} else{
 			return false;
 		}
 
@@ -48,6 +63,9 @@ public class SwInstruction extends TwoRoneIInstruction {
 
 	@Override
 	public boolean executeDF() {
+		if(Globals.forwardingEnable && r1.forwardAvailable()){
+			r2.setForwardTo(id, 5);
+		}
 		return true;
 	}
 
