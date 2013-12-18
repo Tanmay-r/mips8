@@ -21,7 +21,6 @@ public class SwInstruction extends TwoRoneIInstruction {
 	public boolean executeEX() {
 		addr = (int) (super.r2Val + (int) super.immd);
 		if (r2.contentAvailable(id) && r1.contentAvailable(id)) {
-
 		} else if (Globals.forwardingEnable && r2.forwardAvailable() && r1.contentAvailable(id)) {
 			r2.setForwardTo(id, 4);
 		} else if (Globals.forwardingEnable && r2.contentAvailable(id) && r1.forwardAvailable()){

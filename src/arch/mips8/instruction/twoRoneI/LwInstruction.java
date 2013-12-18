@@ -21,9 +21,7 @@ public class LwInstruction extends TwoRoneIInstruction {
 	public boolean executeEX() {
 		super.executeEX();
 		addr = (int) (super.r2Val + (int) super.immd);
-		if (r2.contentAvailable(id)) {
-
-		} else if (Globals.forwardingEnable && r2.forwardAvailable()) {
+		if (Globals.forwardingEnable && r2.forwardAvailable()) {
 			r2.setForwardTo(id, 4);
 		}		
 		return true;

@@ -19,9 +19,7 @@ public class AddiuInstruction extends TwoRoneIInstruction {
 	public boolean executeEX() {
 		super.executeEX();
 		super.r1Val = super.r2Val + super.immd;
-		if (r2.contentAvailable(id)) {
-
-		} else if (Globals.forwardingEnable && r2.forwardAvailable()) {
+		if (Globals.forwardingEnable && r2.forwardAvailable()) {
 			r2.setForwardTo(id, 4);
 		}
 		if(Globals.forwardingEnable){

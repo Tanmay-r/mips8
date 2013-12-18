@@ -22,9 +22,7 @@ public class SltiuInstruction extends TwoRoneIInstruction {
 			super.r1Val = 1;
 		else
 			super.r1Val = 0;
-		if (r2.contentAvailable(id)) {
-
-		} else if (Globals.forwardingEnable && r2.forwardAvailable()) {
+		if (Globals.forwardingEnable && r2.forwardAvailable()) {
 			r2.setForwardTo(id, 4);
 		}
 		if(Globals.forwardingEnable){
