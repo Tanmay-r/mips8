@@ -6,6 +6,7 @@ import arch.mips8.Register;
 public class MfhiInstruction extends OneRInstruction {
 	Register hi;
 	long hiVal;
+
 	public MfhiInstruction(Register r1) {
 		super(r1);
 		super.name = "mfhi";
@@ -17,21 +18,32 @@ public class MfhiInstruction extends OneRInstruction {
 		super.name = "mfhi";
 		hi = Globals.getRegister("hi");
 	}
-	
+
 	@Override
-	public boolean executeID(){
+	public boolean executeID() {
 		super.executeID();
-		if(hi.contentAvailable(id)){
+		if (hi.contentAvailable(id)) {
 			hiVal = hi.getContent();
 			return true;
-		}else{
+		} else if (Globals.forwardingEnable && hi.forwardAvailable()) {
+			hiVal = hi.getForwardContent();
+			return true;
+		} else {
 			return false;
 		}
 	}
+
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
 		super.r1Val = hiVal;
+		if (hi.contentAvailable(id)) {
+		} else if (Globals.forwardingEnable && hi.forwardAvailable()) {
+			hi.setForwardTo(id, 4);
+		}
+		if (Globals.forwardingEnable) {
+			r1.setForward(r1Val, id, 4);
+		}
 		return true;
 	}
 

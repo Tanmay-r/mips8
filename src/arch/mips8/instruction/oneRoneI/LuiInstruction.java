@@ -1,5 +1,6 @@
 package arch.mips8.instruction.oneRoneI;
 
+import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class LuiInstruction extends OneRoneIInstruction {
@@ -18,6 +19,9 @@ public class LuiInstruction extends OneRoneIInstruction {
 	public boolean executeEX() {
 		super.executeEX();
 		super.r1Val = (long) (((int) super.immd) << 16);
+		if (Globals.forwardingEnable) {
+			r1.setForward(r1Val, id, 4);
+		}
 		return true;
 	}
 

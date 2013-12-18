@@ -59,9 +59,24 @@ public class BranchInstruction implements Instruction {
 
 	@Override
 	public boolean executeID() {
-		if (r2.contentAvailable(id) && r1.contentAvailable(id)) {
-			r2Val = r2.getContent();
+		if (r1.contentAvailable(id) && r2.contentAvailable(id)) {
 			r1Val = r1.getContent();
+			r2Val = r2.getContent();
+			return true;
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()
+				&& r2.forwardAvailable()) {
+			r1Val = r1.getForwardContent();
+			r2Val = r2.getForwardContent();
+			return true;
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()
+				&& r2.contentAvailable(id)) {
+			r2Val = r2.getContent();
+			r1Val = r1.getForwardContent();
+			return true;
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()
+				&& r1.contentAvailable(id)) {
+			r1Val = r1.getContent();
+			r2Val = r2.getForwardContent();
 			return true;
 		} else {
 			return false;

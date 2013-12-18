@@ -25,6 +25,9 @@ public class MfloInstruction extends OneRInstruction {
 		if (lo.contentAvailable(id)) {
 			loVal = lo.getContent();
 			return true;
+		} else if (Globals.forwardingEnable && lo.forwardAvailable()) {
+			loVal = lo.getForwardContent();
+			return true;
 		} else {
 			return false;
 		}
@@ -33,8 +36,15 @@ public class MfloInstruction extends OneRInstruction {
 	@Override
 	public boolean executeEX() {
 		super.executeEX();
-		Register lo = Globals.getRegister("lo");
-		super.r1Val = lo.getContent();
+		super.r1Val = loVal;
+
+		if (lo.contentAvailable(id)) {
+		} else if (Globals.forwardingEnable && lo.forwardAvailable()) {
+			lo.setForwardTo(id, 4);
+		}
+		if (Globals.forwardingEnable) {
+			r1.setForward(r1Val, id, 4);
+		}
 		return true;
 	}
 

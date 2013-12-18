@@ -20,6 +20,10 @@ public class JrInstruction extends OneRInstruction {
 	public boolean executeEX() {
 		Register reg = Globals.getRegister("pc");
 		reg.setContent(r1Val);
+		if (r1.contentAvailable(id)) {
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()) {
+			r1.setForwardTo(id, 4);
+		}
 		return true;
 	}
 
@@ -27,6 +31,9 @@ public class JrInstruction extends OneRInstruction {
 	public boolean executeID() {
 		if (r1.contentAvailable(id)) {
 			r1Val = r1.getContent();
+			return true;
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()) {
+			r1Val = r1.getForwardContent();
 			return true;
 		} else {
 			return false;

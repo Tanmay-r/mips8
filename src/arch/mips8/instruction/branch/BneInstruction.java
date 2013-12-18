@@ -23,6 +23,18 @@ public class BneInstruction extends BranchInstruction {
 			reg.setContent(prev_pc + (int) super.immd);
 			super.branchTaken = true;
 		}
+		if (r1.contentAvailable(id) && r2.contentAvailable(id)) {
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()
+				&& r2.forwardAvailable()) {
+			r1.setForwardTo(id, 4);
+			r2.setForwardTo(id, 4);
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()
+				&& r2.contentAvailable(id)) {
+			r1.setForwardTo(id, 4);
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()
+				&& r1.contentAvailable(id)) {
+			r2.setForwardTo(id, 4);
+		}
 		return true;
 	}
 

@@ -58,8 +58,6 @@ public class ThreeRInsruction implements Instruction {
 	@Override
 	public boolean executeID() {
 		r1.lockRegister(id);
-		//forwarding values are assumed to be available only then forwarding available is true
-		//so getting the value and saving it in r2val or r3val as needed
 		if (r2.contentAvailable(id) && r3.contentAvailable(id)) {
 			r2Val = r2.getContent();
 			r3Val = r3.getContent();
