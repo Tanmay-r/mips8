@@ -31,19 +31,16 @@ public class AddInstruction extends ThreeRInsruction {
 			//Whenever set forward to is set add one forward line in forward table
 			r2.setForwardTo(id, 4);
 			r3.setForwardTo(id, 4);
-			return true;
 		} else if (Globals.forwardingEnable && r2.forwardAvailable()
 				&& r3.contentAvailable(id)) {
 			r2.setForwardTo(id, 4);
-			return true;
 		} else if (Globals.forwardingEnable && r3.forwardAvailable()
 				&& r2.contentAvailable(id)) {
 			r3.setForwardTo(id, 4);
-			return true;
 		}
 		if(Globals.forwardingEnable){
 			//Forwarding value of r1 telling it is forwarded from here
-			//this won't affect if r1 is same as r2 or r3 as forward to is set before and after that value is beig changed
+			//this won't affect if r1 is same as r2 or r3 as forward to is set before and after that value is being changed
 			//TODO still needed to be checked
 			r1.setForward(r1Val, id, 4);
 		}

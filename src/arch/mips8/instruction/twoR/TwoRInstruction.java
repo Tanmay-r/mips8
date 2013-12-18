@@ -65,13 +65,30 @@ public class TwoRInstruction implements Instruction {
 		hi.lockRegister(id);
 		lo.lockRegister(id);
 		if (r1.contentAvailable(id) && r2.contentAvailable(id)) {
+			//No register locked
 			r1Val = r1.getContent();
 			r2Val = r2.getContent();
 			return true;
-		} else {
-			return false;
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()
+				&& r2.forwardAvailable()) {
+			//Both locked but both can be forwarded
+			r1Val = r1.getForwardContent();
+			r2Val = r2.getForwardContent();
+			return true;
+		} else if (Globals.forwardingEnable && r1.forwardAvailable()
+				&& r2.contentAvailable(id)) {
+			//r1 forwarded, r2 not locked
+			r2Val = r2.getContent();
+			r1Val = r1.getForwardContent();
+			return true;
+		} else if (Globals.forwardingEnable && r2.forwardAvailable()
+				&& r1.contentAvailable(id)) {
+			//r1 not locked, r2 forwarded
+			r1Val = r1.getContent();
+			r2Val = r2.getForwardContent();
+			return true;
 		}
-
+		return false;
 	}
 
 	@Override

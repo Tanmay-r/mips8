@@ -1,5 +1,6 @@
 package arch.mips8.instruction.twoR;
 
+import arch.mips8.Globals;
 import arch.mips8.Register;
 
 public class DivInstruction extends TwoRInstruction {
@@ -24,8 +25,29 @@ public class DivInstruction extends TwoRInstruction {
 		if (divCounter > 1) {
 			divCounter--;
 			return false;
-		} else
-			return true;
+		} else {
+			if (r1.contentAvailable(id) && r2.contentAvailable(id)) {
+				//no forwarding used here so nothing to set
+			} else if (Globals.forwardingEnable && r1.forwardAvailable()
+					&& r1.forwardAvailable()) {
+				//both forwarded so setting forward to telling both forwarded to ex of this id
+				//Whenever set forward to is set add one forward line in forward table
+				//TODO check if the stageID should be 4 or something else, because this is a 4 step stage
+				r1.setForwardTo(id, 4);
+				r2.setForwardTo(id, 4);
+			} else if (Globals.forwardingEnable && r1.forwardAvailable()
+					&& r2.contentAvailable(id)) {
+				r1.setForwardTo(id, 4);
+			} else if (Globals.forwardingEnable && r2.forwardAvailable()
+					&& r1.contentAvailable(id)) {
+				r1.setForwardTo(id, 4);
+			}
+			if(Globals.forwardingEnable){
+				lo.setForward(loVal, id, 4);
+				hi.setForward(hiVal, id, 4);
+			}
+		}
+		return true;
 	}
 
 	@Override
